@@ -6,7 +6,7 @@ angular.module("MyApp")
                 index: "="
 
             },
-            templateUrl:"/panel/partials/chartA.html",
+            templateUrl:"./partials/chartA.html",
             transclude:true,
             link: function(scope, element) {
               //select element
