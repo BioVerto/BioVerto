@@ -21,6 +21,7 @@ angular.module("MyApp")
                 scope.$watch('data', function(newVals, oldVals) {
                     return scope.render();
                 }, true);
+
                 //D3 related code
                 scope.insertNewData = function(){
                     svg.selectAll("div.h-bar")
@@ -55,7 +56,7 @@ angular.module("MyApp")
                     });
                 };
                //Adding random data to graph
-               scope.genFlg = false;
+                scope.genFlg = false;
                 var addRandomData = function ()
                 {
                     $timeout(addRandomData,1000);
@@ -72,36 +73,40 @@ angular.module("MyApp")
                 }
 
                 //Query for left panel and generate components
-                scope.controls =  componentGenerator.genControls(graphQuery.getViewData(scope.index));
+                var controlsObj = [{type:"bool",name:"P1",property:"generate-bars",label:"Generate Bars",func:"genBars"},
+                                    {type:"range", name:"P2",  property:"width-range" ,label:"Width Range",func:"widthRange",min:0,max:10,default:5},
+                                    {type:"select",name:"P3",property:"color",label:"Color",func:"color",options:[{value:"red",label:"Red"},{value:"green",label:"Green"},{value:"blue",label:"Blue"}]},
+             ];
+                scope.controls =  componentGenerator.genControls(controlsObj);
                 //Query for graph data
                 scope.data = graphQuery.getGraphData();
                 //action on value change
-                scope.changeValue = function(property,value)
-                {
-                    console.log(property);
-                    console.log(value);
-                    if(property == "generate-bars")
-                    {
-                        console.log("here");
-                        scope.genFlg = value;
-                    }
-                    if(property == "color")
-                    {
-                        colorScale = d3.scale.linear()
+                scope.genBars  = function  (value) {
+                    if(!arguments)return scope.genFlg;
+
+                      scope.genFlg = value;  
+                }
+                scope.widthRange = function  (value) {
+                    
+                   if(!arguments)return barWidth;
+
+                        barWidth = value;
+                        scope.updateElementStyle("width",function (d) {
+                            return (d.width * barWidth) + "px";
+                        }); 
+                }
+                
+                scope.color = function  (value) {
+                    if(!arguments)return colorScale;    
+                    colorScale = d3.scale.linear()
                             .domain([0, 100])
                             .range(["#add8e6", value]);
                         scope.updateElementStyle("background-color",function (d) {
                             return colorScale(d.color);
                         });
-                    }
-                    if(property == "width-range")
-                    {
-                        barWidth = value;
-                        scope.updateElementStyle("width",function (d) {
-                            return (d.width * barWidth) + "px";
-                        });
-                    }
                 }
+                
+               
 
             }
         };

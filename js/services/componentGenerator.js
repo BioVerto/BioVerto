@@ -9,13 +9,13 @@ angular.module("MyApp")
             switch (obj.type)
             {
                 case "bool":
-                    temp += "<input type=\"checkbox\"  ng-change = \"changeValue('"+obj.property+"',"+obj.name+")\"ng-model=\""+obj.name+"\"><br>"
+                    temp += "<input type=\"checkbox\"  ng-change = \""+obj.func+"("+obj.name+")\"ng-model=\""+obj.name+"\"><br>"
                     break;
                 case "range":
-                    temp += "<input type=\"range\" min=\""+obj.min+"\" max=\""+obj.max+"\" value = \""+obj.default+"\" ng-change = \"changeValue('"+obj.property+"',"+obj.name+")\"ng-model=\""+obj.name+"\"><br>" //name=\""+obj.name+"\"
+                    temp += "<input type=\"range\" min=\""+obj.min+"\" max=\""+obj.max+"\" value = \""+obj.default+"\" ng-change = \""+obj.func+"("+obj.name+")\"ng-model=\""+obj.name+"\"><br>" //name=\""+obj.name+"\"
                     break;
                 case "select":
-                    temp += "<select ng-change = \"changeValue('"+obj.property+"',"+obj.name+")\" ng-model=\""+obj.name+"\" >";
+                    temp += "<select ng-change = \""+obj.func+"("+obj.name+")\" ng-model=\""+obj.name+"\" >";
                     for(var j =0;j <obj.options.length;j++)
                     {
                         temp += "<option value=\""+obj.options[j].value+"\">"+obj.options[j].label+"</option>"
@@ -24,7 +24,7 @@ angular.module("MyApp")
 
                     break;
                 case "listbox":
-                    temp += "<select ng-change = \"changeValue('"+obj.property+"',"+obj.name+") ng-model=\""+obj.name+"\" size = "+obj.size+" >";
+                    temp += "<select ng-change = \""+obj.func+"("+obj.name+") ng-model=\""+obj.name+"\" size = "+obj.size+" >";
                     for(var j =0;j <obj.options.length;j++)
                     {
                         temp += "<option value=\""+obj.options[j].value+"\">"+obj.options[j].label+"</option>"
