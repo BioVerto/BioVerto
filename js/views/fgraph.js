@@ -17,7 +17,12 @@ dc.fgraph = function (parent){
     _parentID = parent,     // keep track of the parent of an object
     _margins = {top:0, right: 0, bottom: 0, left: 0},
     _fCharge = -120, // charge parameter
-    _color = d3.scale.category20(), // colors to be used for nodes
+    _nodeColor = d3.scale.category20(), // colors to be used for nodes
+    _edgeColor = d3.scale.category20(), // colors to be used for edges
+    _nodeColorAccessor = function(d){ return 1; }, // node color accessor
+    _edgeColorAccessor = function(d){ return 1; }, // edge color accessor
+    _edgeWidthAccessor = function(d){ return 2; },// controlls the width of the link
+    _edgeWidthScale = d3.linear.scale().range([1,10]),
     _linkDistance = 30, // link distance for force
     _linkStrength,
     _force, // force layout
@@ -25,7 +30,7 @@ dc.fgraph = function (parent){
     _link, // links
     _node, // nodes
     _transitionDuration = 750,
-    _data = {}, // data to be displayed
+    _graph = {}, // data to be displayed
     _width = 200,
     _height = 200,
     _displayNames = true, // should we display names
@@ -33,8 +38,6 @@ dc.fgraph = function (parent){
     
     // we can initialize the links/nodes only when we have data
     function changeData(graph){
-	_data = graph;
-
 	if (!_svg)
 	    _svg = d3.select(_parentID)
 	    .append("svg");
@@ -44,16 +47,25 @@ dc.fgraph = function (parent){
 	    .charge(_fCharge)
 	    .linkDistance(_linkDistance);
 
+	// wrap the info in graph so that force layout is happy
+	var _nodeData = graph.nodes.map(function(d,i){
+	    d.index = i;
+	    return { data:d, weight: _weightAccessor(d) };
+	});
+	var _edgeData = graph.edges.map(function(d){
+	    return {source: d.source.index, target:d.target.index, data: d.data};
+	});
+
 	_force
-	    .nodes(graph.nodes)
-	    .links(graph.links)
+	    .nodes(_nodeData)
+	    .links(_edgeData)
 	    .start();
 
 	_link = _svg.selectAll(".link")
-	    .data(graph.links)
+	    .data(_edgeData)
 	    .enter().append("line")
 	    .attr("class", "link")
-	    .style("stroke-width", function(d) { return 5*d.value; });
+	    .style("stroke-width", function(d) { return _edgeWidthAccessor(d.data); });
 	
 	_node = _svg.selectAll(".node")
 	    .data(graph.nodes)
@@ -71,7 +83,7 @@ dc.fgraph = function (parent){
 
 	_node.append("circle")
 	    .attr("r", 5)
-	    .style("fill", function(d) { return _color(d.group); })
+	    .style("fill", function(d) { return _nodeColors(_nodeColorAccessor(d.data)); })
 	
 	_node.append("title")
 	    .text(function(d) { return d.name; });
@@ -156,21 +168,77 @@ dc.fgraph = function (parent){
 
 
     // Change/get inner colors
-    _fgraph.colors = function(_){
-        if (!arguments.length) return _colors;
-        _colors=_;
+    _fgraph.nodeColors = function(_){
+        if (!arguments.length) return _nodeColors;
+        _nodeColors=_;
         return _fgraph;
     }
+
+    _fgraph.edgeColors = function(_){
+        if (!arguments.length) return _edgeColors;
+        _edgeColors=_;
+        return _fgraph;
+    }
+    
+    _chart.nodeColorAccessor = function(_){
+        if(!arguments.length) return _nodeColorAccessor;
+        _nodeColorAccessor = _;
+        return _chart;
+    };
+
+    _chart.edgeColorAccessor = function(_){
+        if(!arguments.length) return _edgeColorAccessor;
+        _edgeColorAccessor = _;
+        return _chart;
+    };
+
+    _chart.weightAccessor = function(_){
+        if(!arguments.length) return _weightAccessor;
+	// TODO, enforce the changes
+        _weightAccessor = _;
+        return _chart;
+    };
 
     // Change/get data
-    _fgraph.data = function(_){
-        if (!arguments.length) return _data;
-        _data=_;
-	changeData(_data);
+    _fgraph.graphView = function(_){
+        if (!arguments.length) return _graph;
+        _graph=_;
+	changeData(_graph);
         return _fgraph;
-    }
+    };
 
+    _fgraph.resize = function(width, height){
+	_width = width;
+	_height = height;
+	if (_force) _force.size([width, height]).start();
+	if (_svg) 
+	    _svg.attr("width", width)
+	    .attr("height", height);
+	return _fgraph;
+    };
 
+    _fgraph.minEdgeWidth = function(_){
+	var range = _edgeWidthScale.range();
+        if (!arguments.length)  return range[0];
+	
+	range[0] = _;
+	_edgeWidthScale.range(range);
+
+        return _fgraph;
+    };
+
+    _fgraph.maxEdgeWidth = function(_){
+	var range = _edgeWidthScale.range();
+        if (!arguments.length)  return range[1];
+	
+	range[1] = _;
+	_edgeWidthScale.range(range);
+
+        return _fgraph;
+    };
+
+    
+    
     return _fgraph;
 
 
