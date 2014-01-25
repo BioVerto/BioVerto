@@ -80,8 +80,8 @@ dc.fgraph = function(parent) {
       return {
         // source: d.source,
         // target: d.target,
-        source: d.source,
-        target: d.target,
+        source: _nodeData[d.source.index],
+        target: _nodeData[d.target.index],
         data: d.data
         //value: d.value                
       };

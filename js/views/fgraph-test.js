@@ -1,4 +1,4 @@
-var graph = {
+var graph1 = {
   "nodes":[
     {"name":"Myriel","group":1},
     {"name":"Napoleon","group":1},
@@ -29,14 +29,33 @@ var graph = {
     {"source":8,"target":0,"data":2}       
   ]
 };
-
+console.log(graph1);
 // var fgraph = dc.fgraph("#div1")
 // 			.graphView(graph)
 // 			.resize(960,600);
 
-var fgraph = dc.fgraph()
-			.init("#div1",graph,960,600)
-			.edgeColors(function(d) { 
-				return "red";})
+g5.createGraph();   
+g5.ioPlugins.csv.input("test2.csv","Source","Target");
+var graph2={},nodes,links;
+wait = setInterval(getData,3000);
+function getData() {
+    nodes = g5.listNodes();
+    links = g5.listEdges();
+    clearInterval(wait);
+    console.log(nodes);
+    console.log(links);
+    graph2.nodes = nodes;
+    graph2.edges =  links;
+    console.log("graph");
+    console.log(graph2);
+    //console.log(JSON.stringify(graph, undefined, 2)); 
+    var fgraph = dc.fgraph()
+            .init("#div1",graph2,960,600)
+            .edgeColors(function(d) { 
+                return "red";})
+
+}
+
+
 
 //console.log(fgraph);

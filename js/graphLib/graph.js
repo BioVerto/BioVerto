@@ -23,7 +23,10 @@
  *      http://graphdracula.net
  *
  /*--------------------------------------------------------------------------*/
-
+//graph object
+/*	var graph ={};
+	console.log(graph);
+*/
 /*
  * Edge Factory
  */
@@ -35,7 +38,7 @@ var EdgeFactory = function() {
 };
 EdgeFactory.prototype = {
     build: function(source, target) {
-        var e = jQuery.extend(true, {}, this.template);
+        var e = jQuery.extend(true, {}, graph.template);
         e.source = source;
         e.target = target;
         return e;
@@ -45,12 +48,18 @@ EdgeFactory.prototype = {
 /*
  * Graph
  */
+//DISCUSS:Singleton
 var Graph = function() {
-    this.nodes = {};
-    this.edges = [];
-    this.snapshots = []; // previous graph states TODO to be implemented
-    this.edgeFactory = new EdgeFactory();
+	
+	this.nodes = {};//changed to array
+    	this.edges = [];
+    	this.snapshots = []; // previous graph states TODO to be implemented
+    	this.edgeFactory = new EdgeFactory();
+	
+    //	return graph;
+
 };
+
 Graph.prototype = {
     /* 
      * add a node
@@ -60,20 +69,24 @@ Graph.prototype = {
      *              representation
      * addNode will update the information if the node already exists
      */
-    addNode: function(id, content) {
+
+    addNode : function(id, content) {
         /* testing if node is already existing in the graph */
         if(this.nodes[id] == undefined) {
             this.nodes[id] = new Graph.Node(id, content);
         } else {
-	    jQuery.extend(this.nodes[id].data, data);
+	    jQuery.extend(this.nodes[id].data, content);//data->content
 	}
         return this.nodes[id];
     },
 
     // TODO: allow update of data for an edge
-    addEdge: function(source, target, data, directed) {
-        var s = this.addNode(source);
-        var t = this.addNode(target);
+	//Discuss with Prof. DOBRA
+    addEdge : function(source, target, data, directed) {
+        
+	//console.log(source+" "+target); !!getting undefined undefined
+	var s = this.addNode(source,data);
+        var t = this.addNode(target,data);
         var edge = this.edgeFactory.build(s, t);
         jQuery.extend(edge.data, data);
         if (directed) { // if directed edge, add it to target adjList
@@ -84,7 +97,7 @@ Graph.prototype = {
         this.edges.push(edge);
     },
     
-    removeNode: function(id) {
+    removeNode : function(id) {
         delete this.nodes[id];
         for(var i = 0; i < this.edges.length; i++) {
             if (this.edges[i].source.id == id || this.edges[i].target.id == id) {
@@ -93,6 +106,7 @@ Graph.prototype = {
             }
         }
     }
+
 };
 
 /*
@@ -100,11 +114,12 @@ Graph.prototype = {
  */
 Graph.Node = function(id, data){
     var node = {};
-    node.id = id;
     node.edges = [];
     node.data = data;
+    node.data.id = id;
     return node;
 };
+
 Graph.Node.prototype = {
 };
 
