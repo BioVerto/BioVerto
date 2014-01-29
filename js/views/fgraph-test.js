@@ -29,19 +29,15 @@ var graph1 = {
     {"source":8,"target":0,"data":2}       
   ]
 };
-console.log(graph1);
-// var fgraph = dc.fgraph("#div1")
-// 			.graphView(graph)
-// 			.resize(960,600);
 
-g5.createGraph();   
-g5.ioPlugins.csv.input("test2.csv","Source","Target");
+d3.text("test2.csv", function(unparsedData)
+{
+    var data = d3.csv.parse(unparsedData);
+g5.ioPlugins.csv.input(unparsedData,"Source","Target");
 var graph2={},nodes,links;
-wait = setInterval(getData,3000);
-function getData() {
+
     nodes = g5.listNodes();
     links = g5.listEdges();
-    clearInterval(wait);
     console.log(nodes);
     console.log(links);
     graph2.nodes = nodes;
@@ -52,9 +48,22 @@ function getData() {
     var fgraph = dc.fgraph()
             .init("#div1",graph2,960,600)
             .edgeColors(function(d) { 
-                return "red";})
+                return "green";})
 
-}
+
+});
+//g5.ioPlugins.csv.input(blob,"Source","Target");
+
+//    nodes = g5.listNodes();
+//    links = g5.listEdges();
+//    graph2.nodes = nodes;
+//    graph2.edges =  links;
+//    var fgraph = dc.fgraph()
+//            .init("#div1",graph1,960,600)
+//            .edgeColors(function(d) { 
+//                return "red";})
+//
+
 
 
 
