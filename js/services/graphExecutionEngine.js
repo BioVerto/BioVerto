@@ -1,13 +1,12 @@
-// import "graph.js"
-/* 
-   This file defines the g5 framework. 
+angular.module("MyApp")
+    .service('graphExecutionEngine', function(){
+this.getGraphEngine = function()
+{
    
-*/
-
 
 // main g5 object 
 var g5 = {};
-var graph;
+g5.graph=null;
 
 g5.version = .1;
 
@@ -145,3 +144,9 @@ g5.listEdges = function(){
 	return graph.edges;
 
 }
+return g5;
+}
+this.getViewData = function(idx)
+{
+}
+})
