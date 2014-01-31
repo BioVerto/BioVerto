@@ -3,7 +3,13 @@
     <div class="row row-offcanvas row-offcanvas-left">
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
             <div class="well sidebar-nav" >
+                
+                <p class="well">Controls</p>
                 <div compile="controls"></div>
+                <tabset justified="true">
+                    <tab ><tab-heading><span class="text-info small">Node </span></tab-heading>Controls to control node Properties<div compile="nodeControls"></div></tab>
+                    <tab> <tab-heading><span class="text-info small">Edge </span></tab-heading>Controls to control edge Properties<div compile="edgeControls"></div></tab>
+                </tabset>
             </div>
         </div>
         <div class="col-xs-12 col-sm-9">
@@ -12,9 +18,9 @@
                     <div class="panel-title">
                         <div class="row">
                             <div class="col-xs-2">
-                                <abbr title="upload graph from file" class="glyphicon glyphicon-import"></abbr>
+                                <span ng-click="fileUpload()" title="upload graph from file" class="glyphicon glyphicon-import"></span>
 
-                                <span class="glyphicon glyphicon-download-alt"></span>
+                                <span title="export graph" class="glyphicon glyphicon-download-alt"></span>
 
                                 <a href="#" ng-click="updateMenu()" class="dropdown-toggle glyphicon glyphicon-th-list" data-toggle="dropdown"></a>
                                 <ul class="dropdown-menu">
@@ -24,9 +30,7 @@
                                     <li ng-repeat="graph in listGraphs" >
                                         <a  href="#" ng-click="viewGraph(graph)">Visualize Graph : {{graph}}</a>
                                     </li>
-                                   
-                                    <li class="divider"></li>
-                                    <li><a href="#">One more separated link</a></li>
+
                                 </ul>
 
                             </div>

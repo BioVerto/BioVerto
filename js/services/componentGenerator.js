@@ -46,4 +46,28 @@ angular.module("MyApp")
 
             return temp;
         }
+        this.generateSidebar = function (data){
+            var temp =  "<tabset justified=\"true\">"
+            var headings = {};
+            var flg= false;
+            for(var i =0;i<data.length;i++)
+            {
+                if(headings[data[i].property]== undefined)
+                {
+                    if(!flg)
+                    {
+                    flg = true;    
+                    }
+                    else
+                    {
+                        temp += "</tab >";
+                    }
+                    headings[data[i].property] = true;
+                     temp += "<tab ><tab-heading><span class=\"text-info small\">"+property+"</span></tab-heading></tab>";
+                }
+                temp += this.generateComponent(data[i]);
+            }
+            temp += "</tab >";
+            temp+=    "<\\tabset>";
+        }
     })
