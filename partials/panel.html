@@ -1,0 +1,56 @@
+
+<div class="container">
+    <div class="row row-offcanvas row-offcanvas-left">
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+            <div class="well sidebar-nav" >
+                <div compile="controls"></div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-9">
+            <div class="panel panel-info">
+                <div class="panel-heading" >  
+                    <div class="panel-title">
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <abbr title="upload graph from file" class="glyphicon glyphicon-import"></abbr>
+
+                                <span class="glyphicon glyphicon-download-alt"></span>
+
+                                <a href="#" ng-click="updateMenu()" class="dropdown-toggle glyphicon glyphicon-th-list" data-toggle="dropdown"></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#" ng-click="fileUpload()">Import Graph From File</a></li>
+                                    <li><a href="#">Import Graph From Database</a></li>
+                                    <li class="divider"></li>
+                                    <li ng-repeat="graph in listGraphs" >
+                                        <a  href="#" ng-click="viewGraph(graph)">Visualize Graph : {{graph}}</a>
+                                    </li>
+                                   
+                                    <li class="divider"></li>
+                                    <li><a href="#">One more separated link</a></li>
+                                </ul>
+
+                            </div>
+                            <div class="col-xs-10">
+                                <a class="text-primary"ng-click="toggleTitle()" ng-show="showTitle"> {{title}}</a>
+                                <input class="text-primary" ng-hide="showTitle" ng-model="title"/>
+                                <a class="text-primary" ng-hide="showTitle" ng-click="toggleTitle()">Done</a>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>  
+                </div>
+
+
+                <div class="panel-body">
+                    <div id="graphNumber{{index}}"></div>
+                </div>
+            </div>
+            <!--/row-->
+        </div>
+        <!--/span-->
+        <!--/span-->
+    </div>
+</div>

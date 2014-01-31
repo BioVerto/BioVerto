@@ -6,53 +6,64 @@
     <script src="js/libs/bootstrap/bootstrap.min.js"></script>
     <script src="js/libs/angularjs/angular.min.js"></script>
     <script src="js/libs/angularjs/angular-sanitize.min.js"></script>
-    <script src="js/libs/ui-bootstrap-tpls-0.6.0.min.js"></script>
+    <script src="js/libs/ui-bootstrap-tpls-0.10.0.min.js"></script>
     <script src="js/script.js"></script>
     <script src="js/directives/compile.js"></script>
     <script src="js/directives/d3Bar.js"></script>
     <script src="js/directives/panel.js"></script>
     <script src="js/factory/d3.js"></script>
-    <script src="js/services/graphQuery.js"></script>
     <script src="js/services/componentGenerator.js"></script>
+    <script src="js/services/graphProvider.js"></script>
+    <script src="js/services/graphExecutionEngine.js"></script>
+    <script src="js/services/graphIOPluginProvider.js"></script>
+    <script src="js/services/viewProvider.js"></script>
+
     <script src="js/controllers/main.js"></script>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" >
     <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 </head>
 <body ng-app="MyApp" ng-controller="mainController">
 
-<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button> <a class="navbar-brand" href="#">BioViz UI</a>
-        </div>
-        <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a>
-                </li>
-                <li ng-click="addView()"><a href="#">Add View</a></li>
-            </ul>
+    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button> <a class="navbar-brand" href="#">BioViz UI</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add View <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" ng-click="addView('force')">Force Layout View</a></li>
+                            <li><a href="#" ng-click="addView('circular')">Circular Layout View</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
-<div class="collapse navbar-collapse">
-    <ul class="nav navbar-nav">
-        <li ng-repeat="view in views" >
-            <a  href="#" ng-click="changeView($index)" ng-class= "{active:viewable[$index]}">{{view.title}}</a>
-        </li>
+    <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li ng-repeat="view in views" >
+                <a  href="#" ng-click="changeView($index)" ng-class= "{active:viewable[$index]}">{{view.title}}</a>
+            </li>
 
-    </ul>
-</div>
-<div  ng-repeat="view in views">
-    <d3bar ng-show="viewable[$index]" index =$index href="#"></d3bar>
-</div>
-<div class="container">
-<footer>
-        <p>&copy; Company 2013</p>
-    </footer>
-</div>
+        </ul>
+    </div>
+    <div  ng-repeat="view in views">
+        <panel ng-show="viewable[$index]" layout = view.layout index =$index title="Test" href="#"></panel>
+    </div>
+    <div class="container">
+        <footer>
+            <p>&copy; Company 2013</p>
+        </footer>
+    </div>
 </body>
 
 </html>
