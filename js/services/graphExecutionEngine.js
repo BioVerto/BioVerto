@@ -1,11 +1,7 @@
 angular.module("MyApp")
-    .service('graphExecutionEngine', function(){
-this.getGraphEngine = function()
-{
-   
-
-// main g5 object 
+    .service('graphExecutionEngine', function(graphProvider,graphIOPluginProvider){
 var g5 = {};
+var graphs = {};
 g5.graph=null;
 
 g5.version = .1;
@@ -15,7 +11,7 @@ g5.version = .1;
 g5.nCnt = 0;
 g5.newField = function(){
     return "_"+(g5.nCnt++);
-}
+};
 
 // plugins with algorithms suported by the framework. Algorithmic
 // plugins run algorithms on the graph to compute new properties
@@ -29,10 +25,9 @@ g5.addAlgoPlugin = function(name, algo){
 	alert("A plugin with the name "+name+" is already present. Ignoring");
 	return;
     }
-
     g5.algoPlugins[name] = { algo: algo };
     return g5;
-}
+};
 
 
 // I/O plugins allow the construction of the graphs from various input
@@ -50,29 +45,47 @@ g5.addIOPlugin = function(name, inputFct, outputFct){
 	alert("A plugin with the name "+name+" is already present. Ignoring");
 	return;
     }
-
     g5.ioPlugins[name] = { input: inputFct, output: outputFct };
     return g5;
-}
+};
 
 // function to create graph 
-g5.createGraph = function(){
-    graph= new Graph();
-    return graph;
-}
+g5.createGraph = function(name){
+   if (graphs[name] !== undefined){
+   alert("A graph with the name "+name+" is already present. Ignoring");
+	return;
+   }
+   
+    graphs[name]= graphProvider.createGraph();
+    return graphs[name];
+};
 //function to return reference of Graph object
-g5.returnGraph = function(){
-    return Graph();
-}
+g5.returnGraph = function(name){
+    return graph[name];
+};
 
 
 
 // create a graph from a blog using an IO plugin
 // @pluggin: the name of the IO plugin
 // @blob: the blob containing the content
-g5.loadGraph = function(pluggin, blob, arg1, arg2, arg3){
+g5.loadGraphFromFile = function(plugin, blob, fileName,arg1, arg2, arg3){
     // Look for the input function of the pluggin and call it
-}
+     if (g5.ioPlugins[plugin] == undefined){
+	 var temp = graphIOPluginProvider.getPlugin(plugin);
+         if(temp)
+         {
+             g5.ioPlugins[plugin] = temp;
+         }
+         else
+         {
+             alert("A plugin for "+ plugin + "  doesnt exists");
+        return; 
+        }
+    }
+ 
+    graphs[fileName] = g5.ioPlugins[plugin](g5,blob,"Source","Target");
+};
 
 
 // Accessor functions allow the information in the graph nodes and
@@ -93,7 +106,7 @@ g5.addNodeAccessor = function(name, fct){
 
     g5.nodeAccessors[name] = fct;
     return g5;
-}
+};
 g5.addEdgeAccessor = function(name, fct){
     if (g5.edgeAccessors[name] !== undefined){
 	alert("A edge accessor with the name "+name+" is already present. Ignoring");
@@ -102,12 +115,12 @@ g5.addEdgeAccessor = function(name, fct){
 
     g5.edgeAccessors[name] = fct;
     return g5;
-}
+};
 
 // return the list of node accessors
 g5.listNodeAccessors = function(){
     return g5.nodeAccessors.map(function(d,i){ return i; });
-}
+};
 
 
 // Factory for accessor function
@@ -116,7 +129,7 @@ g5.createAccessor = function(member){
     // QUESTION: is this better than creating a function using new Function or eval?
     var f = function(obj){ return obj.data[member]; };
     return f;
-}
+};
 
 // add an accessor function for id->name and weigh->weight
 g5.addNodeAccessor("name", g5.createAccessor("id"));
@@ -124,29 +137,23 @@ g5.addEdgeAccessor("weight", g5.createAccessor("weigth"));
 //g5.nodeAccessors["name"](g5.nodes.id1);
 
 
-g5.listNodes = function(){
 
-	
-	var nodes =[];
-	
-	for(var n in graph.nodes){
-		
-		nodes.push(graph.nodes[n]);
-	
-	}
-	
-	return nodes;
-	
-}
 
-g5.listEdges = function(){
-
-	return graph.edges;
-
-}
-return g5;
-}
-this.getViewData = function(idx)
+g5.listGraphs = function()
 {
+var temp = new Array();
+
+for(var name in graphs)
+{
+    
+
+    temp.push(name);
 }
-})
+return temp;
+};
+g5.getGraph = function(name)
+{
+    return graphs[name];
+};
+return g5;
+});

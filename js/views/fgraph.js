@@ -1,13 +1,4 @@
-// Code goes here
-/* Implementation of a graph visualizer
 
-   
-
-   API follows DS conventions.
-*/
-
-// create the dc object if it does not exist
-if (typeof dc == 'undefined')
   dc = {};
 
 /* @param parent: the ID of the DOM element where the gauge will be hooked up into
