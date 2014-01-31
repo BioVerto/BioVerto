@@ -1,6 +1,6 @@
 angular.module("MyApp")
         .service('viewProvider', function(d3) {
-           this.getView = function(type)
+            this.getView = function(type)
             {
                 switch (type)
                 {
@@ -161,7 +161,7 @@ angular.module("MyApp")
                             .resize(width, height);
                     return _fgraph;
                 }
-                _fgraph.destroy = function ()
+                _fgraph.destroy = function()
                 {
                     _svg.remove();
                 }
@@ -318,7 +318,14 @@ angular.module("MyApp")
 
                     return _fgraph;
                 };
-
+                _fgraph.listControls = function()
+                {
+                    var controlsObj = [{type: "select", name: "P1", property: "Edge", label: "Edge color", func: "edgeColors"},
+                        {type: "range", name: "P2", property: "Edge", label: "Width Range", func: "widthRange", min: 0, max: 10, default: 5},
+                        {type: "select", name: "P3", property: "Node", label: "Color", func: "color", options: [{value: "red", label: "Red"}, {value: "green", label: "Green"}, {value: "blue", label: "Blue"}]},
+                    ];
+                    return controlsObj;
+                }
                 return _fgraph;
 
             }

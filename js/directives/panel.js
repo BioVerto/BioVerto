@@ -26,10 +26,11 @@ angular.module("MyApp")
                         if(scope.view)
                         {
                          scope.view.destroy();
-                        delete scope.view ;
+                         delete scope.view ;
                         }
-                            scope.view = viewProvider.getView(scope.layout);
+                       scope.view = viewProvider.getView(scope.layout);
                        scope.view.init("#graphNumber"+scope.index,scope.graph.getData(),500,300);
+                      // componentGenerator.generateSidebar(scope.view.listControls());
                     }
                     scope.updateMenu = function() {
                         scope.listGraphs = graphExecutionEngine.listGraphs();
@@ -48,6 +49,7 @@ angular.module("MyApp")
                             controller: ModalInstanceCtrl,
                         });
                         modalInstance.result.then(function(file) {
+                            
                             var fileNameParts = file.name.split('.')
                             scope.fileType = fileNameParts[1];
                             scope.fileName = fileNameParts[0];
@@ -72,14 +74,11 @@ angular.module("MyApp")
                     var ModalInstanceCtrl = function($scope, $modalInstance) {
                         $scope.file;
                         $scope.handleFileSelect = function(element) {
-
                             $scope.file = element.files[0]; // FileList object
 
                         }
                         $scope.ok = function() {
-
-
-                            $modalInstance.close($scope.file);
+                            $modalInstance.close($scope.file,"hi");
                         };
                         $scope.cancel = function() {
                             $modalInstance.dismiss('cancel');
