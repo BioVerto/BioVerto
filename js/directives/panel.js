@@ -4,7 +4,8 @@ angular.module("MyApp")
                 restrict: 'EA',
                 scope: {
                     index: "=",
-                    layout: "="
+                    layout: "=",
+                    title:"="
                 },
                 templateUrl: "./partials/panel.html",
                 transclude: true,
