@@ -1,5 +1,5 @@
 angular.module("MyApp")
-        .directive("panel", function($http, d3, componentGenerator, graphExecutionEngine,viewProvider, $modal) { //timeout can removed , Its for demo purpose
+        .directive("panel", function(configurationService,componentGenerator, graphExecutionEngine,viewProvider) {
             return {
                 restrict: 'EA',
                 scope: {
@@ -21,6 +21,14 @@ angular.module("MyApp")
                         scope.graph = graphExecutionEngine.getGraph(graphname);
                         scope.refreshView();
                     }
+                    scope.colorAcessorGen = function (color)
+                    {
+                        console.log(color);
+                        return function(d)
+                       {
+                            return color.toString();
+                        }
+                    }
                     scope.refreshView = function()
                     {
                         if(scope.view)
@@ -30,7 +38,11 @@ angular.module("MyApp")
                         }
                        scope.view = viewProvider.getView(scope.layout);
                        scope.view.init("#graphNumber"+scope.index,scope.graph.getData(),500,300);
-                      // componentGenerator.generateSidebar(scope.view.listControls());
+                              
+                                   
+                        var temp=componentGenerator.generateSidebar(configurationService.getConfig(scope.layout));
+                       scope.controls = temp; 
+                      
                     }
                     scope.updateMenu = function() {
                         scope.listGraphs = graphExecutionEngine.listGraphs();

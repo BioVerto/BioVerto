@@ -177,6 +177,9 @@ angular.module("MyApp")
                 _fgraph.updateEgdeStyle = function(style, fn) {
                     _link.style(style, fn);
                 }
+                _fgraph.updateNodeStyle = function(style, fn) {
+                    _node.selectAll("circle").style(style, fn);
+                }
 
                 _fgraph.doRedraw = function() {
                     //need to include jquery for following line to work
@@ -244,13 +247,15 @@ angular.module("MyApp")
                     if (!arguments.length)
                         return _nodeColors;
                     _nodeColors = _;
+                    _fgraph.updateNodeStyle("fill", _);
                     return _fgraph;
                 }
 
-                _fgraph.edgeColors = function(_) {
+                _fgraph.edgeColors = function(_) {                
                     if (!arguments.length)
                         return _edgeColors;
                     _edgeColors = _;
+                 
                     _fgraph.updateEgdeStyle("stroke", _);
                     return _fgraph;
                 }
@@ -318,14 +323,7 @@ angular.module("MyApp")
 
                     return _fgraph;
                 };
-                _fgraph.listControls = function()
-                {
-                    var controlsObj = [{type: "select", name: "P1", property: "Edge", label: "Edge color", func: "edgeColors"},
-                        {type: "range", name: "P2", property: "Edge", label: "Width Range", func: "widthRange", min: 0, max: 10, default: 5},
-                        {type: "select", name: "P3", property: "Node", label: "Color", func: "color", options: [{value: "red", label: "Red"}, {value: "green", label: "Green"}, {value: "blue", label: "Blue"}]},
-                    ];
-                    return controlsObj;
-                }
+                
                 return _fgraph;
 
             }

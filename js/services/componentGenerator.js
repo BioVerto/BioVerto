@@ -5,9 +5,13 @@ angular.module("MyApp")
         this.generateComponent = function(obj)
         {
             var temp = "";
-            temp = "<h5>"+obj.label+"</h5>";
-            switch (obj.type)
+            temp = "<a><h4>"+obj.label+"</h4></a>";
+            switch (obj.controltype)
             {
+                case "colorpicker":
+                   temp += "<span colorpicker ng-model="+obj.name+" style='background-color: "+obj.name+"' ng-change = \"view."+obj.func+"(colorAcessorGen("+obj.name+"))\"class='btn btn-primary'>Change color</span>"
+                   // temp += "<input type=\"checkbox\"  ng-change = \""+obj.func+"("+obj.name+")\"ng-model=\""+obj.name+"\"><br>"
+                break;
                 case "bool":
                     temp += "<input type=\"checkbox\"  ng-change = \""+obj.func+"("+obj.name+")\"ng-model=\""+obj.name+"\"><br>"
                     break;
@@ -48,26 +52,24 @@ angular.module("MyApp")
         }
         this.generateSidebar = function (data){
             var temp =  "<tabset justified=\"true\">"
-            var headings = {};
-            var flg= false;
+            var tabTitles = [];
             for(var i =0;i<data.length;i++)
             {
-                if(headings[data[i].property]== undefined)
+                if(tabTitles.indexOf(data[i].tab)===-1)
                 {
-                    if(!flg)
-                    {
-                    flg = true;    
-                    }
-                    else
+                    if(tabTitles.length!==0)
                     {
                         temp += "</tab >";
                     }
-                    headings[data[i].property] = true;
-                     temp += "<tab ><tab-heading><span class=\"text-info small\">"+property+"</span></tab-heading></tab>";
+                   
+                     temp += "<tab ><tab-heading><span class=\"text-info small\">"+data[i].tab+"</span></tab-heading>";
+                     tabTitles.push(data[i].tab);
                 }
                 temp += this.generateComponent(data[i]);
             }
             temp += "</tab >";
-            temp+=    "<\\tabset>";
-        }
+            temp+=    "</tabset>";
+            console.log(temp);
+        return temp;
+        };
     })
