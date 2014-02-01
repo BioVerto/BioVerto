@@ -17,7 +17,6 @@ angular.module("MyApp")
                 $scope.fileUpload = function()
                 {
                     $scope.uploadButtonEnable = false;
-                    console.log("a");
                     fileLoaderService.loadFile($scope.file, function(e) {
                         $scope.blob = e.target.result;
                         $scope.objArr = graphExecutionEngine.generateObjArray("csv", e.target.result);

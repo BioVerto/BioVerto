@@ -3,7 +3,6 @@ angular.module("MyApp")
             var g5 = {};
             var graphs = {};
             g5.graph = null;
-
             g5.version = .1;
 
 // name generator for fields to be added to objects
