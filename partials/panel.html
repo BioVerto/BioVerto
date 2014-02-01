@@ -18,15 +18,9 @@
                     <div class="panel-title">
                         <div class="row">
                             <div class="col-xs-2">
-                                <span ng-click="fileUpload()" title="upload graph from file" class="glyphicon glyphicon-import"></span>
-
-                                <span title="export graph" class="glyphicon glyphicon-download-alt"></span>
-
+                                
                                 <a href="#" ng-click="updateMenu()" class="dropdown-toggle glyphicon glyphicon-th-list" data-toggle="dropdown"></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#" ng-click="fileUpload()">Import Graph From File</a></li>
-                                    <li><a href="#">Import Graph From Database</a></li>
-                                    <li class="divider"></li>
+                                <ul class="dropdown-menu">                                   
                                     <li ng-repeat="graph in listGraphs" >
                                         <a  href="#" ng-click="viewGraph(graph)">Visualize Graph : {{graph}}</a>
                                     </li>
