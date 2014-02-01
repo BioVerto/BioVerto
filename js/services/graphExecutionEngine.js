@@ -97,8 +97,8 @@ angular.module("MyApp")
                 data.forEach(function(d) {
                     // assuming that source and target columns are defined
                     var s = d[source];
-                    delete d[source];
                     var t = d[target];
+                    delete d[source];
                     delete d[target];
                     graph.addEdge(s, t, d);
                 });

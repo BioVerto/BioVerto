@@ -26,7 +26,6 @@ angular.module("MyApp")
                         {
                             var tempObj = {field: key.toString(), displayName: key.toString(), headerCellTemplate: myHeaderCellTemplate};
                             $scope.columns.push(tempObj);
-
                         }
                         $scope.state = 'previewState';
                         $scope.$apply();

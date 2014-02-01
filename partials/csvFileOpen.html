@@ -6,7 +6,7 @@
         <div ng-show="state=='uploadState'">
         <input type="file" name='files[]' ng-model="fileName" onchange="angular.element(this).scope().handleFileSelect(this)"/>
         <br>
-        <button class="btn btn-primary" ng-disabled="!fileName" ng-click="fileUpload()">Upload</button>
+        <button class="btn btn-primary" ng-disabled="!(fileName&&uploadButtonEnable)" ng-click="fileUpload()">Upload</button>
         </div>
             
         <div ng-show="state=='previewState'">
