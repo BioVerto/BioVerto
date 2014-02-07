@@ -121,11 +121,11 @@ angular.module("MyApp")
             g5.nodeAccessors = {};
             g5.edgeAccessors = {};
 // return the list of node accessors
-            g5.listNodeAccessors = function(name) {
-                return graphs[graphName].listNodeAccessors();
+            g5.listNodeAccessors = function(graphName) {
+                return jQuery.extend({},graphs[graphName].listNodeAccessors(),g5.nodeAccessors);//graphs[graphName].listNodeAccessors());
             };
-            g5.listEdgeAccessors = function(name) {
-                return graphs[graphName].listNodeAccessors();
+            g5.listEdgeAccessors = function(graphName) {
+                return jQuery.extend({},graphs[graphName].listNodeAccessors(),g5.edgeAccessors );
             };
             g5.addNodeAccessor = function(name, fct) {
                 if (g5.nodeAccessors[name] !== undefined) {

@@ -39,7 +39,7 @@ angular.module("MyApp")
             };
             $scope.databaseDownload = function(plugin)
             {
-              var modalInstance = $modal.open({
+               var modalInstance = $modal.open({
                     templateUrl: './partials/'+plugin+'DBOpen.html',
                     controller: modalCtrlProvider.getCtrl(plugin),
                 });

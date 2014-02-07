@@ -4,8 +4,7 @@ angular.module("MyApp")
                 return d3.csv.parse(blob);
             }
             var mintTsvPlugin = function(g5, blob) {
-              var tsv =  d3.dsv("\t", "text/plain");;
-              var a = tsv.parse(blob);
+              var tsv =  d3.dsv("\t", "text/plain");
                 return tsv.parse(blob);
             };
             this.getPlugin = function(plugin) {
