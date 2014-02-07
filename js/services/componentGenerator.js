@@ -69,7 +69,6 @@ angular.module("MyApp")
             }
             temp += "</tab >";
             temp+=    "</tabset>";
-            console.log(temp);
-        return temp;
+            return temp;
         };
     })
