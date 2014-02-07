@@ -15,11 +15,10 @@ angular.module("MyApp")
                     scope.showTitle = true;
                    
                    
-                    scope.viewGraph = function(graphname)
+                    scope.viewGraph = function()
                     {
-                        scope.graphName = graphname;
-                        scope.title = graphname;
-                        scope.graph = graphExecutionEngine.getGraph(graphname);
+                        scope.title = scope.graphName;
+                        scope.graph = graphExecutionEngine.getGraph(scope.graphName);
                         scope.refreshView();
                     }
                    
@@ -40,8 +39,6 @@ angular.module("MyApp")
                         }
                         scope.view = viewProvider.getView(scope.layout);
                         scope.view.init("#graphNumber" + scope.index, scope.graph.getData(), 500, 300);
-
-
                         var temp = componentGenerator.generateSidebar(configurationService.getConfig(scope.layout));
                         scope.controls = temp;
 
@@ -53,10 +50,10 @@ angular.module("MyApp")
                     scope.toggleTitle = function() {
                         scope.showTitle = !scope.showTitle;
                     }
-//                    if(scope.graphName!==undefined)
-//                   {
-//                       $timeout(scope.viewGraph(scope.graphName),500) ;
-//                   }
+                    if(scope.graphName)
+                   {
+                      $timeout(scope.viewGraph,0);
+                   }
                 }
             };
         });
