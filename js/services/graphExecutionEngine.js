@@ -1,16 +1,10 @@
 angular.module("MyApp")
-        .service('graphExecutionEngine', function(graphProvider, graphIOPluginProvider) {
+        .service('graphExecutionEngine', function(graphProvider, graphIOPluginProvider,graphAlgoPluginProvider) {
             var g5 = {};
             var graphs = {};
             g5.graph = null;
             g5.version = .1;
 
-// name generator for fields to be added to objects
-// global counter for name generation
-            g5.nCnt = 0;
-            g5.newField = function() {
-                return "_" + (g5.nCnt++);
-            };
 
 // plugins with algorithms suported by the framework. Algorithmic
 // plugins run algorithms on the graph to compute new properties
@@ -104,7 +98,12 @@ angular.module("MyApp")
                 // select the first element and add accessor functions for mebers
                 var el = data[0] || {};
                 for (v in el) {
-                    g5.addEdgeAccessor(v, g5.createAccessor(v));
+                    if (data[0][v].match(/\d+/g) != null) { //http://stackoverflow.com/questions/5778020/check-whether-an-input-string-contains-numberhttp://stackoverflow.com/questions/5778020/check-whether-an-input-string-contains-number
+                        graph.addEdgeAccessor(v,"number", g5.createAccessor(v));
+                    }
+                    else{
+                        graph.addEdgeAccessor(v,"character", g5.createAccessor(v)); 
+                    }
                 }
                 
                 graphs[graphName] = graph;
@@ -121,6 +120,13 @@ angular.module("MyApp")
 // all accessor repositories go from name->accessorFct
             g5.nodeAccessors = {};
             g5.edgeAccessors = {};
+// return the list of node accessors
+            g5.listNodeAccessors = function(name) {
+                return graphs[graphName].listNodeAccessors();
+            };
+            g5.listEdgeAccessors = function(name) {
+                return graphs[graphName].listNodeAccessors();
+            };
             g5.addNodeAccessor = function(name, fct) {
                 if (g5.nodeAccessors[name] !== undefined) {
                     alert("A node accessor with the name " + name + " is already present. Ignoring");
@@ -140,14 +146,6 @@ angular.module("MyApp")
                 return g5;
             };
 
-// return the list of node accessors
-            g5.listNodeAccessors = function() {
-                return g5.nodeAccessors.map(function(d, i) {
-                    return i;
-                });
-            };
-
-
 // Factory for accessor function
 // @member: string with the name of the member element
             g5.createAccessor = function(member) {
@@ -157,11 +155,6 @@ angular.module("MyApp")
                 };
                 return f;
             };
-
-// add an accessor function for id->name and weigh->weight
-            g5.addNodeAccessor("name", g5.createAccessor("id"));
-            g5.addEdgeAccessor("weight", g5.createAccessor("weigth"));
-//g5.nodeAccessors["name"](g5.nodes.id1);
 
 
 
