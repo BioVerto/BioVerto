@@ -1,59 +1,99 @@
 angular.module("MyApp")
         .service('modalCtrlProvider', function(graphExecutionEngine, fileLoaderService) {
-            var mintCtrl = function($scope, $modalInstance, $http, d3, $q) {
-    $scope.availableOrgList = []
-    $scope.uploadButtonEnable = true;
-    $scope.state = 'uploadState';
-    $scope.selectedOrgName = "";
-    getAvailableOptions();
-    
-    $scope.pathwayUpload = function(selectedPathway)
-    {
-        $scope.uploadButtonEnable = false;
-        $http.get("http://www.cise.ufl.edu/~adobra/BioVerto/MINT/"+selectedPathway.fileName).success(function(result){
-            $scope.blob = "Source\tTarget\tValue\n"+result;
-            graphExecutionEngine.loadGraphFromFile("mint", $scope.blob,selectedPathway.longName+" - " +selectedPathway.subStructureName, "Source", "Target");
-            $modalInstance.close({layout:"force",graphName:selectedPathway.longName+" - " +selectedPathway.subStructureName});
-        });
-    
-    };
+            var mintFullNetworkCtrl = function($scope, $modalInstance, $http, d3, $q) {
+                $scope.availableOrgList = {};
+                $scope.uploadButtonEnable = true;
+                $scope.state = 'uploadState';
+                $scope.selectedOrgName = "";
+                getAvailableOptions();
 
-     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-    function getAvailableOptions(){
-    var organismsListHttp = $http.get('http://www.cise.ufl.edu/~adobra/BioVerto/rest/list/organism'),
-            pathwayListHttp = $http.get("http://www.cise.ufl.edu/~adobra/BioVerto/rest/list/pathway"),
-            fileListHttp = $http.get("http://www.cise.ufl.edu/~adobra/BioVerto/MINT/list.txt");
-    $q.all([organismsListHttp, pathwayListHttp, fileListHttp]).then(function(results) {
-    var orgNameList = {};
-    var subStructureNameList = {};
+                $scope.pathwayUpload = function(selectedNetwork)
+                {
+                    $scope.uploadButtonEnable = false;
+                    $http.get("http://www.cise.ufl.edu/~adobra/BioVerto/MINT-full/" +selectedNetwork +"_all.graph").success(function(result) {
+                        $scope.blob = "Source\tTarget\tValue\ta\b\n" + result;
+                        graphExecutionEngine.loadGraphFromFile("mint", $scope.blob,selectedNetwork, "Source", "Target");
+                        $modalInstance.close({layout: "force", graphName:selectedNetwork});
+                    });
 
-        var rows = results[0].data.split('\n');
-        for (i = 0; i < rows.length; i++) {
-            var tabloc = rows[i].indexOf('\t', 7);
-            var PEnd = rows[i].indexOf('Prokaryotes');
-            var EEnd = rows[i].indexOf('Eukaryotes');
-            var nameEnd = (PEnd !== -1 ? PEnd : EEnd);
-            orgNameList[rows[i].substring(7, tabloc)] = rows[i].substring(tabloc + 1, nameEnd);           
-        }
-        rows = results[1].data.split('\n');
-        for (i = 0; i < rows.length; i++) {
-          subStructureNameList[rows[i].substring(8, 13)] = rows[i].substring(14, rows[i].length);
-        }
-        rows = d3.csv.parseRows(results[2].data);
-        for (i = 0; i < rows.length; i++) {
-                $scope.availableOrgList.push({
-                shortName: rows[i][0],
-                longName:orgNameList[rows[i][0]],
-                id: rows[i][1],
-                subStructureName: subStructureNameList[rows[i][1]],
-                fileName:rows[i][0]+"_"+rows[i][1]+".graph"
-            });
-        }
-    })};
-};
-                var csvCtrl = function($scope, $modalInstance) {
+                };
+
+                $scope.cancel = function() {
+                    $modalInstance.dismiss('cancel');
+                };
+                function getAvailableOptions() {
+                    var organismsListHttp = $http.get('http://www.cise.ufl.edu/~adobra/BioVerto/rest/list/organism-all');
+                    $q.all([organismsListHttp]).then(function(results) {
+                        var orgNameList = {};
+                        var subStructureNameList = {}; 
+                        var rows = d3.csv.parseRows(results[0].data);
+                        for (i = 0; i < rows.length; i++)
+                        {
+                             $scope.availableOrgList[rows[i][1]] =rows[i][0]; 
+                        }
+                       
+                    });
+                }
+                ;
+            };
+
+
+            var mintPathwayCtrl = function($scope, $modalInstance, $http, d3, $q) {
+                $scope.availableOrgList = []
+                $scope.uploadButtonEnable = true;
+                $scope.state = 'uploadState';
+                $scope.selectedOrgName = "";
+                getAvailableOptions();
+
+                $scope.pathwayUpload = function(selectedPathway)
+                {
+                    $scope.uploadButtonEnable = false;
+                    $http.get("http://www.cise.ufl.edu/~adobra/BioVerto/MINT/" + selectedPathway.fileName).success(function(result) {
+                        $scope.blob = "Source\tTarget\tValue\n" + result;
+                        graphExecutionEngine.loadGraphFromFile("mint", $scope.blob, selectedPathway.longName + " - " + selectedPathway.subStructureName, "Source", "Target");
+                        $modalInstance.close({layout: "force", graphName: selectedPathway.longName + " - " + selectedPathway.subStructureName});
+                    });
+
+                };
+
+                $scope.cancel = function() {
+                    $modalInstance.dismiss('cancel');
+                };
+                function getAvailableOptions() {
+                    var organismsListHttp = $http.get('http://www.cise.ufl.edu/~adobra/BioVerto/rest/list/organism'),
+                            pathwayListHttp = $http.get("http://www.cise.ufl.edu/~adobra/BioVerto/rest/list/pathway"),
+                            fileListHttp = $http.get("http://www.cise.ufl.edu/~adobra/BioVerto/MINT/list.txt");
+                    $q.all([organismsListHttp, pathwayListHttp, fileListHttp]).then(function(results) {
+                        var orgNameList = {};
+                        var subStructureNameList = {};
+
+                        var rows = results[0].data.split('\n');
+                        for (i = 0; i < rows.length; i++) {
+                            var tabloc = rows[i].indexOf('\t', 7);
+                            var PEnd = rows[i].indexOf('Prokaryotes');
+                            var EEnd = rows[i].indexOf('Eukaryotes');
+                            var nameEnd = (PEnd !== -1 ? PEnd : EEnd);
+                            orgNameList[rows[i].substring(7, tabloc)] = rows[i].substring(tabloc + 1, nameEnd);
+                        }
+                        rows = results[1].data.split('\n');
+                        for (i = 0; i < rows.length; i++) {
+                            subStructureNameList[rows[i].substring(8, 13)] = rows[i].substring(14, rows[i].length);
+                        }
+                        rows = d3.csv.parseRows(results[2].data);
+                        for (i = 0; i < rows.length; i++) {
+                            $scope.availableOrgList.push({
+                                shortName: rows[i][0],
+                                longName: orgNameList[rows[i][0]],
+                                id: rows[i][1],
+                                subStructureName: subStructureNameList[rows[i][1]],
+                                fileName: rows[i][0] + "_" + rows[i][1] + ".graph"
+                            });
+                        }
+                    });
+                }
+                ;
+            };
+            var csvCtrl = function($scope, $modalInstance) {
                 $scope.uploadButtonEnable = true;
                 $scope.state = 'uploadState';
                 $scope.handleFileSelect = function(element) {
@@ -94,12 +134,17 @@ angular.module("MyApp")
             };
             this.getCtrl = function(type)
             {
+              
                 switch (type)
                 {
                     case 'csv':
                         return csvCtrl;
-                    case 'MINT':
-                        return mintCtrl;
+                        break;
+                    case 'MINTPathways':
+                        return mintPathwayCtrl;
+                        break;
+                    case 'MINTFullNetworks':
+                        return mintFullNetworkCtrl;
                 }
             }
         });

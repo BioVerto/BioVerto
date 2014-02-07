@@ -15,8 +15,12 @@ angular.module("MyApp")
                     scope.showTitle = true;
                    
                    
-                    scope.viewGraph = function()
+                    scope.viewGraph = function(graphName)
                     {
+                        if (arguments.length)
+                        {
+                           scope.graphName = graphName; 
+                        }
                         scope.title = scope.graphName;
                         scope.graph = graphExecutionEngine.getGraph(scope.graphName);
                         scope.refreshView();
@@ -24,7 +28,7 @@ angular.module("MyApp")
                    
                     scope.colorAcessorGen = function(color)
                     {
-                        console.log(color);
+                      
                         return function(d)
                         {
                             return color.toString();
@@ -32,14 +36,15 @@ angular.module("MyApp")
                     }
                     scope.refreshView = function()
                     {
-                        if (scope.view)
+                        if (scope.view!==undefined)
                         {
                             scope.view.destroy();
                             delete scope.view;
                         }
                         scope.view = viewProvider.getView(scope.layout);
                         scope.view.init("#graphNumber" + scope.index, scope.graph.getData(), 500, 300);
-                        var temp = componentGenerator.generateSidebar(configurationService.getConfig(scope.layout));
+                        var k = graphExecutionEngine.listNodeAccessors(scope.graphName);
+                        var temp = componentGenerator.generateSidebar(configurationService.getConfig(scope.layout));//,graphExecutionEngine.listNodeAccessors(scope.graphName),graphExecutionEngine.EdgeAccessors());
                         scope.controls = temp;
 
                     }

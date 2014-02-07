@@ -155,6 +155,12 @@ angular.module("MyApp")
                 },
               newField : function() {
                 return "_" + (this.nCnt++);
+            },
+             listNodeAccessors : function() {
+                return this.nodeAccessors;
+            },
+            listEdgeAccessors : function() {
+             return this.edgeAccessors;   
             }
 
             };
