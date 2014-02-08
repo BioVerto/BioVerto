@@ -20,7 +20,8 @@ angular.module("MyApp")
                     temp += "<input type=\"checkbox\"  ng-change = \""+obj.func+"("+obj.name+")\"ng-model=\""+obj.name+"\"><br>"
                     break;
                 case "range":
-                    temp += "<input type=\"range\" min=\""+obj.options.min+"\" max=\""+obj.options.max+"\" value= '"+obj.options.default+"' ng-change = \""+obj.func+"("+obj.name+")\"ng-model=\""+obj.name+"\"step='"+obj.options.step+"'><br>" //name=\""+obj.name+"\"
+                    temp += "<input type=\"range\" min=\""+obj.options.min+"\" max=\""+obj.options.max+"\" value= '"+obj.options.default+
+                            "' ng-change = 'setValue(\""+obj.func+"\","+obj.name+")' ng-model=\""+obj.name+"\"step='"+obj.options.step+"'><br>" //name=\""+obj.name+"\"
                     break;
                 case "select":
                     temp += "<select ng-change = \""+obj.func+"("+obj.name+")\" ng-model=\""+obj.name+"\" >";

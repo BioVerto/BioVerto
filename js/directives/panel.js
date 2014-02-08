@@ -34,6 +34,15 @@ angular.module("MyApp")
                             return color.toString();
                         }
                     }
+                    
+                    scope.setValue = function(option, value){
+                        // Safely set the value if the view has the option
+                        if (scope.view[option])
+                            scope.view[option](value);
+                        // TODO: add an else with a coding error
+                           
+                    }
+                    
                     scope.refreshView = function()
                     {
                         if (scope.view!==undefined)
