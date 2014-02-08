@@ -41,7 +41,7 @@ angular.module("MyApp")
             };
             EdgeFactory.prototype = {
                 build: function(source, target) {
-                    var e = jQuery.extend(true, {}, {});
+                    var e = jQuery.extend(true, {},this.template);
                     e.source = source;
                     e.target = target;
                     return e;
@@ -112,9 +112,9 @@ angular.module("MyApp")
                 //Discuss with Prof. DOBRA
                 addEdge: function(source, target, data, directed) {
 
-                    //console.log(source+" "+target); !!getting undefined undefined
-                    var s = this.addNode(source, data);
-                    var t = this.addNode(target, data);
+                    
+                    var s = this.addNode(source);
+                    var t = this.addNode(target);
                     var edge = this.edgeFactory.build(s, t);
                     jQuery.extend(edge.data, data);
                     if (directed) { // if directed edge, add it to target adjList
@@ -164,11 +164,14 @@ angular.module("MyApp")
             }
 
             };
-
             /*
              * Node
              */
-            Graph.Node = function(id, data) {
+            Graph.Node = function(id,data) {
+                if(data=== undefined)
+                {
+                    data={}
+                }
                 var node = {};
                 node.edges = [];
                 node.data = data;

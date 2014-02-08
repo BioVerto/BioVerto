@@ -95,21 +95,33 @@ angular.module("MyApp")
                     delete d[target];
                     graph.addEdge(s, t, d);
                 });
+
+                g5.addAccessorFunctions(graph);
+                graphs[graphName] = graph;
+                return graph;
+            };
+            g5.addAccessorFunctions = function (graph)
+            {
                 // select the first element and add accessor functions for mebers
-                var el = data[0] || {};
+                var el = graph.edges[0].data;
                 for (v in el) {
-                    if (data[0][v].match(/\d+/g) != null) { //http://stackoverflow.com/questions/5778020/check-whether-an-input-string-contains-numberhttp://stackoverflow.com/questions/5778020/check-whether-an-input-string-contains-number
+                    if (graph.edges[0].data[v].match(/\d+/g) != null) { //http://stackoverflow.com/questions/5778020/check-whether-an-input-string-contains-numberhttp://stackoverflow.com/questions/5778020/check-whether-an-input-string-contains-number
                         graph.addEdgeAccessor(v,"number", g5.createAccessor(v));
                     }
                     else{
                         graph.addEdgeAccessor(v,"character", g5.createAccessor(v)); 
                     }
                 }
-                
-                graphs[graphName] = graph;
-                return graph;
-            };
-
+                var el = graph.nodes[0].data;
+                for (v in el) {
+                    if (graph.nodes[0].data[v].match(/\d+/g) != null) { //http://stackoverflow.com/questions/5778020/check-whether-an-input-string-contains-numberhttp://stackoverflow.com/questions/5778020/check-whether-an-input-string-contains-number
+                        graph.addNodeAccessor(v,"number", g5.createAccessor(v));
+                    }
+                    else{
+                        graph.addNodeAccessor(v,"character", g5.createAccessor(v)); 
+                    }
+                }
+            }
 // Accessor functions allow the information in the graph nodes and
 // edges to be accessed by programs. The accessor functions are added
 // by plugins. Typically, an algorithm adds a new piece of information
@@ -125,7 +137,7 @@ angular.module("MyApp")
                 return jQuery.extend({},graphs[graphName].listNodeAccessors(),g5.nodeAccessors);//graphs[graphName].listNodeAccessors());
             };
             g5.listEdgeAccessors = function(graphName) {
-                return jQuery.extend({},graphs[graphName].listNodeAccessors(),g5.edgeAccessors );
+                return jQuery.extend({},graphs[graphName].listEdgeAccessors(),g5.edgeAccessors );
             };
             g5.addNodeAccessor = function(name, fct) {
                 if (g5.nodeAccessors[name] !== undefined) {
