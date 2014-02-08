@@ -23,7 +23,7 @@
     <script src="js/libs/colorpicker/bootstrap-colorpicker-module.js"></script>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="js/views/fgraph.js"></script>
-    
+
     <script src="js/services/configurationService.js"></script> 
     <script src="js/services/fileLoaderService.js"></script> 
     <script src="js/services/componentGenerator.js"></script>
@@ -33,16 +33,16 @@
     <script src="js/services/graphIOPluginProvider.js"></script>
     <script src="js/services/viewProvider.js"></script>
     <script src="js/services/modalCtrlProvider.js"></script> 
-    
+
     <script src="js/controllers/main.js"></script>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" >
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" type="text/css" href="css/ng-grid.min.css">
     <link rel="stylesheet" type="text/css" href="css/colorpicker.css">
-   
+
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-    
-    </head>
+
+</head>
 <body ng-app="MyApp" ng-controller="mainController">
 
     <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
@@ -67,8 +67,8 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Upload From Database<b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                     <li><a href="#" ng-click="databaseDownload('MINTPathways')">MINT Pathways</a></li>
-                     <li><a href="#" ng-click="databaseDownload('MINTFullNetworks')">MINT Full Networks</a></li>
+                            <li><a href="#" ng-click="databaseDownload('MINTPathways')">MINT Pathways</a></li>
+                            <li><a href="#" ng-click="databaseDownload('MINTFullNetworks')">MINT Full Networks</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -76,6 +76,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="#" ng-click="addView('force')">Force Layout View</a></li>
                             <li><a href="#" ng-click="addView('circular')">Circular Layout View</a></li>
+                            <li><a href="#" ng-click="addView('tree')">Tree Layout View</a></li>
                         </ul>
                     </li>
                 </ul>
