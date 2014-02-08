@@ -1,51 +1,50 @@
 
 <div class="container">
-    <div class="row row-offcanvas row-offcanvas-left">
-        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-            <div class="well sidebar-nav" >
-                
-                <p class="well">Controls</p>
-                <div compile="controls"></div>
-                 
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-9">
-            <div class="panel panel-info">
-                <div class="panel-heading" >  
-                    <div class="panel-title">
-                        <div class="row">
-                            <div class="col-xs-2">
-                                
-                                <a href="#" ng-click="updateMenu()" class="dropdown-toggle glyphicon glyphicon-th-list" data-toggle="dropdown"></a>
-                                <ul class="dropdown-menu">                                   
-                                    <li ng-repeat="graph in listGraphs" >
-                                        <a  href="#" ng-click="viewGraph(graph)">Visualize Graph : {{graph}}</a>
-                                    </li>
+    <div ng-click="setActive()">
+        <div ng-class="{'viewWindow panel panel-info': (index == activeindex), 'viewWindow panel panel-default': (index != activeindex)}">
+            <div class="panel-heading" >  
+                <div class="panel-title">
+                    <div class="row">
+                        <div class="col-xs-2">
 
-                                </ul>
+                            <a href="#" ng-click="updateMenu()" class="dropdown-toggle glyphicon glyphicon-th-list" data-toggle="dropdown"></a>
+                            <ul class="dropdown-menu">                                   
+                                <li ng-repeat="graph in listGraphs" >
+                                    <a  href="#" ng-click="viewGraph(graph)">Visualize Graph : {{graph}}</a>
+                                </li>
 
-                            </div>
-                            <div class="col-xs-10">
-                                <a class="text-primary"ng-click="toggleTitle()" ng-show="showTitle"> {{title}}</a>
-                                <input class="text-primary" ng-hide="showTitle" ng-model="title"/>
-                                <a class="text-primary" ng-hide="showTitle" ng-click="toggleTitle()">Done</a>
+                            </ul>
 
-                            </div>
-
+                        </div>
+                        <div class="col-xs-10">
+                            <a class="text-primary"ng-click="toggleTitle()" ng-show="showTitle"> {{title}}</a>
+                            <input class="text-primary" ng-hide="showTitle" ng-model="title"/>
+                            <a class="text-primary" ng-hide="showTitle" ng-click="toggleTitle()">Done</a>
 
                         </div>
 
-                    </div>  
-                </div>
 
+                    </div>
 
-                <div class="panel-body">
-                    <div id="graphNumber{{index}}"></div>
-                </div>
+                </div>  
             </div>
-            <!--/row-->
+
+
+            <div class="panel-body">
+                <div id="graphNumber{{index}}"></div>
+            </div>
         </div>
-        <!--/span-->
-        <!--/span-->
+        <!--/row-->
     </div>
+     <div ng-show="index == activeindex" class="sidebar-offcanvas" role="navigation">
+        <div class="well sidebar-nav" >
+
+            <p class="well">Controls</p>
+            <div compile="controls"></div>
+
+        </div>
+    </div>
+    
+    <!--/span-->
+    <!--/span-->
 </div>

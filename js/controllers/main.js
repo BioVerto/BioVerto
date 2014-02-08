@@ -2,6 +2,7 @@ angular.module("MyApp")
         .controller('mainController', function($scope, $modal,modalCtrlProvider) {
             $scope.views = []
             $scope.viewable = []
+            $scope.active = 0;
             $scope.addView = function(layout,graphName)
             {
                 for (var i = 0; i < $scope.viewable.length; i++)
@@ -13,11 +14,7 @@ angular.module("MyApp")
             };
             $scope.changeView = function(indx)
             {
-                for (var i = 0; i < $scope.viewable.length; i++)
-                {
-                    $scope.viewable[i] = false;
-                }
-                $scope.viewable[indx] = true;
+                $scope.active = indx;
 
             }
             $scope.fileUpload = function(plugin)
