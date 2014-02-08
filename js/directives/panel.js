@@ -43,8 +43,8 @@ angular.module("MyApp")
                         }
                         scope.view = viewProvider.getView(scope.layout);
                         scope.view.init("#graphNumber" + scope.index, scope.graph.getData(), 500, 300);
-                        var k = graphExecutionEngine.listNodeAccessors(scope.graphName);
-                        var temp = componentGenerator.generateSidebar(configurationService.getConfig(scope.layout));//,graphExecutionEngine.listNodeAccessors(scope.graphName),graphExecutionEngine.EdgeAccessors());
+                        var acessorFns = {Node:graphExecutionEngine.listNodeAccessors(scope.graphName),Edge:graphExecutionEngine.listEdgeAccessors(scope.graphName)};
+                        var temp = componentGenerator.generateSidebar(configurationService.getConfig(scope.layout),acessorFns);//,graphExecutionEngine.listNodeAccessors(scope.graphName),graphExecutionEngine.EdgeAccessors());
                         scope.controls = temp;
 
                     }

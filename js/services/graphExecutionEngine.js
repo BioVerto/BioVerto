@@ -97,24 +97,37 @@ angular.module("MyApp")
                 });
 
                 g5.addAccessorFunctions(graph);
+                g5.applyAllAlgo(graph);
                 graphs[graphName] = graph;
                 return graph;
             };
+            g5.applyAllAlgo =function(graph)
+            {
+                var listAlgo = graphAlgoPluginProvider.listAlgo();
+                for (var i = 0; i < listAlgo.length; i++) 
+                {
+                    graphAlgoPluginProvider.getAlgo(listAlgo[i]).call(this,graph);
+                }
+            }
             g5.addAccessorFunctions = function (graph)
             {
                 // select the first element and add accessor functions for mebers
                 var el = graph.edges[0].data;
                 for (v in el) {
-                    if (graph.edges[0].data[v].match(/\d+/g) != null) { //http://stackoverflow.com/questions/5778020/check-whether-an-input-string-contains-numberhttp://stackoverflow.com/questions/5778020/check-whether-an-input-string-contains-number
+                    if (el[v].match(/^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/) != null) { //http://stackoverflow.com/questions/1779013/check-if-string-contains-only-digits
                         graph.addEdgeAccessor(v,"number", g5.createAccessor(v));
                     }
                     else{
-                        graph.addEdgeAccessor(v,"character", g5.createAccessor(v)); 
+                        graph.addEdgeAccessor(v,"character", g5.createAccessor(v));
                     }
                 }
-                var el = graph.nodes[0].data;
+               
+                for (v in graph.nodes) {
+                el = graph.nodes[v].data;
+                break;
+                }
                 for (v in el) {
-                    if (graph.nodes[0].data[v].match(/\d+/g) != null) { //http://stackoverflow.com/questions/5778020/check-whether-an-input-string-contains-numberhttp://stackoverflow.com/questions/5778020/check-whether-an-input-string-contains-number
+                    if (el[v].match(/^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/) != null) { 
                         graph.addNodeAccessor(v,"number", g5.createAccessor(v));
                     }
                     else{

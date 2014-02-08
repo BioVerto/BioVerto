@@ -11,9 +11,9 @@ angular.module("MyApp")
                 {
                     $scope.uploadButtonEnable = false;
                     $http.get("http://www.cise.ufl.edu/~adobra/BioVerto/MINT-full/" +selectedNetwork +"_all.graph").success(function(result) {
-                        $scope.blob = "Source\tTarget\tValue\ta\b\n" + result;
-                        graphExecutionEngine.loadGraphFromFile("mint", $scope.blob,selectedNetwork, "Source", "Target");
-                        $modalInstance.close({layout: "force", graphName:selectedNetwork});
+                        $scope.blob = "Source\tTarget\tValue1\tValue2\tValue3\n" + result;
+                        graphExecutionEngine.loadGraphFromFile("mint", $scope.blob,$scope.availableOrgList[selectedNetwork], "Source", "Target");
+                        $modalInstance.close({layout: "force", graphName:$scope.availableOrgList[selectedNetwork]});
                     });
 
                 };
