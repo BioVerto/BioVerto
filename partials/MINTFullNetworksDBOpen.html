@@ -12,8 +12,7 @@
             </select>
             <br/>
             <br/>
-            <button class="btn btn-primary" ng-disabled="!(selectedOrgName && uploadButtonEnable)" ng-click="pathwayUpload(selectedOrgName)">Upload Graph</button>
-        </div>
+         </div>
         <div ng-show="state == 'graphName'">
             <div> <h5>Graph Name</h5>
                 <input type="checkbox" ng-model="defaultName" ng-init="defaultName = true"> Default : Filename<br>
@@ -21,6 +20,7 @@
         </div>
     </div>
     <div class="modal-footer">
+                <button class="btn btn-primary" ng-disabled="!(selectedOrgName && uploadButtonEnable)" ng-click="pathwayUpload(selectedOrgName)">Upload Graph</button>
         <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
     </div>
 </div>

@@ -1,9 +1,9 @@
 
 <div class="container">
-    <div ng-click="setActive()">
+    <div >
         <div ng-class="{'viewWindow panel panel-info': (index == activeindex), 'viewWindow panel panel-default': (index != activeindex)}">
             <div class="panel-heading" >  
-                <div class="panel-title">
+                <div class="panel-title "ng-click="setActive()">
                     <div class="row">
                         <div class="col-xs-2">
 
@@ -16,13 +16,15 @@
                             </ul>
 
                         </div>
-                        <div class="col-xs-10">
+                        <div class="col-xs-8 pull-left">
                             <a class="text-primary"ng-click="toggleTitle()" ng-show="showTitle"> {{title}}</a>
                             <input class="text-primary" ng-hide="showTitle" ng-model="title"/>
                             <a class="text-primary" ng-hide="showTitle" ng-click="toggleTitle()">Done</a>
 
                         </div>
-
+                         
+                        <a href="#" ng-click="removeView()" style="padding-right: 30" class="col-xs-2 pull-right glyphicon glyphicon-remove" ></a>
+                            
 
                     </div>
 

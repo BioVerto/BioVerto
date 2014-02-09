@@ -19,7 +19,6 @@
             </select>
             <br/>
             <br/>
-            <button class="btn btn-primary" ng-disabled="!(selectedPathway && uploadButtonEnable)" ng-click="pathwayUpload(selectedPathway)">Upload Graph</button>
         </div>
         <div ng-show="state == 'graphName'">
             <div> <h5>Graph Name</h5>
@@ -28,6 +27,7 @@
         </div>
     </div>
     <div class="modal-footer">
+        <button class="btn btn-primary" ng-disabled="!(selectedPathway && uploadButtonEnable)" ng-click="pathwayUpload(selectedPathway)">Upload Graph</button>
         <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
     </div>
 </div>
