@@ -21,6 +21,7 @@ function bringFront(elem, stack){
 /* global error function*/
 
 function codingError(text){
+    console.log("Coding Error: " + text);
     alert("Coding Error: " + text);
 }
 /* Start the app */
