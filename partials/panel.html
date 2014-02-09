@@ -35,7 +35,12 @@
     <div ng-show="index == activeindex" class="sidebar-offcanvas" role="navigation">
         <div class="well sidebar-nav" >
 
-            <p class="well">Controls</p>
+            <div class="well">
+                <a>Algorithms</a>
+                <select ng-model=selectedAlgo  ng-init="selectedAlgo = algorithmList[0]" ng-options="name for name in algorithmList">
+                </select>
+                <button ng-click="runAlgo(selectedAlgo)" class="btn-sm btn-info">Run</button>
+            </div>
             <div compile="controls"></div>
 
         </div>

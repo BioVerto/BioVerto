@@ -30,7 +30,7 @@
 /*
  * Edge Factory
  */
-           var EdgeFactory = function() {
+    var EdgeFactory = function() {
     this.template = new Object();
     this.template.data = new Object();
     this.template.directed = false;
@@ -153,7 +153,6 @@ Graph.prototype = {
     createAccessor: function(member) {
         // QUESTION: is this better than creating a function using new Function or eval?
         var f = function(obj) {
-
             return obj.data[member];
         };
         return f;
@@ -161,8 +160,8 @@ Graph.prototype = {
     addInitialAccFunctions: function() {
         // select the first element and add accessor functions for mebers
         var el = this.edges[0].data;
-        for (v in el) {
-            if (el[v].match(/^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/) != null) { //http://stackoverflow.com/questions/1779013/check-if-string-contains-only-digits
+        for (var v in el) {
+            if (el[v].match(/^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/) !== null) { //http://stackoverflow.com/questions/1779013/check-if-string-contains-only-digits
                 this.addEdgeAccessor(v, "number", g5.createAccessor(v));
             }
             else {
@@ -170,12 +169,12 @@ Graph.prototype = {
             }
         }
 
-        for (v in this.nodes) {
+        for (var v in this.nodes) {
             el = this.nodes[v].data;
             break;
         }
-        for (v in el) {
-            if (el[v].match(/^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/) != null) {
+        for (var v in el) {
+            if (el[v].match(/^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/) !== null) {
                 this.addNodeAccessor(v, "number", g5.createAccessor(v));
             }
             else {

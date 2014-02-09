@@ -25,6 +25,7 @@ angular.module("MyApp")
                         break;
                     case "select":
                         temp += "<select ng-change = \"view." + obj.func + "(getAcessorFunction('" + obj.tab + "'," + obj.name + "))\" ng-model=\"" + obj.name + "\" >";
+                        temp += "<option value = Reset> Reset </option>"
                         for (var j in options)
                         {
                             if ((options[j].returnType === obj.datatype) || obj.datatype == "character")

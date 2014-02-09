@@ -2,8 +2,6 @@
 // import "d3.js"
 
 /* This file contains base IO pluggins */
-
-
 // Comma separated edge graph with implicit nodes
 (function(g5){
     g5.addIOPlugin( "csv",

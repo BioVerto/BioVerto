@@ -3,8 +3,6 @@
  This file defines the g5 framework. 
  
  */
-
-
 // main g5 object 
 var g5 = {};
 g5.graphs = {};
@@ -58,8 +56,6 @@ g5.addIOPlugin = function(name, inputFct, outputFct) {
     return g5;
 };
 // use a plugin to create a graph 
-
-
 // function to create graph 
 g5.createGraph = function(name) {
     if (g5.graphs[name] !== undefined) {
@@ -79,16 +75,15 @@ g5.returnGraph = function(name) {
 g5.applyAlgorithm = function(g, algoName) {
     var alg = g5.algoPlugins[algoName]; // TODO: check for error 
     alg.algo(g); // apply the algorithm on the graph
-    if (alg.nodeAcc) // register node accessors with the graph
-        for (var nA in alg.nodeAcc)
-            g.addNodeAccessor(nA, alg.nodeAcc[nA].type,
-                    alg.nodeAcc[nA].fct);
-    if (alg.edgeAcc) // register node accessors with the graph
-        for (var eA in alg.edgeAcc)
-            g.addEdgeAccessor(eA, alg.edgeAcc[eA].type,
-                    alg.edgeAcc[eA].fct);
-}
-
+    if (alg.nodeAccs!== undefined) // register node accessors with the graph
+        for (var nA in alg.nodeAccs)
+            g.addNodeAccessor(nA, alg.nodeAccs[nA].type,
+                    alg.nodeAccs[nA].fct);
+    if (alg.edgeAccs !== undefined) // register node accessors with the graph
+        for (var eA in alg.edgeAccs)
+            g.addEdgeAccessor(eA, alg.edgeAccs[eA].type,
+                    alg.edgeAccs[eA].fct);
+};
 // create a graph from a blog using an IO plugin
 // @pluggin: the name of the IO plugin
 // @blob: the blob containing the content
@@ -117,45 +112,11 @@ g5.loadGraphFromObjArray = function(data, graphName, source, target)
         delete d[target];
         graph.addEdge(s, t, d);
     });
-
     graph.addInitialAccFunctions();
     return graph;
 };
-g5.applyAllAlgo = function(graph)
-{
-    var listAlgo = graphAlgoPluginProvider.listAlgo();
-    for (var i = 0; i < listAlgo.length; i++)
-    {
-        graphAlgoPluginProvider.getAlgo(listAlgo[i]).call(this, graph);
-    }
-}
-
-// Accessor functions allow the information in the graph nodes and
-// edges to be accessed by programs. The accessor functions are added
-// by plugins. Typically, an algorithm adds a new piece of information
-// to data part of node or edge and registers an accessor function to
-// access this info. I/O plugins define accessors for all type of
-// information they encounter
 
 
-g5.addNodeAccessor = function(name, fct) {
-    if (g5.nodeAccessors[name] !== undefined) {
-        alert("A node accessor with the name " + name + " is already present. Ignoring");
-        return;
-    }
-
-    g5.nodeAccessors[name] = fct;
-    return g5;
-};
-g5.addEdgeAccessor = function(name, fct) {
-    if (g5.edgeAccessors[name] !== undefined) {
-        alert("A edge accessor with the name " + name + " is already present. Ignoring");
-        return;
-    }
-
-    g5.edgeAccessors[name] = fct;
-    return g5;
-};
 
 // Factory for accessor function
 // @member: string with the name of the member element
@@ -167,21 +128,17 @@ g5.createAccessor = function(member) {
     return f;
 };
 
-
-
-
 g5.listGraphs = function()
 {
-    var temp = new Array();
+    var result = new Array();
 
     for (var name in graphs)
     {
-
-
-        temp.push(name);
+        result.push(name);
     }
-    return temp;
+    return result;
 };
+
 g5.getGraph = function(name)
 {
     return g5.graphs[name];
