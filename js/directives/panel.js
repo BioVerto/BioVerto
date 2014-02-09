@@ -30,7 +30,7 @@ angular.module("MyApp")
                     }
                    scope.removeView = function()
                    {
-                       console.log("here")
+                        scope.$parent.$parent.removeView(scope.index);
                    }
                     scope.colorAcessorGen = function(color)
                     {
@@ -76,7 +76,6 @@ angular.module("MyApp")
                         scope.showTitle = !scope.showTitle;
                     };
                     scope.setActive = function(){  
-                        console.log("set Active");
                         scope.$parent.$parent.active = scope.index;
                     };
                     scope.resize = function(width,height)
