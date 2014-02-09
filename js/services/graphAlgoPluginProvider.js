@@ -10,15 +10,7 @@ angular.module("MyApp")
             };
             var randomDataNode = function(g)
             {
-                var randomNumber = function () {
-                    return Math.floor(Math.random() * (9)) + 1;
-                };
-                var f = "randomData";
-                g.addNodeAccessor("randomData","number", g.createAccessor(f));
-                for (i in g.nodes) {
-                    var node = g.nodes[i];
-                    node.data[f] = randomNumber();
-                }
+               
             }
             this.getAlgo = function(algo) {
                 switch (algo)

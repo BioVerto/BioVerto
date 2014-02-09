@@ -1,5 +1,5 @@
 angular.module("MyApp")
-        .service('modalCtrlProvider', function(graphExecutionEngine, fileLoaderService) {
+        .service('modalCtrlProvider', function(fileLoaderService) {
             var mintFullNetworkCtrl = function($scope, $modalInstance, $http, d3, $q) {
                 $scope.availableOrgList = {};
                 $scope.uploadButtonEnable = true;
@@ -10,10 +10,10 @@ angular.module("MyApp")
                 $scope.pathwayUpload = function(selectedNetwork)
                 {
                     $scope.uploadButtonEnable = false;
-                    $http.get("http://www.cise.ufl.edu/~adobra/BioVerto/MINT-full/" +selectedNetwork +"_all.graph").success(function(result) {
+                    $http.get("http://www.cise.ufl.edu/~adobra/BioVerto/MINT-full/" + selectedNetwork + "_all.graph").success(function(result) {
                         $scope.blob = "Source\tTarget\tValue1\tValue2\tValue3\n" + result;
-                        graphExecutionEngine.loadGraphFromFile("mint", $scope.blob,$scope.availableOrgList[selectedNetwork], "Source", "Target");
-                        $modalInstance.close({layout: "force", graphName:$scope.availableOrgList[selectedNetwork]});
+                        g5.loadGraphFromFile("mint", $scope.blob, $scope.availableOrgList[selectedNetwork], "Source", "Target");
+                        $modalInstance.close({layout: "force", graphName: $scope.availableOrgList[selectedNetwork]});
                     });
 
                 };
@@ -25,13 +25,13 @@ angular.module("MyApp")
                     var organismsListHttp = $http.get('http://www.cise.ufl.edu/~adobra/BioVerto/rest/list/organism-all');
                     $q.all([organismsListHttp]).then(function(results) {
                         var orgNameList = {};
-                        var subStructureNameList = {}; 
+                        var subStructureNameList = {};
                         var rows = d3.csv.parseRows(results[0].data);
                         for (i = 0; i < rows.length; i++)
                         {
-                             $scope.availableOrgList[rows[i][1]] =rows[i][0]; 
+                            $scope.availableOrgList[rows[i][1]] = rows[i][0];
                         }
-                       
+
                     });
                 }
                 ;
@@ -50,7 +50,7 @@ angular.module("MyApp")
                     $scope.uploadButtonEnable = false;
                     $http.get("http://www.cise.ufl.edu/~adobra/BioVerto/MINT/" + selectedPathway.fileName).success(function(result) {
                         $scope.blob = "Source\tTarget\tValue\n" + result;
-                        graphExecutionEngine.loadGraphFromFile("mint", $scope.blob, selectedPathway.longName + " - " + selectedPathway.subStructureName, "Source", "Target");
+                        g5.loadGraphFromFile("mint", $scope.blob, selectedPathway.longName + " - " + selectedPathway.subStructureName, "Source", "Target");
                         $modalInstance.close({layout: "force", graphName: selectedPathway.longName + " - " + selectedPathway.subStructureName});
                     });
 
@@ -100,7 +100,7 @@ angular.module("MyApp")
                     $scope.file = element.files[0]; // FileList object
                 }
                 $scope.ok = function(graphName) {
-                    graphExecutionEngine.loadGraphFromObjArray($scope.objArr, graphName, $scope.source, $scope.target);
+                    g5.loadGraphFromObjArray($scope.objArr, graphName, $scope.source, $scope.target);
                     $modalInstance.close();
                 }
                 var myHeaderCellTemplate = '<div class="ngHeaderSortColumn {{col.headerClass}}"><div>{{col.displayName}} </div>' +
@@ -112,7 +112,7 @@ angular.module("MyApp")
                     $scope.uploadButtonEnable = false;
                     fileLoaderService.loadFile($scope.file, function(e) {
                         $scope.blob = e.target.result;
-                        $scope.objArr = graphExecutionEngine.generateObjArray("csv", e.target.result);
+                        $scope.objArr = g5.generateObjArray("csv", e.target.result);
                         $scope.columns = [];
                         for (key in $scope.objArr[0])
                         {
@@ -134,7 +134,7 @@ angular.module("MyApp")
             };
             this.getCtrl = function(type)
             {
-              
+
                 switch (type)
                 {
                     case 'csv':

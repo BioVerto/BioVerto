@@ -1,5 +1,5 @@
 angular.module("MyApp")
-        .directive("panel", function(configurationService, componentGenerator, graphExecutionEngine, viewProvider,$timeout) {
+        .directive("panel", function(configurationService, componentGenerator, viewProvider,$timeout) {
             return {
                 restrict: 'EA',
                 scope: {
@@ -25,7 +25,7 @@ angular.module("MyApp")
                            scope.graphName = graphName; 
                         }
                         scope.title = scope.graphName;
-                        scope.graph = graphExecutionEngine.getGraph(scope.graphName);
+                        scope.graph = g5.getGraph(scope.graphName);
                         scope.refreshView();
                     }
                    scope.removeView = function()
@@ -58,7 +58,7 @@ angular.module("MyApp")
                         }
                         scope.view = viewProvider.getView(scope.layout);
                         scope.view.init("#graphNumber" + scope.index, scope.graph.getData(), scope.width, scope.height);
-                        scope.acessorFns = {Node:graphExecutionEngine.listNodeAccessors(scope.graphName),Edge:graphExecutionEngine.listEdgeAccessors(scope.graphName)};
+                        scope.acessorFns = {Node:scope.graph.listNodeAccessors(),Edge:scope.graph.listEdgeAccessors()};
                         scope.controls = componentGenerator.generateSidebar(configurationService.getConfig(scope.layout),scope.acessorFns);//,graphExecutionEngine.listNodeAccessors(scope.graphName),graphExecutionEngine.EdgeAccessors());
  
                     };
@@ -69,7 +69,7 @@ angular.module("MyApp")
                     }
 
                     scope.updateMenu = function() {
-                        scope.listGraphs = graphExecutionEngine.listGraphs();
+                        scope.listGraphs = g5.listGraphs();
 
                     };
                     scope.toggleTitle = function() {
