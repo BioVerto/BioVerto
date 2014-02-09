@@ -12,8 +12,6 @@ angular.module("MyApp")
                 templateUrl: "./partials/panel.html",
                 transclude: true,
                 link: function(scope, element) {
-                    scope.title = "New View";
-                    scope.showTitle = true;
                     scope.width = 580;
                     scope.height = 330;
                     scope.title = "";
@@ -81,9 +79,6 @@ angular.module("MyApp")
                     scope.updateMenu = function() {
                         scope.listGraphs = g5.listGraphs();
 
-                    };
-                    scope.toggleTitle = function() {
-                        scope.showTitle = !scope.showTitle;
                     };
                     scope.setActive = function(){  
                         scope.$parent.$parent.active = scope.index;
