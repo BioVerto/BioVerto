@@ -30,7 +30,7 @@ angular.module("MyApp")
                     }
                    scope.removeView = function()
                    {
-                       console.log("here")
+                        scope.$parent.$parent.removeView(scope.index);
                    }
                     scope.colorAcessorGen = function(color)
                     {
@@ -76,7 +76,6 @@ angular.module("MyApp")
                         scope.showTitle = !scope.showTitle;
                     };
                     scope.setActive = function(){  
-                        console.log("set Active");
                         scope.$parent.$parent.active = scope.index;
                     };
                     scope.resize = function(width,height)
@@ -85,8 +84,14 @@ angular.module("MyApp")
                         scope.height = height-60;
                         scope.view.resize(width-20,height-60);
                     }
+                    
+                          
                     if(scope.graphName)
                     {
+                         // now visualize the graph
+                          $timeout(scope.viewGraph,0);
+     
+                    }   
                         // This is necessary since the DOM element is not build until latter
                         // we need to postpone any activity that manipulates the DOM
                         $timeout(function(){
@@ -108,11 +113,8 @@ angular.module("MyApp")
                             // bring this window to front so it is immediatelly visible                                                                                                                                                
                             bringFront(_DOM, '.viewWindow');
                             scope.setActive();
-                            
-                            // now visualize the graph
-                            scope.viewGraph();   
                         },0);
-                    }
+                    
                 }
             };
         });

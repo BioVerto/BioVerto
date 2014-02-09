@@ -1,4 +1,5 @@
 <head>
+    <title>BioVerto</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -87,13 +88,13 @@
     </div>
     <div class="collapse navbar-collapse center-block">
         <ul class="nav navbar-nav">
-            <li ng-repeat="view in views" >
+            <li ng-repeat="(index, view) in views" >
                 <a  href="#" ng-click="changeView($index)" ng-class= "{active: ($index == active)}">{{view.title}}</a>
             </li>
 
         </ul>
     </div>
-    <div  ng-repeat="view in views">
+    <div  ng-repeat="(index, view) in views">
         <panel activeindex=active layout = view.layout index =view.indx title=view.title graph-name=view.graphName href="#"></panel>
     </div>
     <div class="container">
