@@ -16,7 +16,7 @@ angular.module("MyApp")
                     scope.showTitle = true;
                     scope.width = 580;
                     scope.height = 330;
-                    
+                    scope.title = "";
                    
                     scope.viewGraph = function(graphName)
                     {
@@ -76,7 +76,7 @@ angular.module("MyApp")
                         scope.showTitle = !scope.showTitle;
                     };
                     scope.setActive = function(){  
-                        console.log("set Active")     ;
+                        console.log("set Active");
                         scope.$parent.$parent.active = scope.index;
                     };
                     scope.resize = function(width,height)

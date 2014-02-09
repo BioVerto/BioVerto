@@ -6,6 +6,10 @@ angular.module("MyApp")
                 {
                     case "force":
                         return dc.fgraph();
+                        break;
+                    case "circular":
+                        return dc.cgraph();
+                        break;
                 }
             }
           

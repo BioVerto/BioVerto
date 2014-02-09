@@ -24,7 +24,8 @@
     <script src="js/libs/colorpicker/bootstrap-colorpicker-module.js"></script>
     <script src="js/libs/d3.v3.min.js" charset="utf-8"></script>
     <script src="js/views/fgraph.js"></script>
-
+    <script src="js/views/cgraph.js"></script>
+    
     <script src="js/services/configurationService.js"></script> 
     <script src="js/services/fileLoaderService.js"></script> 
     <script src="js/services/componentGenerator.js"></script>
@@ -93,7 +94,7 @@
         </ul>
     </div>
     <div  ng-repeat="view in views">
-        <panel activeindex=active layout = view.layout index =$index title="view.title" graph-name=view.graphName href="#"></panel>
+        <panel activeindex=active layout = view.layout index =view.indx title=view.title graph-name=view.graphName href="#"></panel>
     </div>
     <div class="container">
         <footer>
