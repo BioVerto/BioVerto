@@ -132,7 +132,7 @@ g5.listGraphs = function()
 {
     var result = new Array();
 
-    for (var name in graphs)
+    for (var name in g5.graphs)
     {
         result.push(name);
     }
