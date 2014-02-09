@@ -171,6 +171,9 @@ dc.fgraph = function(parent) {
     _fgraph.updateNodeStyle = function(style, fn) {
         _node.selectAll("circle").style(style, fn);
     }
+    _fgraph.updateNodeAttr = function(style, fn) {
+        _node.selectAll("circle").attr(style, fn);
+    }
 
     _fgraph.doRedraw = function() {
         //need to include jquery for following line to work
@@ -314,7 +317,10 @@ dc.fgraph = function(parent) {
 
         return _fgraph;
     };
-
+    _fgraph.nodeSizeAcessor = function (_)
+    {
+      _fgraph.updateNodeAttr("r",_); 
+    }
     return _fgraph;
 
 }
