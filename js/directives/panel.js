@@ -14,7 +14,9 @@ angular.module("MyApp")
                 link: function(scope, element) {
                     scope.title = "New View";
                     scope.showTitle = true;
-                   
+                    scope.width = 580;
+                    scope.height = 330;
+                    
                    
                     scope.viewGraph = function(graphName)
                     {
@@ -52,7 +54,7 @@ angular.module("MyApp")
                             delete scope.view;
                         }
                         scope.view = viewProvider.getView(scope.layout);
-                        scope.view.init("#graphNumber" + scope.index, scope.graph.getData(), 500, 300);
+                        scope.view.init("#graphNumber" + scope.index, scope.graph.getData(), scope.width, scope.height);
                         scope.acessorFns = {Node:graphExecutionEngine.listNodeAccessors(scope.graphName),Edge:graphExecutionEngine.listEdgeAccessors(scope.graphName)};
                         scope.controls = componentGenerator.generateSidebar(configurationService.getConfig(scope.layout),scope.acessorFns);//,graphExecutionEngine.listNodeAccessors(scope.graphName),graphExecutionEngine.EdgeAccessors());
  
@@ -71,10 +73,14 @@ angular.module("MyApp")
                         scope.showTitle = !scope.showTitle;
                     };
                     scope.setActive = function(){  
-                        console.log("aasd");
                              scope.$parent.$parent.active = scope.index;
                     };
-                    
+                    scope.resize = function(width,height)
+                    {
+                        scope.width = width-20;
+                        scope.height = height-60;
+                        scope.view.resize(width-20,height-60);
+                    }
                     if(scope.graphName)
                     {
                         // This is necessary since the DOM element is not build until latter
