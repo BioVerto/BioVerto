@@ -3,7 +3,7 @@ angular.module("MyApp")
 
             var forceLayoutControlsObj = [
                 {controltype: "colorpicker", datatype: "color",     name: "P1", tab: "Edge", label: "Edge Color Range",func: "edgeColors",      ignore:false},
-                {controltype: "select",      datatype: "number",    name: "P2", tab: "Edge", label: "Edge Color ",     func: "edgeColorAcessor",ignore:false},
+                {controltype: "select",      datatype: "number",    name: "P2", tab: "Edge", label: "Edge Color ",     func: "edgeColorAccessor",ignore:false},
                 {controltype: "select",      datatype: "character", name: "P3", tab: "Edge", label: "Edge Text ",      func: "edgeTextAcessor", ignore:false},
                 {controltype: "colorpicker", datatype: "color",     name: "P4", tab: "Node", label: "Node Color Range",func: "nodeColors",      ignore:false},
                 {controltype: "select",      datatype: "character", name: "P5", tab: "Node", label: "Node Label",      func: "nodeLabelAcessor",ignore:false},

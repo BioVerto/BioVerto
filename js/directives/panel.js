@@ -53,11 +53,16 @@ angular.module("MyApp")
                         }
                         scope.view = viewProvider.getView(scope.layout);
                         scope.view.init("#graphNumber" + scope.index, scope.graph.getData(), 500, 300);
-                        var acessorFns = {Node:graphExecutionEngine.listNodeAccessors(scope.graphName),Edge:graphExecutionEngine.listEdgeAccessors(scope.graphName)};
-                        var temp = componentGenerator.generateSidebar(configurationService.getConfig(scope.layout),acessorFns);//,graphExecutionEngine.listNodeAccessors(scope.graphName),graphExecutionEngine.EdgeAccessors());
-                        scope.controls = temp;
-
+                        scope.acessorFns = {Node:graphExecutionEngine.listNodeAccessors(scope.graphName),Edge:graphExecutionEngine.listEdgeAccessors(scope.graphName)};
+                        scope.controls = componentGenerator.generateSidebar(configurationService.getConfig(scope.layout),scope.acessorFns);//,graphExecutionEngine.listNodeAccessors(scope.graphName),graphExecutionEngine.EdgeAccessors());
+ 
                     };
+                    scope.getAcessorFunction = function(tab,name)
+                    {
+                        var temp = scope.acessorFns[tab][name];
+                        return temp;
+                    }
+
                     scope.updateMenu = function() {
                         scope.listGraphs = graphExecutionEngine.listGraphs();
 
@@ -65,7 +70,8 @@ angular.module("MyApp")
                     scope.toggleTitle = function() {
                         scope.showTitle = !scope.showTitle;
                     };
-                    scope.setActive = function(){      
+                    scope.setActive = function(){  
+                        console.log("aasd");
                              scope.$parent.$parent.active = scope.index;
                     };
                     
