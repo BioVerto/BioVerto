@@ -32,15 +32,13 @@ var graph1 = {
 
 d3.text("test2.csv", function(unparsedData)
 {
-    var data = d3.csv.parse(unparsedData);
+var data = d3.csv.parse(unparsedData);
 g5.ioPlugins.csv.input(unparsedData,"Source","Target");
 var graph2={},nodes,links;
 
-    nodes = g5.listNodes(); // returns node array
-    links = g5.listEdges(); // returns edge array
-    console.log("nodes");
-	console.log(nodes);
-    console.log("links");
+    nodes = g5.listNodes();
+    links = g5.listEdges();
+    console.log(nodes);
     console.log(links);
     graph2.nodes = nodes;
     graph2.edges =  links;
@@ -50,7 +48,7 @@ var graph2={},nodes,links;
     var fgraph = dc.fgraph()
             .init("#div1",graph2,960,600)
             .edgeColors(function(d) { 
-                return "green";})
+                return "red";})
 
 
 });

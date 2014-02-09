@@ -1,0 +1,52 @@
+
+<div class="container">
+    <div >
+        <div ng-class="{'viewWindow panel panel-info': (index == activeindex), 'viewWindow panel panel-default': (index != activeindex)}">
+            <div class="panel-heading" >  
+                <div class="panel-title "ng-click="setActive()">
+                    <div class="row">
+                        <div class="col-xs-2">
+
+                            <a href="#" ng-click="updateMenu()" class="dropdown-toggle glyphicon glyphicon-th-list" data-toggle="dropdown"></a>
+                            <ul class="dropdown-menu">                                   
+                                <li ng-repeat="graph in listGraphs" >
+                                    <a  href="#" ng-click="viewGraph(graph)">Visualize Graph : {{graph}}</a>
+                                </li>
+
+                            </ul>
+
+                        </div>
+                        <div class="col-xs-8 pull-left">
+                            <a class="text-primary"ng-click="toggleTitle()" ng-show="showTitle"> {{title}}</a>
+                            <input class="text-primary" ng-hide="showTitle" ng-model="title"/>
+                            <a class="text-primary" ng-hide="showTitle" ng-click="toggleTitle()">Done</a>
+
+                        </div>
+                         
+                        <a href="#" ng-click="removeView()" style="padding-right: 30" class="col-xs-2 pull-right glyphicon glyphicon-remove" ></a>
+                            
+
+                    </div>
+
+                </div>  
+            </div>
+
+
+            <div class="panel-body">
+                <div id="graphNumber{{index}}"></div>
+            </div>
+        </div>
+        <!--/row-->
+    </div>
+     <div ng-show="index == activeindex" class="sidebar-offcanvas" role="navigation">
+        <div class="well sidebar-nav" >
+
+            <p class="well">Controls</p>
+            <div compile="controls"></div>
+
+        </div>
+    </div>
+    
+    <!--/span-->
+    <!--/span-->
+</div>
