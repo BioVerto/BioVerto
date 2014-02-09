@@ -3,14 +3,12 @@ angular.module("MyApp")
             $scope.views = []
             $scope.viewable = []
             $scope.active = 0;
+            $scope.newViewIndex = 0;
+            
             $scope.addView = function(layout,graphName)
             {
-                for (var i = 0; i < $scope.viewable.length; i++)
-                {
-                    $scope.viewable[i] = false;
-                }
-                $scope.viewable.push(true);
-                $scope.views.push({layout: layout, title: "New View " + $scope.views.length,graphName:graphName});
+                $scope.views.push({layout: layout, title: "New View " + $scope.views.length,graphName:graphName,indx:$scope.newViewIndex});
+                $scope.newViewIndex++;
             };
             $scope.changeView = function(indx)
             {

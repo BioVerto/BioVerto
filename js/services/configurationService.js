@@ -20,6 +20,10 @@ angular.module("MyApp")
                 {
                     case "force":
                         return forceLayoutControlsObj;
+                        break;
+                    case "circular":
+                        return forceLayoutControlsObj;
+                        break;
                 }
             }
 
