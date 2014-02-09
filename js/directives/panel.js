@@ -5,7 +5,7 @@ angular.module("MyApp")
                 scope: {
                     index: "=",
                     layout: "=",
-                    title: "@",
+                    title: "=",
                     activeindex: "=",
                     graphName: "="
                 },
