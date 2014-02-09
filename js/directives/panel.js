@@ -28,7 +28,10 @@ angular.module("MyApp")
                         scope.graph = graphExecutionEngine.getGraph(scope.graphName);
                         scope.refreshView();
                     }
-                   
+                   scope.removeView = function()
+                   {
+                       console.log("here")
+                   }
                     scope.colorAcessorGen = function(color)
                     {
                       
@@ -73,7 +76,8 @@ angular.module("MyApp")
                         scope.showTitle = !scope.showTitle;
                     };
                     scope.setActive = function(){  
-                             scope.$parent.$parent.active = scope.index;
+                        console.log("set Active")     ;
+                        scope.$parent.$parent.active = scope.index;
                     };
                     scope.resize = function(width,height)
                     {
