@@ -14,14 +14,14 @@ angular.module("MyApp")
                 switch (obj.controltype)
                 {
                     case "colorpicker":
-                        temp += "<span colorpicker ng-model=" + obj.name + " style='background-color: " + obj.name + "' ng-change = \"view." + obj.func + "(colorAcessorGen(" + obj.name + "))\"class='btn btn-primary'>Change color</span>"
+                        temp += "<span colorpicker ng-model=" + obj.name + " style='background-color: " + obj.name + "' ng-change = \"view." + obj.func + "(" + obj.name + ")\"class='btn btn-primary'>Change color</span>"
                         break;
                     case "bool":
                         temp += "<input type=\"checkbox\" ng-change = \"" + obj.func + "(" + obj.name + ")\"ng-model=\"" + obj.name + "\"><br>"
                         break;
                     case "range":
                         temp += "<input type=\"range\" min=\"" + obj.options.min + "\" max=\"" + obj.options.max + "\"  ng-init=\""+obj.name +"="+obj.options.default +"\" " +
-                                "' ng-change = 'setValue(\"" + obj.func + "\"," + obj.name + ")' ng-model=\"" + obj.name + "\"step='" + obj.options.step + "'><br>" //name=\""+obj.name+"\"
+                                "' ng-change = 'setNumber(\"" + obj.func + "\"," + obj.name + ")' ng-model=\"" + obj.name + "\"step='" + obj.options.step + "'><br>" //name=\""+obj.name+"\"
                         break;
                     case "select":
                         temp += "<select ng-change = \"view." + obj.func + "(getAcessorFunction('" + obj.tab + "'," + obj.name + "))\" ng-model=\"" + obj.name + "\" >";

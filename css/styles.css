@@ -75,8 +75,7 @@ footer {
     box-shadow: 2px 2px 2px #666;
 }
 .node {
-    stroke: #fff;
-    stroke-width: 1.5px;
+    
 }
 
 .link {
@@ -104,15 +103,14 @@ path.link {
     stroke-width: 1.5px;
 }
 
-circle {
+.fgraph-circle {
     fill: #ccc;
-    stroke: #fff;
-    stroke-width: 1.5px;
 }
 
-text {
-    fill: #000;
-    font: 10px sans-serif;
+.fgraph-text {
+    stroke: black;
+    stroke-width: .5;
+    font: nm;
     pointer-events: none;
 }
 
@@ -152,4 +150,11 @@ text {
 .btn-sm-nopad {
     padding-left: 2px !important;
     padding-right: 2px ! important;
+}
+
+/* class for making nodes look sticky in fgraph */
+.sticky {
+    stroke: "rgb(17, 16, 16)";
+    stroke-width: 14;
+    opacity: .3;
 }

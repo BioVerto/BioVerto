@@ -12,8 +12,8 @@ angular.module("MyApp")
                 templateUrl: "./partials/panel.html",
                 transclude: true,
                 link: function(scope, element) {
-                    scope.width = 580;
-                    scope.height = 330;
+                    scope.width = 594;
+                    scope.height = 360;
                     scope.title = "";
                     scope.algorithmList = g5.listAlgorithms();
                     scope.runAlgo = function(name)
@@ -50,10 +50,10 @@ angular.module("MyApp")
                         }
                     }
                     
-                    scope.setValue = function(option, value){
+                    scope.setNumber = function(option, value){
                         // Safely set the value if the view has the option
                         if (scope.view[option])
-                            scope.view[option](value);
+                            scope.view[option](+value);
                         // TODO: add an else with a coding error
                            
                     }
@@ -85,9 +85,9 @@ angular.module("MyApp")
                     };
                     scope.resize = function(width,height)
                     {
-                        scope.width = width-20;
-                        scope.height = height-60;
-                        scope.view.resize(width-20,height-60);
+                        scope.width = width-6;
+                        scope.height = height-30;
+                        scope.view.resize(width-6,height-30);
                     }
                     
                           

@@ -137,7 +137,7 @@ Graph.prototype = {
             return;
         }
 
-        this.nodeAccessors[name] = fct;
+        this.nodeAccessors[name] = fct; // HOW DOES THIS WORK? KARTIK THINKS IT DOES
         this.nodeAccessors[name].returnType = type; // ??catergorical or continuous // how to handle type information
         this.nodeAccessors[name].type = "Node";
     },
