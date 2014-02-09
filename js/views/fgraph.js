@@ -15,10 +15,9 @@ dc.fgraph = function(parent) {
     _fCharge = -120, // charge parameter
             _nodeColors = d3.scale.category20(), // colors to be used for nodes
             _edgeColors = d3.scale.category20(), // colors to be used for edges
-            _nodeColorAccessor = function(d) {
-                return 1;
-            }, // node color accessor
-            _edgeColorAccessor = function(d) {
+            _nodeLabelAccessor = function(d){ return ""; },
+                    _nodeColorAccessor = function(d) { return 1; }, // node color accessor
+                    _edgeColorAccessor = function(d) {
                 return 1;
             }, // edge color accessor
             _edgeWidthAccessor = function(d) {
@@ -120,10 +119,9 @@ dc.fgraph = function(parent) {
                     return d.name;
                 });
 
-        if (_displayNames)
             _node.append("text")
                     .text(function(d) {
-                        return d.name;
+                        return _nodeLabelAccessor(d);
                     });
 
         _force.on("tick", function() {
@@ -317,10 +315,21 @@ dc.fgraph = function(parent) {
 
         return _fgraph;
     };
+    
     _fgraph.nodeSizeAcessor = function (_)
     {
       _fgraph.updateNodeAttr("r",_); 
-    }
+    };
+    
+    
+    _fgraph.nodeLabelAcessor = function(_){
+        _nodeLabelAccessor = (typeof _ === 'function') ? _ : function(d){ return ""; };
+        _node.selectAll("text")
+                .text(function(d) {
+                    console.log(_nodeLabelAccessor(d.data));
+                    return _nodeLabelAccessor(d.data);
+        });   
+    };
+    
     return _fgraph;
-
-}
+};

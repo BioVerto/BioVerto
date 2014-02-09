@@ -11,7 +11,15 @@ angular.module("MyApp")
             };
             $scope.removeView = function(index)
             {
-             //   delete $scope.views[index];
+                // First delete this view
+                delete $scope.views[index];
+                // Select another view to be the active view
+                // Simply pick the first view available
+                // This is ugly but effective. There is no API to do this
+                for (var i in $scope.views){
+                    $scope.changeView(i);
+                    break; // we got the first one
+                } // no view, no active
             }
             $scope.changeView = function(indx)
             {

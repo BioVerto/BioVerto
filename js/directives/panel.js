@@ -107,7 +107,7 @@ angular.module("MyApp")
                                     scope.$broadcast('RESIZE', ui.size.width, ui.size.height);
                                 }
                             })
-                                    .draggable({ containment: [320, 120, 2000, 1500], handle: ".panel-title", stack: ".viewWindow", grid: [1, 1] })
+                                    .draggable({ containment: [320, 104, 2000, 1500], handle: ".panel-title", stack: ".viewWindow", grid: [1, 1] })
                                     .bind('click',function(event){ bringFront($(this), '.tableViz'); event.stopPropagation();});
                             
                             // bring this window to front so it is immediatelly visible                                                                                                                                                

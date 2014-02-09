@@ -157,7 +157,7 @@ angular.module("MyApp")
                     // QUESTION: is this better than creating a function using new Function or eval?
                     var f = function(obj) {
 
-                        return obj.data.data[member];
+                        return obj.data[member];
                     };
                     return f;
                 }
