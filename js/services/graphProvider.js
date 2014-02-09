@@ -183,7 +183,7 @@ angular.module("MyApp")
                 }
                 var node = {};
                 node.edges = [];
-                node.data = data;
+                node.data = jQuery.extend({},data);
                 node.data.id = id;
                 return node;
             };
