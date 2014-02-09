@@ -10,6 +10,7 @@
 
 
     <script type="text/javascript" src="js/libs/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="js/libs/jquery/jqueryui.min.js"></script>
     <script src="js/libs/bootstrap/bootstrap.min.js"></script>
     <script src="js/libs/angularjs/angular.min.js"></script>
     <script src="js/libs/angularjs/angular-sanitize.min.js"></script>
@@ -21,9 +22,9 @@
     <script src="js/directives/panel.js"></script>
     <script src="js/factory/d3.js"></script>
     <script src="js/libs/colorpicker/bootstrap-colorpicker-module.js"></script>
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="js/libs/d3.v3.min.js" charset="utf-8"></script>
     <script src="js/views/fgraph.js"></script>
-    
+
     <script src="js/services/configurationService.js"></script> 
     <script src="js/services/fileLoaderService.js"></script> 
     <script src="js/services/componentGenerator.js"></script>
@@ -33,16 +34,16 @@
     <script src="js/services/graphIOPluginProvider.js"></script>
     <script src="js/services/viewProvider.js"></script>
     <script src="js/services/modalCtrlProvider.js"></script> 
-    
+
     <script src="js/controllers/main.js"></script>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" >
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" type="text/css" href="css/ng-grid.min.css">
     <link rel="stylesheet" type="text/css" href="css/colorpicker.css">
-   
+    <link rel="stylesheet" type="text/css" href="css/ui-lightness/jquery-ui-1.10.4.custom.min.css">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-    
-    </head>
+
+</head>
 <body ng-app="MyApp" ng-controller="mainController">
 
     <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
@@ -67,8 +68,8 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Upload From Database<b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                     <li><a href="#" ng-click="databaseDownload('MINTPathways')">MINT Pathways</a></li>
-                     <li><a href="#" ng-click="databaseDownload('MINTFullNetworks')">MINT Full Networks</a></li>
+                            <li><a href="#" ng-click="databaseDownload('MINTPathways')">MINT Pathways</a></li>
+                            <li><a href="#" ng-click="databaseDownload('MINTFullNetworks')">MINT Full Networks</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -76,6 +77,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="#" ng-click="addView('force')">Force Layout View</a></li>
                             <li><a href="#" ng-click="addView('circular')">Circular Layout View</a></li>
+                            <li><a href="#" ng-click="addView('tree')">Tree Layout View</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -85,17 +87,17 @@
     <div class="collapse navbar-collapse center-block">
         <ul class="nav navbar-nav">
             <li ng-repeat="view in views" >
-                <a  href="#" ng-click="changeView($index)" ng-class= "{active:viewable[$index]}">{{view.title}}</a>
+                <a  href="#" ng-click="changeView($index)" ng-class= "{active: ($index == active)}">{{view.title}}</a>
             </li>
 
         </ul>
     </div>
     <div  ng-repeat="view in views">
-        <panel ng-show="viewable[$index]" layout = view.layout index =$index title="view.title" graph-name=view.graphName href="#"></panel>
+        <panel activeindex=active layout = view.layout index =$index title="view.title" graph-name=view.graphName href="#"></panel>
     </div>
     <div class="container">
         <footer>
-            <p>&copy;Bioverto 2014</p>
+            <p>&copy;BioVerto 2014</p>
         </footer>
     </div>
 </body>

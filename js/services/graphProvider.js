@@ -41,7 +41,7 @@ angular.module("MyApp")
             };
             EdgeFactory.prototype = {
                 build: function(source, target) {
-                    var e = jQuery.extend(true, {},this.template);
+                    var e = jQuery.extend(true, {}, this.template);
                     e.source = source;
                     e.target = target;
                     return e;
@@ -112,7 +112,7 @@ angular.module("MyApp")
                 //Discuss with Prof. DOBRA
                 addEdge: function(source, target, data, directed) {
 
-                    
+
                     var s = this.addNode(source);
                     var t = this.addNode(target);
                     var edge = this.edgeFactory.build(s, t);
@@ -141,8 +141,8 @@ angular.module("MyApp")
                     }
 
                     this.nodeAccessors[name] = fct;
-                    this.nodeAccessors[name].type = type; // ??catergorical or continuous // how to handle type information
-                   
+                    this.nodeAccessors[name].returnType = type; // ??catergorical or continuous // how to handle type information
+                    this.nodeAccessors[name].type = "Node";
                 },
                 addEdgeAccessor: function(name, type, fct) {
                     if (this.edgeAccessors[name] !== undefined) {
@@ -150,27 +150,35 @@ angular.module("MyApp")
                         return;
                     }
                     this.edgeAccessors[name] = fct;
-                    this.edgeAccessors[name].type = type; // catergorical or continuous//Attach property to Function Object???
-                   
+                    this.edgeAccessors[name].returnType = type; // catergorical or continuous//Attach property to Function Object???
+                    this.edgeAccessors[name].type = "Edge";
                 },
-              newField : function() {
-                return "_" + (this.nCnt++);
-            },
-             listNodeAccessors : function() {
-                return this.nodeAccessors;
-            },
-            listEdgeAccessors : function() {
-             return this.edgeAccessors;   
-            }
+                createAccessor: function(member) {
+                    // QUESTION: is this better than creating a function using new Function or eval?
+                    var f = function(obj) {
+                        return obj.data[member];
+                    };
+                    return f;
+                }
+                ,
+                newField: function() {
+                    return "_" + (this.nCnt++);
+                },
+                listNodeAccessors: function() {
+                    return this.nodeAccessors;
+                },
+                listEdgeAccessors: function() {
+                    return this.edgeAccessors;
+                }
 
             };
             /*
              * Node
              */
-            Graph.Node = function(id,data) {
-                if(data=== undefined)
+            Graph.Node = function(id, data) {
+                if (data === undefined)
                 {
-                    data={}
+                    data = {}
                 }
                 var node = {};
                 node.edges = [];
