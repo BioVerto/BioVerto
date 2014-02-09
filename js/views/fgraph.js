@@ -60,7 +60,7 @@ dc.fgraph = function(parent) {
             _displayNames = true, // should we display names
             _dblclickHandler = function(d) { // handler for what happens under a dbouleclick
                 // do nothing
-            }
+            },
     _terminator; // not used, just to terminate list
 
     // partial redraw of node size
