@@ -318,7 +318,11 @@ dc.fgraph = function(parent) {
     
     _fgraph.nodeSizeAcessor = function (_)
     {
-      _fgraph.updateNodeAttr("r",_); 
+        _nodeSizeAccessor = (typeof _ === 'function') ? _ : function(d){ return 5; };
+        _node.selectAll("circle")
+                .attr("r",function(d) {
+                    return _nodeSizeAccessor(d.data);
+        }); 
     };
     
     
