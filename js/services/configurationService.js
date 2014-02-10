@@ -30,6 +30,9 @@ angular.module("MyApp")
             case "circular":
                 return forceLayoutControlsObj;
                 break;
+            case "chord":
+                return forceLayoutControlsObj;
+                break;    
             }
         }
 
