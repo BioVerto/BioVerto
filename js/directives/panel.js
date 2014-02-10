@@ -114,7 +114,7 @@ angular.module("MyApp")
                                 }
                             })
                                     .draggable({ containment: [320, 84, 2000, 1500], handle: ".panel-title", stack: ".viewWindow", grid: [1, 1] })
-                                    .bind('click',function(event){ bringFront($(this), '.tableViz'); event.stopPropagation();});
+                                    .bind('click',function(event){ bringFront($(this), '.viewWindow'); event.stopPropagation();});
                             
                             // bring this window to front so it is immediatelly visible                                                                                                                                                
                             bringFront(_DOM, '.viewWindow');

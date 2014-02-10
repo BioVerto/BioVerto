@@ -329,6 +329,7 @@ dc.chordgraph = function(parent) {
             addPair(links[i].target.data.id,keyCount++);
         }
         _matrix[m][n]++;
+        _matrix[n][m]++;
         //console.log(_matrix[m][n]++);
     }
     //console.log("matrix");

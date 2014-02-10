@@ -19,7 +19,12 @@ angular.module("MyApp")
             {controltype: "range",       datatype: "number",    name: "P10", tab:"Global",label: "Distance",       func: "distance",    ignore:false,options:{min:0,max:100,default:20,step:1}},
 	    
         ];
-        
+
+        var circularLayoutControlsObj = [
+	    {controltype: "range",       datatype: "number",    name: "P1", tab:"Global",label: "Text radius",  func: "textRadius",     ignore:false,options:{min:10,max:100,default:30,step:1}},
+            
+	];
+
         this.getConfig = function(layout)
         {
             switch (layout)
@@ -28,7 +33,7 @@ angular.module("MyApp")
                 return forceLayoutControlsObj;
                 break;
             case "circular":
-                return forceLayoutControlsObj;
+                return circularLayoutControlsObj;
                 break;
             case "chord":
                 return forceLayoutControlsObj;
