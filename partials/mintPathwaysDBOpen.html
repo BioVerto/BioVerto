@@ -7,14 +7,14 @@
             <br/>
             Organism:
             <br/>
-            <select ng-model="selectedOrgName.longName" ng-options="v.longName as v.longName for v in availableOrgList|unique:'longName'">
+            <select ng-model="selectedOrgName.longName" ng-options="v.longName as v.longName for v in availableOrgList|unique:'longName' |orderBy:'longName'">
                 <option value="">-- choose organism --</option>
             </select>
             <br/>
             Pathway:
             <br/>
 
-            <select  ng-model="selectedPathway"  ng-options="v as v.subStructureName for v in  availableOrgList|filter:selectedOrgName">
+            <select  ng-model="selectedPathway"  ng-options="v as v.subStructureName for v in  availableOrgList|filter:selectedOrgName|orderBy:'subStructureName'">
                 <option value="">-- choose pathway --</option>
             </select>
             <br/>
