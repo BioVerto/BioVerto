@@ -10,6 +10,8 @@ angular.module("MyApp")
                     case "circular":
                         return dc.cgraph();
                         break;
+                    case "chord":
+                        return dc.chordgraph();
                 }
             }
           
