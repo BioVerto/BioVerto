@@ -223,7 +223,8 @@ dc.fgraph = function(parent) {
     }
     _fgraph.destroy = function()
     {
-        _svg.remove();
+        $(_parentID).empty();
+       _svg.remove();
     }
     _fgraph.doRender = function() {
         // delete old content if present
