@@ -1,7 +1,7 @@
  if (typeof  modalControllers === 'undefined')
  modalControllers = {};
  modalControllers.mintFullNetworks = function($scope, $modalInstance, $http, d3, $q) {
-                $scope.availableOrgList = {};
+                $scope.availableOrgList = [];
                 $scope.uploadButtonEnable = true;
                 $scope.state = 'uploadState';
                 $scope.selectedOrgName = "";
@@ -10,10 +10,10 @@
                 $scope.pathwayUpload = function(selectedNetwork)
                 {
                     $scope.uploadButtonEnable = false;
-                    $http.get("http://www.cise.ufl.edu/~adobra/BioVerto/MINT-full/" + selectedNetwork + "_all.graph").success(function(result) {
+                    $http.get("http://www.cise.ufl.edu/~adobra/BioVerto/MINT-full/" + selectedNetwork.fileName + "_all.graph").success(function(result) {
                         $scope.blob = "Source\tTarget\tValue1\tValue2\tValue3\n" + result;
-                        g5.loadGraphFromFile("mint", $scope.blob, $scope.availableOrgList[selectedNetwork], "Source", "Target");
-                        $modalInstance.close({layout: "force", graphName: $scope.availableOrgList[selectedNetwork]});
+                        g5.loadGraphFromFile("mint", $scope.blob,selectedNetwork.name, "Source", "Target");
+                        $modalInstance.close({layout: "force", graphName:selectedNetwork.name});
                     });
 
                 };
@@ -29,7 +29,7 @@
                         var rows = d3.csv.parseRows(results[0].data);
                         for (i = 0; i < rows.length; i++)
                         {
-                            $scope.availableOrgList[rows[i][1]] = rows[i][0];
+                            $scope.availableOrgList.push({name:rows[i][0],fileName:rows[i][1]});
                         }
 
                     });
