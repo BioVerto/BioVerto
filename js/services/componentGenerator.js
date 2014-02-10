@@ -24,13 +24,9 @@ angular.module("MyApp")
                                 "' ng-change = 'setNumber(\"" + obj.func + "\"," + obj.name + ")' ng-model=\"" + obj.name + "\"step='" + obj.options.step + "'><br>" //name=\""+obj.name+"\"
                         break;
                     case "select":
-                        temp += "<select ng-change = \"view." + obj.func + "(getAcessorFunction('" + obj.tab + "'," + obj.name + "))\" ng-model=\"" + obj.name + "\" >";
-                        temp += "<option value = Reset> Reset </option>"
-                        for (var j in options)
-                        {
-                            if ((options[j].returnType === obj.datatype) || obj.datatype == "character")
-                                temp += "<option value=\"" + j + "\">" + j + "</option>"
-                        }
+                        temp += "<select ng-options=\""+"key as key for (key , value) in "+"acessorFns['"+obj.tab+"'] \" ng-change = \"view." + obj.func + "(getAcessorFunction('" + obj.tab + "'," + obj.name + "))\" ng-model=\"" + obj.name + "\" >";
+                        temp += "<option value = Reset n> Reset </option>"
+                        temp += " <option value=''>-- choose Option --</option>";
                         temp += "</select>";
                         break;
                 }

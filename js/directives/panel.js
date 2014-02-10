@@ -15,7 +15,7 @@ angular.module("MyApp")
                     scope.width = 594;
                     scope.height = 360;
                     scope.heading = "";
-                    scope.algorithmList = g5.listAlgorithms();
+                    scope.algorithmList = g5.listAlgorithms();    
                     scope.runAlgo = function(name)
                     {
                         g5.applyAlgorithm(g5.getGraph(scope.graphName),name);
@@ -24,8 +24,7 @@ angular.module("MyApp")
                     scope.refreshSidebar= function()
                     {
                         scope.acessorFns = {Node:scope.graph.listNodeAccessors(),Edge:scope.graph.listEdgeAccessors()};
-                        scope.controls = componentGenerator.generateSidebar(configurationService.getConfig(scope.layout),scope.acessorFns);//,graphExecutionEngine.listNodeAccessors(scope.graphName),graphExecutionEngine.EdgeAccessors());
- 
+                     
                     }
                     scope.viewGraph = function(graphName)
                     {
@@ -36,6 +35,8 @@ angular.module("MyApp")
                         scope.heading = scope.graphName;
                         scope.graph = g5.getGraph(scope.graphName);
                         scope.refreshView();
+                        scope.controls = componentGenerator.generateSidebar(configurationService.getConfig(scope.layout),scope.acessorFns);//,graphExecutionEngine.listNodeAccessors(scope.graphName),graphExecutionEngine.EdgeAccessors());
+ 
                     }
                    scope.removeView = function()
                    {
