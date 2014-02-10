@@ -158,3 +158,16 @@ path.link {
     stroke-width: 14;
     opacity: .3;
 }
+.node--source {
+  fill: #2ca02c;
+}
+
+.node--target {
+  fill: #d62728;
+}
+
+.link--source,
+.link--target {
+  stroke-opacity: 1;
+  stroke-width: 2px;
+}
