@@ -14,7 +14,7 @@ angular.module("MyApp")
                 link: function(scope, element) {
                     scope.width = 594;
                     scope.height = 360;
-                    scope.heading = "";
+                    
                     scope.algorithmList = g5.listAlgorithms();    
                     scope.runAlgo = function(name)
                     {
