@@ -5,7 +5,7 @@ angular.module("MyApp")
                 scope: {
                     index: "=",
                     layout: "=",
-                    title: "=",
+                    heading: "=",
                     activeindex: "=",
                     graphName: "="
                 },
@@ -14,7 +14,7 @@ angular.module("MyApp")
                 link: function(scope, element) {
                     scope.width = 594;
                     scope.height = 360;
-                    scope.title = "";
+                    scope.heading = "";
                     scope.algorithmList = g5.listAlgorithms();
                     scope.runAlgo = function(name)
                     {
@@ -33,7 +33,7 @@ angular.module("MyApp")
                         {
                            scope.graphName = graphName; 
                         }
-                        scope.title = scope.graphName;
+                        scope.heading = scope.graphName;
                         scope.graph = g5.getGraph(scope.graphName);
                         scope.refreshView();
                     }
@@ -112,7 +112,7 @@ angular.module("MyApp")
                                     scope.$broadcast('RESIZE', ui.size.width, ui.size.height);
                                 }
                             })
-                                    .draggable({ containment: [320, 104, 2000, 1500], handle: ".panel-title", stack: ".viewWindow", grid: [1, 1] })
+                                    .draggable({ containment: [320, 84, 2000, 1500], handle: ".panel-title", stack: ".viewWindow", grid: [1, 1] })
                                     .bind('click',function(event){ bringFront($(this), '.tableViz'); event.stopPropagation();});
                             
                             // bring this window to front so it is immediatelly visible                                                                                                                                                

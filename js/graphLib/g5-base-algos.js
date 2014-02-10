@@ -8,7 +8,7 @@
     // new field and register accessor for it under algo name
     var f = g5.newField();
     g5.addAlgoPlugin({
-            name: "outDegree",
+            name: "Degree Centrality",
             algo: function(g) {
                 for (i in g.nodes) {
                     var node = g.nodes[i];
@@ -16,7 +16,7 @@
                 }
             },
             nodeAccs: {
-                "Out Degree": { type:"number", fct: g5.createAccessor(f)}
+                "Degree": { type:"number", fct: g5.createAccessor(f)}
             }});
 }(g5));
 
@@ -28,7 +28,7 @@
     };
     var f = g5.newField();
     g5.addAlgoPlugin({
-        name: "randomAlg",
+        name: "Random Data Generator",
         algo: function(g) {
             for (i in g.nodes) {
                 var node = g.nodes[i];
@@ -36,7 +36,7 @@
             }
         },
         nodeAccs: {
-            "Random": { type: "number", fct: g5.createAccessor(f)}
+            "Random Data": { type: "number", fct: g5.createAccessor(f)}
         }
     });
 }(g5));
