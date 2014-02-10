@@ -39,7 +39,7 @@ dc.cgraph = function(parent) {
     _graph = {}, // data to be displayed
     _diameter =360,
     _radius = _diameter / 2,
-    _innerRadius = _radius - 10,
+    _innerRadius = _radius - 100,
     _displayNames = true, // should we display names
     _terminator; // not used, just to terminate list
 
@@ -81,24 +81,28 @@ dc.cgraph = function(parent) {
     var nodes = _cluster.nodes(packageHierarchy(circularData)),
         links = packageImports(nodes);
 
-    _link = _rootGElement.selectAll(".link")
+    _link = _rootGElement.selectAll(".link-cgraph")
               .data(_bundle(links))
               .enter().append("path")
               .each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
-              .attr("class", "link")
+              .attr("class", "link-cgraph")
               .attr("d", _line);
 
-    _node = _rootGElement.selectAll(".node")
+    _node = _rootGElement.selectAll(".node-cgraph")
             .data(nodes.filter(function(n) { return !n.children; }))
-            .enter().append("g")
-            .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
-            .append("text")
-            .attr("fill", "red")
+            // .enter().append("g")
+            // .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+            // .append("text")
+            .enter().append("text")
+            .attr("class", "node-cgraph")
             .attr("dx", function(d) { return d.x < 180 ? 8 : -8; })
             .attr("dy", ".31em")
+            //.attr("transform", function(d) { return d.x < 180 ? null : "rotate(180)"; })
+            .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")" + (d.x < 180 ? "" : "rotate(180)"); })
             .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-            .attr("transform", function(d) { return d.x < 180 ? null : "rotate(180)"; })
-            .text(function(d) { return d.key; });
+            .text(function(d) { return d.key; })
+            .on("mouseover", mouseovered)
+            .on("mouseout", mouseouted);
 
     _node.append("title")
           .text(function(d) {
@@ -118,32 +122,31 @@ dc.cgraph = function(parent) {
         .each(function(n) { n.target = n.source = false; });
 
     _link
-        .classed("link--target", function(l) { if (l.target === d) return l.source.source = true; })
-        .classed("link--source", function(l) { if (l.source === d) return l.target.target = true; })
+        .classed("link-cgraph--target", function(l) { if (l.target === d) return l.source.source = true; })
+        .classed("link-cgraph--source", function(l) { if (l.source === d) return l.target.target = true; })
         .filter(function(l) { return l.target === d || l.source === d; })
         .each(function() { this.parentNode.appendChild(this); });
 
     _node
-        .classed("node--target", function(n) { return n.target; })
-        .classed("node--source", function(n) { return n.source; });
+        .classed("node-cgraph--target", function(n) { return n.target; })
+        .classed("node-cgraph--source", function(n) { return n.source; });
   }
 
   function mouseouted(d) {
     _link
-        .classed("link--target", false)
-        .classed("link--source", false);
+        .classed("link-cgraph--target", false)
+        .classed("link-cgraph--source", false);
 
     _node
-        .classed("node--target", false)
-        .classed("node--source", false);
+        .classed("node-cgraph--target", false)
+        .classed("node-cgraph--source", false);
   }
 
   _fgraph.init = function(parent,data,width,height) {
-      var diameter = minDiameter(width,height);
-      console.log("diameter = " + diameter);
+      _diameter = minDiameter(width,height);
       _parentID = parent;
       _fgraph.graphView(data)
-             .resize(diameter);
+             .resize(width,height);
       return _fgraph;
   };
 
@@ -166,6 +169,7 @@ dc.cgraph = function(parent) {
     _width = parent.width() - _margins.left - _margins.right;
     _height = parent.height() - _margins.top - _margins.bottom;
 
+    _diameter = minDiameter(_width,_height);
     _svg
       .attr("width", _diameter)
       .attr("height", _diameter);
@@ -247,12 +251,12 @@ dc.cgraph = function(parent) {
     return _fgraph;
   };
 
-  _fgraph.resize = function(diameter) {
-    _diameter = diameter;
+  _fgraph.resize = function(width,height) {
+    _diameter = minDiameter(width,height);
     if (_cluster) {
           
       _radius = _diameter / 2,
-      _innerRadius = _radius - 10;
+      _innerRadius = _radius - 100;
     
       _cluster.size([360, _innerRadius])
               .sort(null)
@@ -265,6 +269,11 @@ dc.cgraph = function(parent) {
 
       _svg.select("g")
         .attr("transform", "translate(" + _radius + "," + _radius + ")");    
+    }
+    
+    if(_line) {
+        _line.radius(function(d) { return d.y; })
+        .angle(function(d) { return d.x / 180 * Math.PI; });
     }
     //console.log(_svg.attr(_width));
     return _fgraph;
@@ -361,3 +370,4 @@ function packageImports(nodes) {
 
   return imports;
 }
+
