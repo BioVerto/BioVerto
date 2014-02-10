@@ -17,10 +17,10 @@ dc.fgraph = function(parent) {
             _fCharge = -120, // charge parameter
             _nodeColorType = "cont", // is the coloring measure discrete? "cont" or "disc"
             _nodeColorScaleD = d3.scale.category20(), // colors to be used for nodes when nodeAccessor is discret
-            _nodeMinColor = "blue",
-            _nodeMaxColor = "red",
+            _minNodeColor = "blue",
+            _maxNodeColor = "red",
             _nodeColorScaleC = d3.scale.linear() // same for continous
-            .range([_nodeMinColor, _nodeMaxColor])
+            .range([_minNodeColor, _maxNodeColor])
             .interpolate(d3.interpolateHcl),
             _edgeColors = d3.scale.category20(), // colors to be used for edges
             _nodeLabelAccessor = function(d) {
