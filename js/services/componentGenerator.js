@@ -1,7 +1,6 @@
 angular.module("MyApp")
         .service('componentGenerator', function() {
 
-
             this.generateComponent = function(obj, options)
             {
                 if (obj.ignore)
@@ -10,12 +9,12 @@ angular.module("MyApp")
                 }
 
                 var temp = "";
-                temp = "<a><h4>" + obj.label + "</h4></a>";
+                temp = "<a>" + obj.label + "</a>";
                 switch (obj.controltype)
                 {
                     case "colorpicker":
-                        temp += "<span colorpicker ng-model=" + obj.name + " style='background-color: " + obj.name + "' ng-change = \"view." + obj.func + "(" + obj.name + ")\"class='btn btn-primary'>Change color</span>"
-                        break;
+              temp += "<button  ng-init = ''class = 'btn-sm' colorpicker ng-model=" + obj.name + " style='background-color: {{" + obj.name + "}}' ng-change = \"view." + obj.func + "(" + obj.name + ")\"class='btn btn-primary'>Change color</button>"
+                                 break;
                     case "bool":
                         temp += "<input type=\"checkbox\" ng-change = \"" + obj.func + "(" + obj.name + ")\"ng-model=\"" + obj.name + "\"><br>"
                         break;
