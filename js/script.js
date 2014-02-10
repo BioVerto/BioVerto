@@ -18,7 +18,12 @@ function bringFront(elem, stack){
     $(elem).css({'zIndex' : min + group.length});
 }
 
+/* global error function*/
 
+function codingError(text){
+    console.log("Coding Error: " + text);
+    alert("Coding Error: " + text);
+}
 /* Start the app */
 var app= angular.module("MyApp", ['ngSanitize','ui.bootstrap','ngGrid','colorpicker.module','ui.unique'])
 

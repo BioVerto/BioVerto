@@ -4,17 +4,39 @@
 
 
 // Out degree computation. Simply counts the numer of out degrees
-(function(g5){
+(function(g5) {
     // new field and register accessor for it under algo name
     var f = g5.newField();
-    g5.addNodeAccessor("outDegree",  g5.createAccessor(f));
+    g5.addAlgoPlugin({
+            name: "outDegree",
+            algo: function(g) {
+                for (i in g.nodes) {
+                    var node = g.nodes[i];
+                    node.data[f] = node.edges.length;
+                }
+            },
+            nodeAccs: {
+                "Out Degree": { type:"number", fct: g5.createAccessor(f)}
+            }});
+}(g5));
 
-    g5.addAlgoPlugin(
-	"outDegree",
-	function(g){
-	    for (i in g.nodes){
-		var node = g.nodes[i];
-		node.data[f] = node.edges.length;
-	    }
-	});
+
+// Random data node algo
+(function(g5) {
+    var randomNumber = function() {
+        return Math.floor(Math.random() * (9)) + 1;
+    };
+    var f = g5.newField();
+    g5.addAlgoPlugin({
+        name: "randomAlg",
+        algo: function(g) {
+            for (i in g.nodes) {
+                var node = g.nodes[i];
+                node.data[f] = randomNumber();
+            }
+        },
+        nodeAccs: {
+            "Random": { type: "number", fct: g5.createAccessor(f)}
+        }
+    });
 }(g5));
