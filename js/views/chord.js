@@ -91,7 +91,7 @@ dc.chord = function(parent) {
             var k = (d.endAngle - d.startAngle) / d.value;
             return d3.range(0, d.value, 1000).map(function(v, i) {
                 return {
-                    angle: v * k + d.startAngle,
+                    angle: d.startAngle/2 +( d.endAngle)/2,
                     label: (d.index < _nodeData.length) ? _nodeData[d.index].data.data.id : _uniqueElements[d.index],
                 };
             });
@@ -122,7 +122,7 @@ dc.chord = function(parent) {
 
         var matrix = createUniqueList();
         _chord = d3.layout.chord()
-                .padding(.05)
+                .padding(.005)
                 .sortSubgroups(d3.descending)
                 .matrix(matrix);
         _width = _width - 300;
@@ -195,7 +195,7 @@ dc.chord = function(parent) {
             var k = (d.endAngle - d.startAngle) / d.value;
             return d3.range(0, d.value, 1000).map(function(v, i) {
                 return {
-                    angle: v * k + d.startAngle,
+                    angle: d.startAngle/2 +( d.endAngle)/2,
                     label: (d.index < _nodeData.length) ? _nodeData[d.index].data.data.id : _uniqueElements[d.index],
                 };
             });

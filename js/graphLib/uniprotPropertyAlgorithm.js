@@ -15,6 +15,21 @@
                         g.nodes[rows[i][0]].data[f3] = rows[i][3];
                     }   
                 }
+                for (var i in g.nodes) {
+                        if(g.nodes[rows[i][0]].data[f1] ===undefined)
+                        {
+                            g.nodes[rows[i][0]].data[f1] = "";
+                        }
+                        if(g.nodes[rows[i][0]].data[f2] ===undefined)
+                        {
+                            g.nodes[rows[i][0]].data[f2] = 1;
+                        }
+                        if(g.nodes[rows[i][0]].data[f3] ===undefined)
+                        {
+                            g.nodes[rows[i][0]].data[f3] =1;
+                        }
+                        
+                }
             }
             );
         },
