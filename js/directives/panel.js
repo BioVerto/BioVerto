@@ -106,12 +106,19 @@ angular.module("MyApp")
                         scope.alertText = message;
                         scope.alertType = type;
                     }
-
+                    scope.$watch('$parent.$parent.active',function()
+                    {
+                        if(scope.activeindex === scope.index)
+                        {
+                          
+                            $timeout(function(){bringFront($(this), '.viewWindow')},0);
+                        }
+                    });
                     if (scope.graphName)
                     {
                         // now visualize the graph
                         $timeout(scope.viewGraph, 0);
-
+                         bringFront($(this), '.viewWindow');
                     }
                     // This is necessary since the DOM element is not build until latter
                     // we need to postpone any activity that manipulates the DOM
