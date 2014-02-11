@@ -57,9 +57,7 @@ var Graph = function() {
     this.edgeFactory = new EdgeFactory();
     this.nodeAccessors = {};
     this.edgeAccessors = {};
-    // name generator for fields to be added to objects
-    // global counter for name generation
-    this.nCnt = 0;
+    
     //	return graph;
 
 };
@@ -187,6 +185,11 @@ Graph.prototype = {
     },
     listEdgeAccessors: function() {
         return this.edgeAccessors;
+    },
+    listAlgorithms:function()
+    {
+        //TODO: intersection of Algorithm
+       return g5.listAlgorithms();
     }
 
 };

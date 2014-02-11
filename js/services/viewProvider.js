@@ -11,7 +11,9 @@ angular.module("MyApp")
                         return dc.cgraph();
                         break;
                     case "chord":
-                        return dc.chordgraph();
+                        return dc.chord();
+                        break;
+                    
                 }
             }
           
