@@ -23,7 +23,7 @@ dc.chord = function(parent) {
             _weightAccessor = function(d) {
                 return 2;
             },
-                    _ticks,
+            _ticks,
             _uniqueElements = [],
             _graphProperty = function(d) {
                 return d.data["_0"];
@@ -33,29 +33,29 @@ dc.chord = function(parent) {
 
     function redraw()
     {
-      
-        innerRadius = Math.min(_width-60, _height-40) * .41,
-         outerRadius = innerRadius * 1.1;
+
+        innerRadius = Math.min(_width - 60, _height - 40) * .41,
+                outerRadius = innerRadius * 1.1;
         var fill = d3.scale.ordinal()
                 .domain(d3.range(4))
                 .range(["#000000", "#FFDD89", "#957244", "#F26223"]);
         d3.select(_parentID).select("svg")
-            .attr("width", _width)
-            .attr("height", _height);
+                .attr("width", _width)
+                .attr("height", _height);
         _svg.attr("width", _width)
-            .attr("height", _height);
-    
+                .attr("height", _height);
+
         _svg.attr("transform", "translate(" + _width / 2 + "," + (_height + 40) / 2 + ")");
         _svg.selectAll("path")
-            .data(_chord.groups)
-            .style("fill", function(d) {
+                .data(_chord.groups)
+                .style("fill", function(d) {
                     return fill(d.index);
                 })
-            .style("stroke", function(d) {
+                .style("stroke", function(d) {
                     return fill(d.index);
                 })
-            .attr("d", d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius))
-          _ticks.data(_chord.groups)
+                .attr("d", d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius))
+        _ticks.data(_chord.groups)
                 .data(groupTicks)
                 .attr("transform", function(d) {
                     return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
@@ -78,25 +78,25 @@ dc.chord = function(parent) {
                 .style("text-anchor", function(d) {
                     return d.angle > Math.PI ? "end" : null;
                 })
-                
 
-           _svg.selectAll(".chord").selectAll("path")
+
+        _svg.selectAll(".chord").selectAll("path")
                 .data(_chord.chords)
                 .attr("d", d3.svg.chord().radius(innerRadius))
                 .style("fill", function(d) {
                     return fill(d.target.index);
                 })
                 .style("opacity", 1);
-         function groupTicks(d) {
+        function groupTicks(d) {
             var k = (d.endAngle - d.startAngle) / d.value;
             return d3.range(0, d.value, 1000).map(function(v, i) {
                 return {
-                    angle: d.startAngle/2 +( d.endAngle)/2,
+                    angle: d.startAngle / 2 + (d.endAngle) / 2,
                     label: (d.index < _nodeData.length) ? _nodeData[d.index].data.data.id : _uniqueElements[d.index],
                 };
             });
         }
-        
+
     }
 
     function changeData(graph) {
@@ -149,8 +149,8 @@ dc.chord = function(parent) {
                     return fill(d.index);
                 })
                 .attr("d", d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius))
-                .on("mouseover", fade(.1))
-                .on("mouseout", fade(1));
+                .on("mouseover", fade(.1,true))
+                .on("mouseout", fade(1,false));
 
         _ticks = _svg.append("g").selectAll("g")
                 .data(_chord.groups)
@@ -181,7 +181,7 @@ dc.chord = function(parent) {
                 .text(function(d) {
                     return d.label;
                 });
-                 _svg.append("g")
+        _svg.append("g")
                 .attr("class", "chord")
                 .selectAll("path")
                 .data(_chord.chords)
@@ -195,20 +195,50 @@ dc.chord = function(parent) {
             var k = (d.endAngle - d.startAngle) / d.value;
             return d3.range(0, d.value, 1000).map(function(v, i) {
                 return {
-                    angle: d.startAngle/2 +( d.endAngle)/2,
+                    angle: d.startAngle / 2 + (d.endAngle) / 2,
                     label: (d.index < _nodeData.length) ? _nodeData[d.index].data.data.id : _uniqueElements[d.index],
                 };
             });
         }
-        function fade(opacity) {
+        function fade(opacity,flg) {
             return function(g, i) {
+                var highlightAreas = [];
+                highlightAreas.push(i);
                 _svg.selectAll(".chord path")
                         .filter(function(d) {
+                            if((d.source.index === (d.target.index+1))||(d.target.index=== (d.source.index+1)))
+                    {
+                        console.log("ah Oh");
+                    }
+                            if ((d.source.index == i || d.target.index == i))
+                            {
+                                console.log(d.source.index);
+                                console.log(d.target.index);
+                                console.log(i)
+                                if(d.source.index ==i)
+                                {
+                                    highlightAreas.push(d.target.index)
+                                }  
+                                else
+                                {
+                                    highlightAreas.push(d.source.index)   
+                                }
+                                console.log(highlightAreas);
+                            }
                             return d.source.index != i && d.target.index != i;
                         })
                         .transition()
                         .style("opacity", opacity);
-              
+                if(flg){
+                _svg.select("g:nth-child(2)").selectAll("text").filter(function(d, j) {
+                    return highlightAreas.indexOf(j)!==-1
+                }).style("fill", "red");
+            }
+            else{
+                _svg.select("g:nth-child(2)").selectAll("text").filter(function(d, j) {
+                    return highlightAreas.indexOf(j)!==-1
+                }).style("fill", "black");
+            }
             };
         }
 
