@@ -175,7 +175,6 @@ dc.chord = function(parent) {
                 if (_uniqueElements[j] === _graphProperty(_uniqueElements[i].data))
                 {
                     matrix[i][j] = 1;
-                    matrix[j][j]=1;
                     matrix[j][i]=1;
                     
                 }
