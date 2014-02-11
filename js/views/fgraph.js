@@ -53,6 +53,7 @@ dc.fgraph = function(parent) {
             _svg, // svg element
             _link, // links
             _node, // nodes
+            _blinks, // bundle links
             _transitionDuration = 750,
             _graph = {}, // data to be displayed
             _width = 960,
@@ -167,20 +168,26 @@ dc.fgraph = function(parent) {
                     return _edgeWidthAccessor(d.data);
                 });
 
+        var drag = _force.drag()
+                .on("dragstart", function(d) {
+                    d.fixed = true;
+                    d3.select(this).select("circle").classed("sticky", d.fixed);
+                });
+
         _node = _svg.selectAll(".node")
                 .data(_nodeData)
                 .enter().append("g")
                 .attr("class", "node")
-                .call(_force.drag)
+                .call(drag)
                 ;
 
         _node.append("circle")
                 .attr("class", "fgraph-circle")
-                .on("mousedown", function(d) {
-                    d.fixed = !d.fixed;
-                    d3.select(this).classed('sticky', d.fixed);
-                })
-                .on("dblclick", function(d){ _dblclickHandler(d); });
+                .on("dblclick", function(d) {
+                    d.fixed = false;
+                    d3.select(this).classed("sticky", d.fixed);
+                    _force.start();
+                });
         changeNodeSize();
         changeNodeColor();
 

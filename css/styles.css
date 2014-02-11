@@ -154,9 +154,8 @@ path.link {
 
 /* class for making nodes look sticky in fgraph */
 .sticky {
-    stroke: "rgb(17, 16, 16)";
-    stroke-width: 14;
-    opacity: .3;
+    stroke: #909090 ! important;
+    stroke-width:4px ! important;
 }
 .node-cgraph {
   font: 300 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
