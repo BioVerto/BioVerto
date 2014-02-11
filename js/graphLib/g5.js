@@ -113,6 +113,10 @@ g5.loadGraphFromObjArray = function(data, graphName, source, target)
         graph.addEdge(s, t, d);
     });
     graph.addInitialAccFunctions();
+    g5.applyAlgorithm(graph,"Degree Centrality");
+    g5.applyAlgorithm(graph,"Random Data Generator");
+    g5.applyAlgorithm(graph,"Uniprot Data");
+    
     return graph;
 };
 
