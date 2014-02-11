@@ -16,17 +16,17 @@
                     }   
                 }
                 for (var i in g.nodes) {
-                        if(g.nodes[rows[i][0]].data[f1] ===undefined)
+                        if(g.nodes[i].data[f1] ===undefined)
                         {
-                            g.nodes[rows[i][0]].data[f1] = "";
+                            g.nodes[i].data[f1] = "";
                         }
-                        if(g.nodes[rows[i][0]].data[f2] ===undefined)
+                        if(g.nodes[i].data[f2] ===undefined)
                         {
-                            g.nodes[rows[i][0]].data[f2] = 1;
+                            g.nodes[i].data[f2] = 1;
                         }
-                        if(g.nodes[rows[i][0]].data[f3] ===undefined)
+                        if(g.nodes[i].data[f3] ===undefined)
                         {
-                            g.nodes[rows[i][0]].data[f3] =1;
+                            g.nodes[i].data[f3] =1;
                         }
                         
                 }
