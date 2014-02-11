@@ -231,8 +231,7 @@ dc.fgraph = function(parent) {
     _fgraph.destroy = function()
     {
         $(_parentID).empty();
-       _svg.remove();
-    }
+     }
     _fgraph.doRender = function() {
         // delete old content if present
         // d3.select(_parentID).select("svg").remove();

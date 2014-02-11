@@ -273,7 +273,10 @@ dc.cgraph = function(parent) {
 	changeData(_graph);
 	return _fgraph;
     };
-
+_fgraph.destroy = function()
+    {
+        $(_parentID).empty();
+     }
     _fgraph.resize = function(width,height) {
 	_diameter = minDiameter(width,height);
 	_radius = _diameter / 2,
