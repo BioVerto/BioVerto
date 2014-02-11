@@ -208,8 +208,10 @@ dc.chord = function(parent) {
                         })
                         .transition()
                         .style("opacity", opacity);
+              
             };
         }
+
         return _fgraph;
 
     }
