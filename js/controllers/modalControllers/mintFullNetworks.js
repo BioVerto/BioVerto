@@ -10,7 +10,7 @@
                 $scope.pathwayUpload = function(selectedNetwork)
                 {
                     $scope.uploadButtonEnable = false;
-                    $http.get("http://www.cise.ufl.edu/~adobra/BioVerto/MINT-full/" + selectedNetwork.fileName + "_all.graph").success(function(result) {
+                    $http.get("http://datapath.cise.ufl.edu:1080/BioVerto/MINT-full/" + selectedNetwork.fileName + "_all.graph").success(function(result) {
                         $scope.blob = "Source\tTarget\tValue1\tValue2\tValue3\n" + result;
                         g5.loadGraphFromFile("mint", $scope.blob,selectedNetwork.name, "Source", "Target");
                         $modalInstance.close({layout: "force", graphName:selectedNetwork.name});
@@ -22,7 +22,7 @@
                     $modalInstance.dismiss('cancel');
                 };
                 function getAvailableOptions() {
-                    var organismsListHttp = $http.get('http://www.cise.ufl.edu/~adobra/BioVerto/rest/list/organism-all');
+                    var organismsListHttp = $http.get('http://datapath.cise.ufl.edu:1080/BioVerto/rest/list/organism-all');
                     $q.all([organismsListHttp]).then(function(results) {
                         var orgNameList = {};
                         var subStructureNameList = {};

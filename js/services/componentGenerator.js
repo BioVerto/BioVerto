@@ -13,7 +13,7 @@ angular.module("MyApp")
                 switch (obj.controltype)
                 {
                     case "colorpicker":
-                        temp += "<button ng-init=\"" + obj.name + "=" + obj.options.default + "\" class='pull-right btn-xs' colorpicker ng-model=" + obj.name + " style='background-color: {{" + obj.name + "}}' ng-change = \"view." + obj.func + "(" + obj.name + ")\"class='btn btn-primary'>Change color</button>"
+                        temp += "<button ng-init=\"" + obj.name + "='" + obj.options.default + "'\" class='pull-right btn-xs' colorpicker ng-model=" + obj.name + " style='background-color: {{" + obj.name + "}}' ng-change = \"view." + obj.func + "(" + obj.name + ")\"class='btn btn-primary'>Change color</button>"
                         break;
                     case "bool":
                         temp += "<input type=\"checkbox\" ng-change = \"" + obj.func + "(" + obj.name + ")\"ng-model=\"" + obj.name + "\"><br>"
