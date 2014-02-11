@@ -23,16 +23,83 @@ dc.chord = function(parent) {
             _weightAccessor = function(d) {
                 return 2;
             },
+                    _ticks,
             _uniqueElements = [],
             _graphProperty = function(d) {
                 return d.data["_0"];
             },
+            _chord,
             _terminator; // not used, just to terminate list
 
+    function redraw()
+    {
+      
+        innerRadius = Math.min(_width-60, _height-40) * .41,
+         outerRadius = innerRadius * 1.1;
+        var fill = d3.scale.ordinal()
+                .domain(d3.range(4))
+                .range(["#000000", "#FFDD89", "#957244", "#F26223"]);
+        d3.select(_parentID).select("svg")
+            .attr("width", _width)
+            .attr("height", _height);
+        _svg.attr("width", _width)
+            .attr("height", _height);
+    
+        _svg.attr("transform", "translate(" + _width / 2 + "," + (_height + 40) / 2 + ")");
+        _svg.selectAll("path")
+            .data(_chord.groups)
+            .style("fill", function(d) {
+                    return fill(d.index);
+                })
+            .style("stroke", function(d) {
+                    return fill(d.index);
+                })
+            .attr("d", d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius))
+          _ticks.data(_chord.groups)
+                .data(groupTicks)
+                .attr("transform", function(d) {
+                    return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
+                            + "translate(" + outerRadius + ",0)";
+                });
 
-    // we can initialize the links/nodes only when we have data
+        _ticks.append("line")
+                .attr("x1", 1)
+                .attr("y1", 0)
+                .attr("x2", 5)
+                .attr("y2", 0)
+                .style("stroke", "#000");
+
+        _ticks.selectAll("text")
+                .attr("x", 8)
+                .attr("dy", ".35em")
+                .attr("transform", function(d) {
+                    return d.angle > Math.PI ? "rotate(180)translate(-16)" : null;
+                })
+                .style("text-anchor", function(d) {
+                    return d.angle > Math.PI ? "end" : null;
+                })
+                
+
+           _svg.selectAll(".chord").selectAll("path")
+                .data(_chord.chords)
+                .attr("d", d3.svg.chord().radius(innerRadius))
+                .style("fill", function(d) {
+                    return fill(d.target.index);
+                })
+                .style("opacity", 1);
+         function groupTicks(d) {
+            var k = (d.endAngle - d.startAngle) / d.value;
+            return d3.range(0, d.value, 1000).map(function(v, i) {
+                return {
+                    angle: v * k + d.startAngle,
+                    label: (d.index < _nodeData.length) ? _nodeData[d.index].data.data.id : _uniqueElements[d.index],
+                };
+            });
+        }
+        
+    }
+
     function changeData(graph) {
-        _svg = d3.select(_parentID);
         _nodeData = graph.nodes.map(function(d, i) {
             d.index = i;
             return {
@@ -54,26 +121,26 @@ dc.chord = function(parent) {
         });
 
         var matrix = createUniqueList();
-        var chord = d3.layout.chord()
+        _chord = d3.layout.chord()
                 .padding(.05)
                 .sortSubgroups(d3.descending)
                 .matrix(matrix);
-                 _width=_width - 300;
-                innerRadius = Math.min(_width, _height) * .41,
+        _width = _width - 300;
+        innerRadius = Math.min(_width, _height) * .41,
                 outerRadius = innerRadius * 1.1;
-
         var fill = d3.scale.ordinal()
                 .domain(d3.range(4))
                 .range(["#000000", "#FFDD89", "#957244", "#F26223"]);
 
-        var svg = d3.select(_parentID).append("svg")
-                .attr("width", _width)
-                .attr("height", _height)
-                .append("g")
-                .attr("transform", "translate(" + _width / 2 + "," + (_height+40) / 2 + ")");
+        if (!_svg)
+            _svg = d3.select(_parentID).append("svg")
+                    .attr("width", _width)
+                    .attr("height", _height)
+                    .append("g")
+                    .attr("transform", "translate(" + _width / 2 + "," + (_height + 40) / 2 + ")");
 
-        svg.append("g").selectAll("path")
-                .data(chord.groups)
+        _svg.append("g").selectAll("path")
+                .data(_chord.groups)
                 .enter().append("path")
                 .style("fill", function(d) {
                     return fill(d.index);
@@ -85,8 +152,8 @@ dc.chord = function(parent) {
                 .on("mouseover", fade(.1))
                 .on("mouseout", fade(1));
 
-        var ticks = svg.append("g").selectAll("g")
-                .data(chord.groups)
+        _ticks = _svg.append("g").selectAll("g")
+                .data(_chord.groups)
                 .enter().append("g").selectAll("g")
                 .data(groupTicks)
                 .enter().append("g")
@@ -95,14 +162,14 @@ dc.chord = function(parent) {
                             + "translate(" + outerRadius + ",0)";
                 });
 
-        ticks.append("line")
+        _ticks.append("line")
                 .attr("x1", 1)
                 .attr("y1", 0)
                 .attr("x2", 5)
                 .attr("y2", 0)
                 .style("stroke", "#000");
 
-        ticks.append("text")
+        _ticks.append("text")
                 .attr("x", 8)
                 .attr("dy", ".35em")
                 .attr("transform", function(d) {
@@ -114,35 +181,28 @@ dc.chord = function(parent) {
                 .text(function(d) {
                     return d.label;
                 });
-
-        svg.append("g")
+                 _svg.append("g")
                 .attr("class", "chord")
                 .selectAll("path")
-                .data(chord.chords)
+                .data(_chord.chords)
                 .enter().append("path")
                 .attr("d", d3.svg.chord().radius(innerRadius))
                 .style("fill", function(d) {
                     return fill(d.target.index);
                 })
                 .style("opacity", 1);
-
-// Returns an array of tick angles and labels, given a group.
         function groupTicks(d) {
             var k = (d.endAngle - d.startAngle) / d.value;
             return d3.range(0, d.value, 1000).map(function(v, i) {
                 return {
                     angle: v * k + d.startAngle,
-                    label: (d.index <_nodeData.length) ? _nodeData[d.index].data.data.id :  _uniqueElements[d.index],
+                    label: (d.index < _nodeData.length) ? _nodeData[d.index].data.data.id : _uniqueElements[d.index],
                 };
             });
-//             return[ {
-//                    angle: NaN,
-//                    label: (d.index <_nodeData.length) ? _nodeData[d.index].data.data.id : _uniqueElements[d.index],
-//                }];
         }
         function fade(opacity) {
             return function(g, i) {
-                svg.selectAll(".chord path")
+                _svg.selectAll(".chord path")
                         .filter(function(d) {
                             return d.source.index != i && d.target.index != i;
                         })
@@ -150,7 +210,7 @@ dc.chord = function(parent) {
                         .style("opacity", opacity);
             };
         }
-// Returns an event handler for fading a given chord group.
+        return _fgraph;
 
     }
     function createUniqueList() {
@@ -175,8 +235,8 @@ dc.chord = function(parent) {
                 if (_uniqueElements[j] === _graphProperty(_uniqueElements[i].data))
                 {
                     matrix[i][j] = 1;
-                    matrix[j][i]=1;
-                    
+                    matrix[j][i] = 1;
+
                 }
                 else
                 {
@@ -185,8 +245,8 @@ dc.chord = function(parent) {
             }
 
         }
-        
-        
+
+
         return matrix;
     }
 
@@ -195,21 +255,19 @@ dc.chord = function(parent) {
     //console.log(_edgeData);
 
 
-
-
     _fgraph.init = function(parent, data, width, height) {
         _parentID = parent;
-       _width = width;
-       _height = height;
-       
+        _width = width;
+        _height = height;
+
         _fgraph.graphView(data)
-           .resize(width, height);
+                .resize(width, height);
         return _fgraph;
     }
     _fgraph.destroy = function()
     {
         $(_parentID).empty();
-  
+
     }
 
 
@@ -246,6 +304,7 @@ dc.chord = function(parent) {
     _fgraph.resize = function(width, height) {
         _width = width;
         _height = height;
+        redraw();
         return _fgraph;
     };
 
