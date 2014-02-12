@@ -20,12 +20,12 @@ angular.module("MyApp")
                         break;
                     case "range":
                         temp += "<input type=\"range\" min=\"" + obj.options.min + "\" max=\"" + obj.options.max + "\"  ng-init=\"" + obj.name + "=" + obj.options.default + "\" " +
-                                "' ng-change = 'setNumber(\"" + obj.func + "\"," + obj.name + ")' ng-model=\"" + obj.name + "\"step='" + obj.options.step + "' class ='pull-right'><br>" //name=\""+obj.name+"\"
+                                "' ng-change = 'setNumber(\"" + obj.func + "\"," + obj.name + ")' ng-model=\"" + obj.name + "\"step='" + obj.options.step + "' class ='pull-right'></input><br>" //name=\""+obj.name+"\"
                         break;
                     case "select":
                         temp += "<select class='pull-right' ng-options=\"" + "key as key for (key , value) in " + "acessorFns['" + obj.tab + "'] \" ng-change = \"view." + obj.func + "(getAcessorFunction('" + obj.tab + "'," + obj.name + "))\" ng-model=\"" + obj.name + "\" >";
                         temp += "<option value = Reset n> Reset </option>"
-                        temp += " <option value=''>-- choose Option --</option>";
+                        temp += " <option value=''>None</option>";
                         temp += "</select>";
                         break;
                 }

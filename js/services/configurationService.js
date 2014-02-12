@@ -6,7 +6,7 @@ angular.module("MyApp")
             {controltype: "select",      datatype: "character", tab: "Node", label: "Node Label",      func: "nodeLabelAcessor",ignore:false},
             {controltype: "select",      datatype: "number",    tab: "Node", label: "Node Size",       func: "nodeSizeAcessor", ignore:false},
             {controltype: "range",       datatype: "number",     tab:"Node",label: "Min node size",    func: "minNodeSize",    ignore:false,options:{min:5,max:50,default:10,step:1}},
-            {controltype: "range",       datatype: "number",     tab:"Node",label: "Max node size",    func: "maxNodeSize",    ignore:false,options:{min:5,max:50,default:15,step:1}},
+            {controltype: "range",       datatype: "number",     tab:"Node",label: "Max node size",    func: "maxNodeSize",    ignore:false,options:{min:10,max:50,default:15,step:1}},
 	    {controltype: "select",      datatype: "number",     tab: "Node", label: "Color Attribute",      func: "nodeColorAcessor", ignore:false},
             {controltype: "colorpicker", datatype: "color",     tab: "Node", label: "Cold Color",func: "minNodeColor",      ignore:false,options:{default:"blue"}},
             {controltype: "colorpicker", datatype: "color",      tab: "Node", label: "Hot Color",func: "maxNodeColor",      ignore:false,options:{default:"red"}},            
