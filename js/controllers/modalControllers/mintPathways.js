@@ -11,7 +11,7 @@
                 $scope.pathwayUpload = function(selectedPathway)
                 {
                     $scope.uploadButtonEnable = false;
-                    $http.get("http://www.cise.ufl.edu/~adobra/BioVerto/MINT/" + selectedPathway.fileName).success(function(result) {
+                    $http.get(BioVertoPath+"/MINT/" + selectedPathway.fileName).success(function(result) {
                         $scope.blob = "Source\tTarget\tValue\n" + result;
                         g5.loadGraphFromFile("mint", $scope.blob, selectedPathway.longName + " - " + selectedPathway.subStructureName, "Source", "Target");
                         $modalInstance.close({layout: "force", graphName: selectedPathway.longName + " - " + selectedPathway.subStructureName});
@@ -23,9 +23,9 @@
                     $modalInstance.dismiss('cancel');
                 };
                 function getAvailableOptions() {
-                    var organismsListHttp = $http.get('http://www.cise.ufl.edu/~adobra/BioVerto/rest/list/organism'),
-                            pathwayListHttp = $http.get("http://www.cise.ufl.edu/~adobra/BioVerto/rest/list/pathway"),
-                            fileListHttp = $http.get("http://www.cise.ufl.edu/~adobra/BioVerto/MINT/list.txt");
+                    var organismsListHttp = $http.get(BioVertoPath+'/rest/list/organism'),
+                            pathwayListHttp = $http.get(BioVertoPath+"/rest/list/pathway"),
+                            fileListHttp = $http.get(BioVertoPath+"/MINT/list.txt");
                     $q.all([organismsListHttp, pathwayListHttp, fileListHttp]).then(function(results) {
                         var orgNameList = {};
                         var subStructureNameList = {};

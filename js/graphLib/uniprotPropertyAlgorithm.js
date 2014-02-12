@@ -5,7 +5,7 @@
     g5.addAlgoPlugin({
         name: "Uniprot Data",
         algo: function(g) {
-            d3.text("http://www.cise.ufl.edu/~adobra/BioVerto/rest/uniprot/uniprot.list", function(result) {
+            d3.text(BioVertoPath+"/MINT-full/uniprot.list", function(result) {
                 var rows = d3.csv.parseRows(result);
                 for (i = 0; i < rows.length; i++) {
                     if (g.nodes[rows[i][0]] !== undefined)

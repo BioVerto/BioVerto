@@ -26,7 +26,13 @@ angular.module("MyApp")
 	    {controltype: "range",       datatype: "number",   tab:"Global",label: "Text radius",  func: "textRadius",     ignore:false,options:{min:10,max:100,default:30,step:1}},
             
 	];
-
+        
+        var chordLayoutControlsObj = [
+            {controltype: "select",      datatype: "number",     tab: "Node", label: "Chord Attribute",      func: "nodeAcessor", ignore:false},
+           
+	];
+        
+        
         this.getConfig = function(layout)
         {
             switch (layout)
@@ -38,7 +44,7 @@ angular.module("MyApp")
                 return circularLayoutControlsObj;
                 break;
             case "chord":
-                return [];
+                return chordLayoutControlsObj;
                 break;    
             }
         }
