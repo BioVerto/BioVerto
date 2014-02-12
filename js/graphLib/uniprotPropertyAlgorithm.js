@@ -35,7 +35,7 @@
         },
         nodeAccs: {
             "Name": {type: "character", fct: g5.createAccessor(f1)},
-            "Sequence": {type: "number", fct: g5.createAccessor(f2)},
+            "Sequence Length": {type: "number", fct: g5.createAccessor(f2)},
             "GO Length": {type: "number", fct: g5.createAccessor(f3)}
         }
     });
