@@ -203,15 +203,9 @@ dc.chord = function(parent) {
                 highlightAreas.push(i);
                 _svg.selectAll(".chord path")
                         .filter(function(d) {
-                            if((d.source.index === (d.target.index+1))||(d.target.index=== (d.source.index+1)))
-                    {
-                        console.log("ah Oh");
-                    }
+                     
                             if ((d.source.index == i || d.target.index == i))
                             {
-                                console.log(d.source.index);
-                                console.log(d.target.index);
-                                console.log(i)
                                 if(d.source.index ==i)
                                 {
                                     highlightAreas.push(d.target.index)
@@ -220,7 +214,6 @@ dc.chord = function(parent) {
                                 {
                                     highlightAreas.push(d.source.index)   
                                 }
-                                console.log(highlightAreas);
                             }
                             return d.source.index != i && d.target.index != i;
                         })

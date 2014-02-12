@@ -33,7 +33,7 @@ loadFile = function(file, callback)
                 })(file);
                 reader.readAsText(file);
             }
-var BioVertoPath = "http://datapath.cise.ufl.edu:1080/BioVerto";      
+var BioVertoPath = "http://datapath.cise.ufl.edu:1080/BioVerto-data";      
 /* Start the app */
 var app= angular.module("MyApp", ['ngSanitize','ui.bootstrap','ngGrid','colorpicker.module','ui.unique'])
 
