@@ -26,6 +26,10 @@ angular.module("MyApp")
                         g5.applyAlgorithm(g5.getGraph(scope.graphName), name);
                         scope.refreshSidebar();
                     }
+                    scope.highlightNode = function(nodenum)
+                    {
+                        scope.view.highlightNode(nodenum);
+                    }
                     scope.refreshSidebar = function()
                     {
                         scope.acessorFns = {Node: scope.graph.listNodeAccessors(), Edge: scope.graph.listEdgeAccessors()};

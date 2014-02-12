@@ -87,9 +87,9 @@ g5.applyAlgorithm = function(g, algoName) {
 // create a graph from a blog using an IO plugin
 // @pluggin: the name of the IO plugin
 // @blob: the blob containing the content
-g5.loadGraphFromFile = function(plugin, blob, graphName, source, target, arg3) {
+g5.loadGraphFromFile = function(plugin, blob, graphName, source, target, directed) {
     // Look for the input function of the pluggin and call it
-    g5.loadGraphFromObjArray(g5.generateObjArray(plugin, blob), graphName, source, target);
+    g5.loadGraphFromObjArray(g5.generateObjArray(plugin, blob), graphName, source, target,directed);
 };
 g5.generateObjArray = function(plugin, blob)
 {
@@ -99,8 +99,12 @@ g5.generateObjArray = function(plugin, blob)
     }
     return g5.ioPlugins[plugin].input(blob);
 };
-g5.loadGraphFromObjArray = function(data, graphName, source, target)
+g5.loadGraphFromObjArray = function(data, graphName, source, target,directed)
 {
+    if(typeof directed==='undefined')
+    {
+        directed = false;
+    }
     source = source || "source";
     target = target || "target";
     var graph = g5.createGraph(graphName);
@@ -110,7 +114,7 @@ g5.loadGraphFromObjArray = function(data, graphName, source, target)
         var t = d[target];
         delete d[source];
         delete d[target];
-        graph.addEdge(s, t, d);
+        graph.addEdge(s, t, d,directed);
     });
     graph.addInitialAccFunctions();
     g5.applyAlgorithm(graph,"Degree Centrality");

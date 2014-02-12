@@ -24,6 +24,16 @@ function codingError(text){
     console.log("Coding Error: " + text);
     alert("Coding Error: " + text);
 }
+
+loadFile = function(file, callback)
+            {
+                var reader = new FileReader();
+                reader.onload = (function(theFile) {
+                    return callback;
+                })(file);
+                reader.readAsText(file);
+            }
+            
 /* Start the app */
 var app= angular.module("MyApp", ['ngSanitize','ui.bootstrap','ngGrid','colorpicker.module','ui.unique'])
 

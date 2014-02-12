@@ -1,5 +1,5 @@
 angular.module("MyApp")
-        .service('modalCtrlProvider', function(fileLoaderService) {
+        .service('modalCtrlProvider', function() {
           
             this.getCtrl = function(type)
             {

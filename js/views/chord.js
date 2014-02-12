@@ -100,6 +100,7 @@ dc.chord = function(parent) {
     }
 
     function changeData(graph) {
+   
         _nodeData = graph.nodes.map(function(d, i) {
             d.index = i;
             return {
@@ -107,19 +108,15 @@ dc.chord = function(parent) {
                 weight: _weightAccessor(d)
             };
         });
-        //console.log(_nodeData);
+     
         _edgeData = graph.edges.map(function(d, i) {
             d.index = i;
             return {
-                //  source: d.source,
-                //  target: d.target,
                 source: _nodeData[d.source.index],
                 target: _nodeData[d.target.index],
                 data: d.data,
-                //value: d.value                
             };
         });
-
         var matrix = createUniqueList();
         _chord = d3.layout.chord()
                 .padding(.005)
@@ -243,8 +240,9 @@ dc.chord = function(parent) {
         }
 
         return _fgraph;
-
     }
+         
+
     function createUniqueList() {
         _uniqueElements = [];
         for (var i = 0; i < _nodeData.length; i++) {
@@ -277,14 +275,8 @@ dc.chord = function(parent) {
             }
 
         }
-
-
         return matrix;
     }
-
-    // wrap the info in graph so that force layout is happy
-
-    //console.log(_edgeData);
 
 
     _fgraph.init = function(parent, data, width, height) {

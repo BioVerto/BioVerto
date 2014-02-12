@@ -18,7 +18,7 @@
                 $scope.fileUpload = function()
                 {
                     $scope.uploadButtonEnable = false;
-                    fileLoaderService.loadFile($scope.file, function(e) {
+                    loadFile($scope.file, function(e) {
                         $scope.blob = e.target.result;
                         $scope.objArr = g5.generateObjArray("csv", e.target.result);
                         $scope.columns = [];

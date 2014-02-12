@@ -62,7 +62,7 @@ dc.fgraph = function(parent) {
             _dblclickHandler = function(d) { // handler for what happens under a dbouleclick
                 // do nothing
             },
-    _terminator; // not used, just to terminate list
+            _terminator; // not used, just to terminate list
 
     // partial redraw of node size
     function changeNodeSize() {
@@ -77,7 +77,7 @@ dc.fgraph = function(parent) {
                     return _nodeSizeScale(_nodeSizeAccessor(d.data));
                 });
     }
-
+   
     // partial redraw for node colors
     function changeNodeColor() {
         if (_nodeColorType === "cont") {
@@ -125,8 +125,7 @@ dc.fgraph = function(parent) {
                     .style("pointer-events", "all")
                     .call(d3.behavior.zoom().scaleExtent([.0625, 8]).on("zoom", zoom))
 
-            _svg = _svg.append("g")
-                    ;
+            _svg = _svg.append("g");
         }
 
 
@@ -184,7 +183,8 @@ dc.fgraph = function(parent) {
         _node.append("circle")
                 .attr("class", "fgraph-circle")
                 .on("dblclick", function(d) {
-                    d.fixed = false;
+                    console.log(d);
+                            d.fixed = false;
                     d3.select(this).classed("sticky", d.fixed);
                     _force.start();
                 });
@@ -221,7 +221,11 @@ dc.fgraph = function(parent) {
             });
         });
     }
-
+ _fgraph .highlightNode=function(nodenum)
+    {
+        console.log(_svg.selectAll("circle").filter(function(d){return d.data.data.id===nodenum}));
+        _svg.selectAll("circle").filter(function(d){return d.data.data.id===nodenum}).style("fill","red");
+    }
     _fgraph.init = function(parent, data, width, height) {
         _parentID = parent;
         _fgraph.graphView(data)

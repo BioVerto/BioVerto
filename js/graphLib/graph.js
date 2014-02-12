@@ -107,14 +107,13 @@ Graph.prototype = {
     //Discuss with Prof. DOBRA
     addEdge: function(source, target, data, directed) {
 
-
         var s = this.addNode(source);
         var t = this.addNode(target);
         var edge = this.edgeFactory.build(s, t);
         jQuery.extend(edge.data, data);
-        if (directed) { // if directed edge, add it to target adjList
+        if (!directed) { // if directed edge, add it to target adjList
             t.edges.push(edge);
-            edge.directed = true;
+            edge.directed = false;
         }
         s.edges.push(edge);
         this.edges.push(edge);
