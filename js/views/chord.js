@@ -285,7 +285,7 @@ dc.chord = function(parent) {
     _fgraph.destroy = function()
     {
         $(_parentID).empty();
-
+        _svg = null;
     }
 
 
