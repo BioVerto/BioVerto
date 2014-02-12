@@ -30,6 +30,7 @@ dc.chord = function(parent) {
                 return d.data["_0"];
             },
             _chord,
+            _label= function(d){return _nodeData[d.index].data.data.id}
             _terminator; // not used, just to terminate list
 
     function redraw()
@@ -327,6 +328,12 @@ dc.chord = function(parent) {
     };
     _fgraph.nodeAcessor = function(_)
     {
+        if(typeof _==='undefined')
+        {
+            _ = function(d) {
+                return d.data["_0"];
+            }
+        }
           _fgraph.destroy();
         _graphProperty =_;
         _fgraph.init(_parentID,_data,_width,_height);

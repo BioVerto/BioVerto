@@ -278,7 +278,7 @@ _fgraph.destroy = function()
         $(_parentID).empty();
      }
     _fgraph.resize = function(width,height) {
-	_diameter = minDiameter(width,height);
+	_diameter = minDiameter(width-40,height-40);
 	_radius = _diameter / 2,
 	_innerRadius = _radius - _textRadius;
 	if (_svg) {
@@ -286,7 +286,7 @@ _fgraph.destroy = function()
 		.attr("height", height);
 
 	    _svg.select("g")
-		.attr("transform", "translate(" + _radius + "," + _radius + ")");    
+		.attr("transform", "translate(" + (_radius+20) + "," + (_radius+20) + ")");    
 	    
 	    changeLayout();
 	}
