@@ -11,7 +11,7 @@
                 {
                     $scope.uploadButtonEnable = false;
                     $http.get(BioVertoPath+"/MINT-full/" + selectedNetwork.fileName + "_all.graph").success(function(result) {
-                        $scope.blob = "Source\tTarget\tProbablity 1\tProbablity 2\taxid\n" + result;
+                        $scope.blob = "Source\tTarget\tProbablity 1\tProbablity 2\ttaxid\n" + result;
                         g5.loadGraphFromFile("mint", $scope.blob,selectedNetwork.name, "Source", "Target",true);
                         $modalInstance.close({layout: "force", graphName:selectedNetwork.name});
                     });

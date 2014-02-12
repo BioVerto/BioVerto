@@ -23,6 +23,7 @@ dc.chord = function(parent) {
             _weightAccessor = function(d) {
                 return 2;
             },
+                    _data={},
             _ticks,
             _uniqueElements = [],
             _graphProperty = function(d) {
@@ -276,7 +277,7 @@ dc.chord = function(parent) {
         _parentID = parent;
         _width = width;
         _height = height;
-
+        _data = data;
         _fgraph.graphView(data)
                 .resize(width, height);
         return _fgraph;
@@ -324,7 +325,13 @@ dc.chord = function(parent) {
         redraw();
         return _fgraph;
     };
-
+    _fgraph.nodeAcessor = function(_)
+    {
+          _fgraph.destroy();
+        _graphProperty =_;
+        _fgraph.init(_parentID,_data,_width,_height);
+      
+    }
 
     return _fgraph;
 };
