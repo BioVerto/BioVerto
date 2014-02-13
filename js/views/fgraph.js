@@ -183,7 +183,6 @@ dc.fgraph = function(parent) {
         _node.append("circle")
                 .attr("class", "fgraph-circle")
                 .on("dblclick", function(d) {
-                    console.log(d);
                             d.fixed = false;
                     d3.select(this).classed("sticky", d.fixed);
                     _force.start();

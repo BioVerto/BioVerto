@@ -8,7 +8,6 @@ angular.module("MyApp")
             {
                 if($scope.newViewIndex!==0&&typeof graphName==='undefined')
                 {
-                    console.log("came here")
                     graphName = $scope.views[$scope.active]. graphName;
                 };
                 $scope.views[$scope.newViewIndex]={layout: layout, title: "New View " +$scope.newViewIndex,graphName:graphName,indx:$scope.newViewIndex};
