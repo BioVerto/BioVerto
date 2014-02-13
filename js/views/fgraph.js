@@ -33,7 +33,7 @@ dc.fgraph = function(parent) {
                 return 1;
             },
             _minNodeSize = 10,
-            _maxNodeSize = 30,
+            _maxNodeSize = 15,
             _nodeSizeAccessor = function(d) {
                 return _minNodeSize;
             },
