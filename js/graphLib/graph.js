@@ -130,7 +130,7 @@ Graph.prototype = {
     /* Acessor Functions*/
     addNodeAccessor: function(name, type, fct) {
         if (this.nodeAccessors[name] !== undefined) {
-            alert("A node accessor with the name " + name + " is already present. Ignoring");
+            codingError("A node accessor with the name " + name + " is already present. Ignoring");
             return;
         }
 
@@ -140,7 +140,7 @@ Graph.prototype = {
     },
     addEdgeAccessor: function(name, type, fct) {
         if (this.edgeAccessors[name] !== undefined) {
-            alert("A edge accessor with the name " + name + " is already present. Ignoring");
+            codingError("A edge accessor with the name " + name + " is already present. Ignoring");
             return;
         }
         this.edgeAccessors[name] = fct;

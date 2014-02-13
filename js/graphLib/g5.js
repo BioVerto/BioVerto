@@ -23,7 +23,7 @@ g5.addAlgoPlugin = function(obj) {
     // TODO: check that the obj is correct
     var name = obj.name;
     if (g5.algoPlugins[name] !== undefined) {
-        alert("A plugin with the name " + name + " is already present. Ignoring");
+        codingError("A plugin with the name " + name + " is already present. Ignoring");
         return;
     }
     g5.algoPlugins[name] = obj;
@@ -49,7 +49,7 @@ g5.ioPlugins = {};
 // @outputFct: function(Graph) -> Blob
 g5.addIOPlugin = function(name, inputFct, outputFct) {
     if (g5.ioPlugins[name] !== undefined) {
-        alert("A plugin with the name " + name + " is already present. Ignoring");
+        codingError("A plugin with the name " + name + " is already present. Ignoring");
         return;
     }
     g5.ioPlugins[name] = {input: inputFct, output: outputFct};
@@ -59,7 +59,7 @@ g5.addIOPlugin = function(name, inputFct, outputFct) {
 // function to create graph 
 g5.createGraph = function(name) {
     if (g5.graphs[name] !== undefined) {
-        alert("A graph with the name " + name + " is already present. Ignoring");
+        codingError("A graph with the name " + name + " is already present. Ignoring");
         return;
     }
 
@@ -94,7 +94,7 @@ g5.loadGraphFromFile = function(plugin, blob, graphName, source, target, directe
 g5.generateObjArray = function(plugin, blob)
 {
     if (g5.ioPlugins[plugin] == undefined) {
-        alert("A plugin for " + plugin + "  doesnt exists");
+        codingError("A plugin for " + plugin + "  doesnt exists");
         return;
     }
     return g5.ioPlugins[plugin].input(blob);

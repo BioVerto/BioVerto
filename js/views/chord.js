@@ -30,7 +30,7 @@ dc.chord = function(parent) {
                 return d.data["_0"];
             },
             _chord,
-            _label= function(d){return _nodeData[d.index].data.data.id}
+            _label= function(d){return _nodeData[d.index].data.data.id},
             _terminator; // not used, just to terminate list
 
     function redraw()

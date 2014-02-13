@@ -19,10 +19,16 @@ function bringFront(elem, stack){
 }
 
 /* global error function*/
-
+var debugMode = false;
 function codingError(text){
-    console.log("Coding Error: " + text);
-    alert("Coding Error: " + text);
+   if(debugMode)
+   {
+    alert("Error: " + text);
+   }
+   else
+   {
+    console.log("Error: " + text);      
+   }
 }
 
 loadFile = function(file, callback)

@@ -41,11 +41,11 @@
                 }
             }
         //console.log("Calculated closeness for " + source.id);
-        var sum = 0;
+        var sum = 0.0;
         for (j in nodes) {
-            sum += nodes[j].distance;
+            sum += 1.0/nodes[j].distance;
         }
-        var closeness = 1 / sum;
+        var closeness =  sum;
         //console.log(source.id + " " + sum);
         return closeness;
     }

@@ -6,6 +6,11 @@ angular.module("MyApp")
             
             $scope.addView = function(layout,graphName)
             {
+                if($scope.newViewIndex!==0&&typeof graphName==='undefined')
+                {
+                    console.log("came here")
+                    graphName = $scope.views[$scope.active]. graphName;
+                };
                 $scope.views[$scope.newViewIndex]={layout: layout, title: "New View " +$scope.newViewIndex,graphName:graphName,indx:$scope.newViewIndex};
                 $scope.newViewIndex++;
             };
@@ -18,8 +23,9 @@ angular.module("MyApp")
                 // This is ugly but effective. There is no API to do this
                 for (var i in $scope.views){
                     $scope.changeView(i);
-                    break; // we got the first one
-                } // no view, no active
+                    return; // we got the first one
+                } 
+                $scope.newViewIndex = 0;
             }
             $scope.changeView = function(indx)
             {
