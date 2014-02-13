@@ -49,6 +49,18 @@ angular.module("MyApp")
                 });
 
             };
+            $scope.contactUs = function()
+            {
+                var modalInstance = $modal.open({
+                    templateUrl: './partials/contactUs.html',
+                    controller: modalCtrlProvider.getCtrl("contactUs"),
+                });
+                modalInstance.result.then(function() {
+              
+                }, function() {
+                    return;
+                });
+            }
             $scope.databaseDownload = function(plugin)
             {
                var modalInstance = $modal.open({
