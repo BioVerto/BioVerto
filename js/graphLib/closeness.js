@@ -15,7 +15,7 @@
 		var edges = g.listEdges();
 		var INF = 4294967295;
 		
-		console.log("Length" +nodes.length);
+		//console.log("Length" +nodes.length);
 		for (var n in nodes)
 			nodes[n].data.distance = INF;
 		
@@ -26,18 +26,18 @@
 		for (var i = 1; i < nodes.length; i++){
 			
 			for (var e in g.edges) {
-				console.log("Edge id " +e);
+				//console.log("Edge id " +e);
 				var edge = g.edges[e];
-				console.log(edge.source.data.distance + "\t" + edge.weight  + "\t" + edge.target.data.distance);
+				//console.log(edge.source.data.distance + "\t" + edge.weight  + "\t" + edge.target.data.distance);
 				 if(edge.source.data.distance + edge.weight < edge.target.data.distance) {
-					console.log("Relax edge between " + edge.source.id + " and " + edge.target.id + ".");
+					//console.log("Relax edge between " + edge.source.id + " and " + edge.target.id + ".");
 					edge.target.data.distance = edge.source.data.distance + edge.weight;
 					edge.target.data.predecessor = edge.source.data.id;
 				}
 				
 				if(!edge.directed) {
 					if(edge.target.data.distance + edge.weight < edge.source.data.distance) {
-						console.log("Not directed" + "Relax edge between "+edge.target.data.id+" and "+edge.source.data.id+".");
+						//console.log("Not directed" + "Relax edge between "+edge.target.data.id+" and "+edge.source.data.id+".");
 						edge.source.data.distance = edge.target.data.distance + edge.weight;
 						edge.source.data.predecessor = edge.target.data.id;	
 					}
@@ -46,9 +46,9 @@
 		}
 		
 		var sum = 0.0;
-		console.log("Distance cal." + source);
+		//console.log("Distance cal." + source);
 		for (j in nodes) {
-			console.log(nodes[j].data.distance);
+			//console.log(nodes[j].data.distance);
 			if(nodes[j].data.distance<4294967295)sum += (nodes[j].data.distance);
 		}
 		var closeness = roundToTwo(1/(sum));
@@ -68,7 +68,7 @@ function roundToTwo(num) {
             for (j in g.nodes) {
                 var node = g.nodes[j];
                 node.data[f] = closeness(g, g.nodes[j]);
-                console.log(node.data[f]);
+                //console.log(node.data[f]);
             }
         },
         nodeAccs: {
