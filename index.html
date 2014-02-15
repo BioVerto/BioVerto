@@ -18,26 +18,38 @@
     <script src="js/libs/ui-bootstrap-tpls-0.10.0.min.js"></script>
     <script src="js/libs/nggrid/ng-grid-2.0.7.debug.js"></script> 
     <script src="js/libs/uiunique/unique.js"></script>
+
     <script src="js/script.js"></script>
     <script src="js/directives/compile.js"></script>
     <script src="js/directives/panel.js"></script>
     <script src="js/factory/d3.js"></script>
     <script src="js/libs/colorpicker/bootstrap-colorpicker-module.js"></script>
     <script src="js/libs/d3.v3.min.js" charset="utf-8"></script>
+
     <script src="js/views/fgraph.js"></script>
     <script src="js/views/cgraph.js"></script>
-    
+    <script src="js/views/chord.js"></script>
+    <script src="js/filters/filterAccessorFn.js"></script>
     <script src="js/services/configurationService.js"></script> 
-    <script src="js/services/fileLoaderService.js"></script> 
     <script src="js/services/componentGenerator.js"></script>
-    <script src="js/services/graphProvider.js"></script>
-    <script src="js/services/graphAlgoPluginProvider.js"></script>
-    <script src="js/services/graphExecutionEngine.js"></script>
-    <script src="js/services/graphIOPluginProvider.js"></script>
     <script src="js/services/viewProvider.js"></script>
     <script src="js/services/modalCtrlProvider.js"></script> 
 
+    <script src="js/graphLib/graph.js"></script>  
+    <script src="js/graphLib/g5.js"></script>  
+    <script src="js/graphLib/g5-base-algos.js"></script>  
+    <script src="js/graphLib/g5-base-IO.js"></script>  
+    <script src="js/graphLib/mcl.js"></script>
+    <script src="js/graphLib/betweenness.js"></script>
+    <script src="js/graphLib/closeness.js"></script>
+     <script src="js/graphLib/uniprotPropertyAlgorithm.js"></script>
+   
     <script src="js/controllers/main.js"></script>
+    <script src="js/controllers/modalControllers/csv.js"></script>
+    <script src="js/controllers/modalControllers/mintFullNetworks.js"></script>
+    <script src="js/controllers/modalControllers/mintPathways.js"></script>
+    <script src="js/controllers/modalControllers/contactUs.js"></script>
+    
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" >
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" type="text/css" href="css/ng-grid.min.css">
@@ -46,9 +58,9 @@
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 
 </head>
-<body ng-app="MyApp" ng-controller="mainController">
+<body ng-app="MyApp" style="padding-top: 50px;"  ng-controller="mainController">
 
-    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+    <div class="navbar navbar-fixed-top navbar-inverse" style="margin-bottom: 0px !important; padding-bottom: 0px" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-bar"></span>
@@ -70,8 +82,8 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Upload From Database<b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#" ng-click="databaseDownload('MINTPathways')">MINT Pathways</a></li>
-                            <li><a href="#" ng-click="databaseDownload('MINTFullNetworks')">MINT Full Networks</a></li>
+                            <li><a href="#" ng-click="databaseDownload('mintPathways')">MINT Pathways</a></li>
+                            <li><a href="#" ng-click="databaseDownload('mintFullNetworks')">MINT Full Networks</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -79,24 +91,29 @@
                         <ul class="dropdown-menu">
                             <li><a href="#" ng-click="addView('force')">Force Layout View</a></li>
                             <li><a href="#" ng-click="addView('circular')">Circular Layout View</a></li>
-                            <li><a href="#" ng-click="addView('tree')">Tree Layout View</a></li>
+                            <li><a href="#" ng-click="addView('chord')">Chord Layout View</a></li>
                         </ul>
+                    </li>
+                    <li><a href="#" ng-click="contactUs()">Contact Us</a>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
     <div class="collapse navbar-collapse center-block">
-        <ul class="nav navbar-nav">
-            <li ng-repeat="(index, view) in views" >
+        <div class="btn-group">
+            <div ng-repeat="(index, view) in views" class="btn" >
                 <a  href="#" ng-click="changeView($index)" ng-class= "{active: ($index == active)}">{{view.title}}</a>
-            </li>
+            </div>
 
-        </ul>
+        </div>
     </div>
-    <div  ng-repeat="(index, view) in views">
-        <panel activeindex=active layout = view.layout index =view.indx title=view.title graph-name=view.graphName href="#"></panel>
+    <div  ng-repeat="(index, view) in views" style="position:absolute">
+        <panel activeindex=active layout = view.layout index =view.indx heading=view.title graph-name=view.graphName href="#"></panel>
     </div>
+<!--     <div ng-show="!jQuery.isEmptyObject(views)"> -->
+
+<!-- </div> -->
     <div class="container">
         <footer>
             <p>&copy;BioVerto 2014</p>

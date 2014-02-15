@@ -30,7 +30,7 @@
 /*
  * Edge Factory
  */
-var EdgeFactory = function() {
+    var EdgeFactory = function() {
     this.template = new Object();
     this.template.data = new Object();
     this.template.directed = false;
@@ -38,7 +38,7 @@ var EdgeFactory = function() {
 };
 EdgeFactory.prototype = {
     build: function(source, target) {
-        var e = jQuery.extend(true, {}, graph.template);
+        var e = jQuery.extend(true, {}, this.template);
         e.source = source;
         e.target = target;
         return e;
@@ -50,12 +50,14 @@ EdgeFactory.prototype = {
  */
 //DISCUSS:Singleton
 var Graph = function() {
-	
-	this.nodes = {};//changed to array
-    	this.edges = [];
-    	this.snapshots = []; // previous graph states TODO to be implemented
-    	this.edgeFactory = new EdgeFactory();
-	
+
+    this.nodes = {};//changed to array
+    this.edges = [];
+    this.snapshots = []; // previous graph states TODO to be implemented
+    this.edgeFactory = new EdgeFactory();
+    this.nodeAccessors = {};
+    this.edgeAccessors = {};
+    
     //	return graph;
 
 };
@@ -69,57 +71,143 @@ Graph.prototype = {
      *              representation
      * addNode will update the information if the node already exists
      */
+    getData: function()
+    {
+        var temp = {};
+        temp.edges = this.listEdges();
+        temp.nodes = this.listNodes();
+        return temp;
+    },
+    
+	listNodes: function() {
+        var nodes = [];
 
-    addNode : function(id, content) {
-        /* testing if node is already existing in the graph */
-        if(this.nodes[id] == undefined) {
+        for (var n in this.nodes) {
+            nodes.push(this.nodes[n]);
+        }
+		return nodes;
+    },
+	
+    listEdges: function() {
+        return this.edges;
+
+    },
+    
+	addNode: function(id, content) {
+        
+		if (this.nodes[id] == undefined) {
             this.nodes[id] = new Graph.Node(id, content);
         } else {
-	    jQuery.extend(this.nodes[id].data, content);//data->content
-	}
+            jQuery.extend(this.nodes[id].data, content);//data->content
+        }
         return this.nodes[id];
     },
+    
+	addEdge: function(source, target, data, directed) {
 
-    // TODO: allow update of data for an edge
-	//Discuss with Prof. DOBRA
-    addEdge : function(source, target, data, directed) {
-        
-	//console.log(source+" "+target); !!getting undefined undefined
-	var s = this.addNode(source,data);
-        var t = this.addNode(target,data);
+        var s = this.addNode(source);
+        var t = this.addNode(target);
         var edge = this.edgeFactory.build(s, t);
         jQuery.extend(edge.data, data);
-        if (directed) { // if directed edge, add it to target adjList
-	    t.edges.push(edge);
-	    edge.directed = true;
-	}
+        if (!directed) { // if directed edge, add it to target adjList
+            t.edges.push(edge);
+            edge.directed = false;
+        }
         s.edges.push(edge);
         this.edges.push(edge);
     },
-    
-    removeNode : function(id) {
+	
+    removeNode: function(id) {
         delete this.nodes[id];
-        for(var i = 0; i < this.edges.length; i++) {
+        for (var i = 0; i < this.edges.length; i++) {
             if (this.edges[i].source.id == id || this.edges[i].target.id == id) {
                 this.edges.splice(i, 1);
                 i--;
             }
         }
+    },
+    /* Acessor Functions*/
+    addNodeAccessor: function(name, type, fct) {
+        if (this.nodeAccessors[name] !== undefined) {
+            codingError("A node accessor with the name " + name + " is already present. Ignoring");
+            return;
+        }
+
+        this.nodeAccessors[name] = fct; // HOW DOES THIS WORK? KARTIK THINKS IT DOES
+        this.nodeAccessors[name].returnType = type; // ??catergorical or continuous // how to handle type information
+        this.nodeAccessors[name].type = "Node";
+    },
+    addEdgeAccessor: function(name, type, fct) {
+        if (this.edgeAccessors[name] !== undefined) {
+            codingError("A edge accessor with the name " + name + " is already present. Ignoring");
+            return;
+        }
+        this.edgeAccessors[name] = fct;
+        this.edgeAccessors[name].returnType = type; // catergorical or continuous//Attach property to Function Object???
+        this.edgeAccessors[name].type = "Edge";
+    },
+    createAccessor: function(member) {
+        // QUESTION: is this better than creating a function using new Function or eval?
+        var f = function(obj) {
+            return obj.data[member];
+        };
+        return f;
+    },
+    addInitialAccFunctions: function() {
+        // select the first element and add accessor functions for mebers
+        var el = this.edges[0].data;
+        for (var v in el) {
+            if (el[v].match(/^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/) !== null) { //http://stackoverflow.com/questions/1779013/check-if-string-contains-only-digits
+                this.addEdgeAccessor(v, "number", g5.createAccessor(v));
+            }
+            else {
+                this.addEdgeAccessor(v, "character", g5.createAccessor(v));
+            }
+        }
+
+        for (var v in this.nodes) {
+            el = this.nodes[v].data;
+            break;
+        }
+        for (var v in el) {
+            if (el[v].match(/^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/) !== null) {
+                this.addNodeAccessor(v, "number", g5.createAccessor(v));
+            }
+            else {
+                this.addNodeAccessor(v, "character", g5.createAccessor(v));
+            }
+        }
+    },
+    listNodeAccessors: function() {
+        return this.nodeAccessors;
+    },
+    listEdgeAccessors: function() {
+        return this.edgeAccessors;
+    },
+    listAlgorithms:function()
+    {
+        //TODO: intersection of Algorithm
+       return g5.listAlgorithms();
     }
 
 };
-
 /*
  * Node
  */
-Graph.Node = function(id, data){
+Graph.Node = function(id, data) {
+    if (data === undefined)
+    {
+        data = {}
+    }
     var node = {};
     node.edges = [];
-    node.data = data;
+    node.data = jQuery.extend({}, data);
     node.data.id = id;
     return node;
 };
 
 Graph.Node.prototype = {
 };
-
+this.createGraph = function() {
+    return new Graph();
+}

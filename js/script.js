@@ -18,7 +18,28 @@ function bringFront(elem, stack){
     $(elem).css({'zIndex' : min + group.length});
 }
 
+/* global error function*/
+var debugMode = false;
+function codingError(text){
+   if(debugMode)
+   {
+    alert("Error: " + text);
+   }
+   else
+   {
+    console.log("Error: " + text);      
+   }
+}
 
+loadFile = function(file, callback)
+            {
+                var reader = new FileReader();
+                reader.onload = (function(theFile) {
+                    return callback;
+                })(file);
+                reader.readAsText(file);
+            }
+var BioVertoPath = "http://datapath.cise.ufl.edu:1080/BioVerto-data";      
 /* Start the app */
 var app= angular.module("MyApp", ['ngSanitize','ui.bootstrap','ngGrid','colorpicker.module','ui.unique'])
 

@@ -6,12 +6,25 @@ angular.module("MyApp")
             
             $scope.addView = function(layout,graphName)
             {
+                if($scope.newViewIndex!==0&&typeof graphName==='undefined')
+                {
+                    graphName = $scope.views[$scope.active]. graphName;
+                };
                 $scope.views[$scope.newViewIndex]={layout: layout, title: "New View " +$scope.newViewIndex,graphName:graphName,indx:$scope.newViewIndex};
                 $scope.newViewIndex++;
             };
             $scope.removeView = function(index)
             {
-             //   delete $scope.views[index];
+                // First delete this view
+                delete $scope.views[index];
+                // Select another view to be the active view
+                // Simply pick the first view available
+                // This is ugly but effective. There is no API to do this
+                for (var i in $scope.views){
+                    $scope.changeView(i);
+                    return; // we got the first one
+                } 
+                $scope.newViewIndex = 0;
             }
             $scope.changeView = function(indx)
             {
@@ -35,6 +48,18 @@ angular.module("MyApp")
                 });
 
             };
+            $scope.contactUs = function()
+            {
+                var modalInstance = $modal.open({
+                    templateUrl: './partials/contactUs.html',
+                    controller: modalCtrlProvider.getCtrl("contactUs"),
+                });
+                modalInstance.result.then(function() {
+              
+                }, function() {
+                    return;
+                });
+            }
             $scope.databaseDownload = function(plugin)
             {
                var modalInstance = $modal.open({

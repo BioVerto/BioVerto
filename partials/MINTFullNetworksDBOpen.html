@@ -7,7 +7,7 @@
             <br/>
             Organism:
             <br/>
-            <select ng-model="selectedOrgName" ng-options="key as value for (key , value) in  availableOrgList">
+            <select ng-model="selectedOrgName" ng-options="obj as obj.name for obj in  availableOrgList|orderBy:'name'">
                 <option value="">-- choose organism --</option>
             </select>
             <br/>

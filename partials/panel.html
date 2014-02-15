@@ -2,51 +2,51 @@
 <div class="container">
     <div >
         <div ng-class="{'viewWindow panel panel-info': (index == activeindex), 'viewWindow panel panel-default': (index != activeindex)}">
-            <div class="panel-heading" >  
+            <div class="panel-heading" style="padding: 2px;">  
                 <div class="panel-title "ng-click="setActive()">
-                    <div class="row">
-                        <div class="col-xs-2">
-
+                    <div class="btn-group" style="width:100%;">
+                        <div class="btn-sm btn-sm-nopad pull-left">
                             <a href="#" ng-click="updateMenu()" class="dropdown-toggle glyphicon glyphicon-th-list" data-toggle="dropdown"></a>
                             <ul class="dropdown-menu">                                   
                                 <li ng-repeat="graph in listGraphs" >
                                     <a  href="#" ng-click="viewGraph(graph)">Visualize Graph : {{graph}}</a>
                                 </li>
-
                             </ul>
-
                         </div>
-                        <div class="col-xs-8 pull-left">
-                            <a class="text-primary"ng-click="toggleTitle()" ng-show="showTitle"> {{title}}</a>
-                            <input class="text-primary" ng-hide="showTitle" ng-model="title"/>
-                            <a class="text-primary" ng-hide="showTitle" ng-click="toggleTitle()">Done</a>
-
+                        <div class="pull-left">
+                            <div class="text-primary"> {{heading}}</div>
                         </div>
-                         
-                        <a href="#" ng-click="removeView()" style="padding-right: 30" class="col-xs-2 pull-right glyphicon glyphicon-remove" ></a>
-                            
-
+                        <div class="btn-sm btn-sm-nopad pull-right">
+                            <a href="#" ng-click="removeView()" class="col-xs-2 pull-right glyphicon glyphicon-remove" ></a>
+                        </div>
                     </div>
-
                 </div>  
             </div>
 
 
-            <div class="panel-body">
+            <div class="panel-body" style="padding: 1px;">
                 <div id="graphNumber{{index}}"></div>
             </div>
         </div>
         <!--/row-->
     </div>
-     <div ng-show="index == activeindex" class="sidebar-offcanvas" role="navigation">
+    <div ng-show="index == activeindex" class="sidebar-offcanvas" role="navigation">
         <div class="well sidebar-nav" >
 
-            <p class="well">Controls</p>
+            <div class="well">
+                <a>Algorithms</a>
+                <select ng-model=selectedAlgo  ng-init="selectedAlgo = algorithmList[0]" ng-options="name for name in algorithmList">
+                </select>
+                <button ng-click="runAlgo(selectedAlgo)" class="btn-sm btn-info">Run</button>
+                <alert  style="padding-bottom: 2px;padding-top: 2px;padding-left: 2px;padding-right: 15px; margin-bottom: 0px;"ng-show="alertShow" type="alertType" close="alertClose(a)">{{alertText}}</alert>
+<!--                <input type="text" ng-model ="debugindex">
+                <button ng-click="highlightNode(debugindex)" class="btn-sm btn-info">Highlight Node</button>   -->
+            </div>
             <div compile="controls"></div>
 
         </div>
     </div>
-    
+
     <!--/span-->
     <!--/span-->
 </div>

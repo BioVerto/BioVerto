@@ -50,7 +50,7 @@ footer {
 }
 .sidebar-offcanvas {
     position: absolute;
-    top: 120px;
+    top: 0px;
     width: 300px;}
 
 .chart {
@@ -75,8 +75,7 @@ footer {
     box-shadow: 2px 2px 2px #666;
 }
 .node {
-    stroke: #fff;
-    stroke-width: 1.5px;
+    
 }
 
 .link {
@@ -104,15 +103,14 @@ path.link {
     stroke-width: 1.5px;
 }
 
-circle {
+.fgraph-circle {
     fill: #ccc;
-    stroke: #fff;
-    stroke-width: 1.5px;
 }
 
-text {
-    fill: #000;
-    font: 10px sans-serif;
+.fgraph-text {
+    stroke: black;
+    stroke-width: .5;
+    font: nm;
     pointer-events: none;
 }
 
@@ -142,9 +140,63 @@ text {
 */
 
 .viewWindow {
-    positioning: relative;
+    position: relative;
     top: 0px;
     left: 320px;
     width: 600px;
     height: 400px;
+}
+
+.btn-sm-nopad {
+    padding-left: 2px !important;
+    padding-right: 2px ! important;
+}
+
+/* class for making nodes look sticky in fgraph */
+.sticky {
+    stroke: #909090 ! important;
+    stroke-width:4px ! important;
+}
+.node-cgraph {
+  font: 300 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  fill: #001FFF;
+}
+
+.node-cgraph:hover {
+  fill: #000;
+}
+
+.link-cgraph {
+  stroke: steelblue;
+  stroke-opacity: .4;
+  fill: none;
+  pointer-events: none;
+}
+
+.node-cgraph:hover,
+.node-cgraph--source,
+.node-cgraph--target {
+  font-weight: 700;
+}
+
+.node-cgraph--source {
+  fill: #2ca02c;
+}
+
+.node-cgraph--target {
+  fill: #d62728;
+}
+
+.link-cgraph--source,
+.link-cgraph--target {
+  stroke-opacity: 1;
+  stroke-width: 2px;
+}
+
+.link-cgraph--source {
+  stroke: #d62728;
+}
+
+.link-cgraph--target {
+  stroke: #2ca02c;
 }
