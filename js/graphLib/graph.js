@@ -57,7 +57,7 @@ var Graph = function() {
     this.edgeFactory = new EdgeFactory();
     this.nodeAccessors = {};
     this.edgeAccessors = {};
-    
+    this.adjMatrix = null;
     //	return graph;
 
 };
@@ -189,9 +189,37 @@ Graph.prototype = {
     {
         //TODO: intersection of Algorithm
        return g5.listAlgorithms();
+    },
+    
+    getAdjacencyMatrix: function() {
+        if (this.adjMatrix===null) {  //construct adjMatrix only if it hasn't been constructed yet
+            this.constructAdjacencyMatrix();
+        }
+        return this.adjMatrix;
+    },
+    constructAdjacencyMatrix: function() {
+        var INF = 4294967295;
+        var myNodes = this.listNodes();
+        var myEdges = this.listEdges();
+        var N = myNodes.length; //console.log("N is "+N);
+        var table = new Array(N); //a dictionary for nodes so as to get id for each node
+        this.adjMatrix = new Array(N);
+        for (i=0; i<N; i++) {  //initialize table[] and adjMatrix[][] arrays
+            table[myNodes[i].data.id]=i;
+            this.adjMatrix[i] = new Array(N);
+            for (j=0; j<N; j++) {
+                if (i===j)  this.adjMatrix[i][j] = 0;
+                else  this.adjMatrix[i][j] = INF;
+            }
+        }
+        for (var i=0; i<myEdges.length; i++) {  //create the adjecancy matrix for the graph
+            this.adjMatrix[table[myEdges[i].source.data.id]][table[myEdges[i].target.data.id]] = 1;
+            this.adjMatrix[table[myEdges[i].target.data.id]][table[myEdges[i].source.data.id]] = 1;
+        }
     }
 
 };
+
 /*
  * Node
  */
