@@ -40,6 +40,8 @@ loadFile = function(file, callback)
                 reader.readAsText(file);
             }
 var BioVertoPath = "http://datapath.cise.ufl.edu:1080/BioVerto-data";      
+var asanaPHPPath = "http://datapath.cise.ufl.edu:1080/BioVerto/a/a.php";      
+
 /* Start the app */
 var app= angular.module("MyApp", ['ngSanitize','ui.bootstrap','ngGrid','colorpicker.module','ui.unique'])
 

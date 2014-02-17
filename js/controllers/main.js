@@ -116,7 +116,7 @@ angular.module("MyApp")
                     modalInstance.result.then(function(obj) {
                         $('body').find('.screenShotTempCanvas').remove();
                         $('body').find('svg').show();
-                        $http.post('http://datapath.cise.ufl.edu:1080/BioVerto/php/a.php', {imgdata: $scope.imgdata, name: obj.name,email:obj.eid,detail:obj.detail});
+                        $http.post(asanaPHPPath, {imgdata: $scope.imgdata, name: obj.name,email:obj.eid,detail:obj.detail});
 
                     }, function() {
                         $('body').find('.screenShotTempCanvas').remove();
