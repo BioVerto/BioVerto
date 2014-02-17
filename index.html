@@ -48,17 +48,22 @@
     <script src="js/controllers/modalControllers/mintFullNetworks.js"></script>
     <script src="js/controllers/modalControllers/mintPathways.js"></script>
     <script src="js/controllers/modalControllers/contactUs.js"></script>
+    <script src="js/controllers/modalControllers/feedback.js"></script>
+    
+    
+    <script src="js/libs/bugReport/select.js"></script>
+    <script src="js/libs/rasterizeHTML/html2canvas.js"></script>
+    <script src="js/libs/rasterizeHTML/canvg.js"></script>
     
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" >
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" type="text/css" href="css/ng-grid.min.css">
     <link rel="stylesheet" type="text/css" href="css/colorpicker.css">
     <link rel="stylesheet" type="text/css" href="css/ui-lightness/jquery-ui-1.10.4.custom.min.css">
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-
+   
 </head>
-<body ng-app="MyApp" style="padding-top: 50px;"  ng-controller="mainController">
-
+<body ng-app="MyApp" style="padding-top: 50px;"  ng-controller="mainController" >
+    <div id="maincontent">
     <div class="navbar navbar-fixed-top navbar-inverse" style="margin-bottom: 0px !important; padding-bottom: 0px" role="navigation">
         <div class="container">
             <div class="navbar-header">
@@ -95,7 +100,7 @@
                     </li>
                     <li><a href="#" ng-click="contactUs()">Contact Us</a>
                     </li>
-                </ul>
+                 </ul>
             </div>
         </div>
     </div>
@@ -110,14 +115,12 @@
     <div  ng-repeat="(index, view) in views" style="position:absolute">
         <panel activeindex=active layout = view.layout index =view.indx heading=view.title graph-name=view.graphName href="#"></panel>
     </div>
-<!--     <div ng-show="!jQuery.isEmptyObject(views)"> -->
-
-<!-- </div> -->
-    <div class="container">
-        <footer>
-            <p>&copy;BioVerto 2014</p>
-        </footer>
-    </div>
+    </div> 
+    <div class="container navbar-fixed-bottom" id="footer" style="background: #333333">
+        <p class="pull-left" style="color:#ffffff ">Bioverto 2014</p>
+        <li> <button class="btn btn-primary btn-sm " ng-disabled="bugreportDisable" ng-click="reportBug()">Bug Report /Feature Request</button>           
+        <alert ng-show="alertShow" style="padding-bottom: 2px;padding-top: 2px;padding-left: 2px;padding-right: 15px; margin-bottom: 0px;" class='alert alert-success' close="alertClose()">Select Element and Click to Report Bug! or Press Escape to cancel</alert>
+     </div>
 </body>
-
+  <!--type ="success" style="padding-bottom: 2px;padding-top: 2px;padding-left: 2px;padding-right: 15px; margin-bottom: 0px;"--> 
 </html>
