@@ -47,7 +47,7 @@ var app= angular.module("MyApp", ['ngSanitize','ui.bootstrap','ngGrid','colorpic
 
 $(document).ready( function() {
     $('#myCarousel').carousel({
-    	interval:   40000
+    	interval:   4000
 	});
 	
 	var clickEvent = false;
