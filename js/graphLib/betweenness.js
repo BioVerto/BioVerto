@@ -1,105 +1,69 @@
-/* 08-FEB-2014 Tejas
- Returns BetweenNess Centrality for all vertices of the given graph.
+/* updated on 15-FEB-2014 by Tejas
+  Returns BetweenNess Centrality for all vertices of the given graph.
+  BetweenNess centrality for a node is the importance of the node based on how many shortest paths
+   in the graph pass through it. In short, how many shortest paths will suffer if the node is removed
  */
 (function(g5) {
-    var INF = 4294967295;
-    var N = 0;
-    var count = [];
-    var dist = [];
-    var next = new Array();
-
-    function constructAdjacencyMatrix(g)
-    {
-        var myNodes = g.listNodes();
-        var myEdges = g.listEdges();
-        N = myNodes.length;
-        console.log("N is "+N)
-        var n = myNodes.length;
-        var table = new Array(n);
-        var input = new Array(n);
-        for (var i = 0; i < n; i++)
-            input[i] = new Array(n);
-
-        for (var i = 0; i < n; i++)
-        {
-            for (var j = 0; j < n; j++)
-            {
-                if (i === j)
-                {
-                    input[i][j] = 0;
-                }
-                else
-                    input[i][j] = INF;
-            }
-        }
-
-//create a dictionary for nodes so that I can get id associated with each node
-        for (var i = 0; i < n; i++)
-        {
-            table[myNodes[i].data.id] = i;
-
-        }
-//create the adjecancy matrix for the graph
-        for (var i = 0; i < myEdges.length; i++)
-        {
-            input[table[myEdges[i].source.data.id]][table[myEdges[i].target.data.id]] = 1;
-            input[table[myEdges[i].target.data.id]][table[myEdges[i].source.data.id]] = 1;
-        }
-        dist = input;
-         for (i = 0; i < N; i++) {
-        count.push(0); 
-        }
-        for (i = 0; i < N; i++) {
-            next[i] = new Array();
-            for (j = 0; j < N; j++)
-                next[i][j] = null;
-        }
-    }
-
-    function AllPairShortestPaths() {
-        for (k = 0; k < N; k++)
-            for (i = 0; i < N; i++)
-                for (j = 0; j < N; j++)
-                    if (dist[i][j] > dist[i][k] + dist[k][j]) {
-                        dist[i][j] = dist[i][k] + dist[k][j];
-                        next[i][j] = k;
-                    }
-    }
-    function ReconstructPaths() {
-        for (i = 0; i < N; i++) {
-            for (j = 0; j < N; j++) {
-                console.log("from " + i + " to " + j + " the shortest path is = " + i + Path(i, j) + j);
-            }
-            console.log("\n");
-        }
-    }
-    function Path(i, j) {
-        if (dist[i][j] === INF) {
-            return "no path";
-        }
-        var intermediate = next[i][j];
-        if (intermediate === null) {
-            return " ";
-        }
-        else {
-            count[intermediate]++;
-            return Path(i, intermediate) + intermediate + Path(intermediate, j);
-        }
-    }
+    //these are some global variables: will be initialized after constructing adjacency matrix
+    var INF=4294967295;   //Not the largest int in js to avoid potential overflow on increment
+    var btwnnss=[];  //Betweenness values for each node will be stored in this array
+    var next=[]; //Stores the intermediate node along a shortest path, required for reconstruction
+    var N=0;  //Number of nodes, initialized after constructAdjacencyMatrix()
+    var dist=[];  //adjacency matrix form of the graph g5, initialized after constructAdjacencyMatrix()
     var f = g5.newField();
+
     g5.addAlgoPlugin({
         name: "Betweenness Centrality",
         algo: function(g) {
-            constructAdjacencyMatrix(g);
+            dist = g.getAdjacencyMatrix();  //dist is the adjacency matrix of input graph
+            N = dist.length;  //number of nodes in the graph
+            for (i=0; i<N; i++) {  //initialize btwnnss and next arrays
+                btwnnss.push(0);
+                next[i] = new Array();
+                for (j=0; j<N; j++)
+                    next[i][j] = null;
+            }
+
             AllPairShortestPaths();
             ReconstructPaths();
             var j = 0;
             for (i in g.nodes) {
                 var node = g.nodes[i];
-                node.data[f] = count[j++];
+                node.data[f] = btwnnss[j++];
             }
         },
         nodeAccs: {
             "Betweenness Centrality": {type: "number", fct: g5.createAccessor(f)}
         }});
-}(g5)); 
+
+    //updates shortest distance between pairs of nodes into dist[][]
+    //and update intermediate node along the route into next[][]
+    function AllPairShortestPaths() { //Floyd-Warshall algorithm
+        for (k=0; k<N; k++)
+            for (i=0; i<N; i++)
+                for (j=0; j<N; j++)  //if used instead of Min() because need to update next[][] value
+                    if (dist[i][j] > dist[i][k] + dist[k][j]) {
+                        dist[i][j] = dist[i][k] + dist[k][j];
+                        next[i][j] = k;  //next[][] will be useful in Path() function
+                    }
+    }
+
+    //retrace shortest paths to calculate how many of them pass through each node
+    function ReconstructPaths() {
+        for (i=0; i<N; i++) {
+            for (j=0; j<N; j++) {
+                Path(i, j);  //its a recursive function, hence has been written separately
+            }
+        }
+    }
+
+    //increment btwnnss value for each node for every shortest path passing through it
+    function Path(i, j) {
+        var intermediate = next[i][j];
+        if (!(intermediate===null)) {
+            btwnnss[intermediate]++;  //betweenness values for each node get calculated/populated here!
+            return Path(i, intermediate) + intermediate + Path(intermediate, j);
+        }
+    }
+
+}(g5));
