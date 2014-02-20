@@ -100,15 +100,7 @@ angular.module("MyApp")
                         scope.alertShow = true;
                         scope.alertText = message;
                         scope.alertType = type;
-                    }
-//                    scope.$watch('$parent.$parent.active',function()
-//                    {
-//                        if(scope.activeindex === scope.index)
-//                        {
-//                          
-//                            $timeout(function(){bringFront($(element).find(".viewWindow"), '.viewWindow');scope.setActive();},0);
-//                        }
-//                    });
+                    }   
                     if (scope.graphName)
                     {
                         // now visualize the graph
