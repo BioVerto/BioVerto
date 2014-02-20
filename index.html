@@ -107,7 +107,7 @@
         <div class="collapse navbar-collapse center-block">
             <div >
                 <div ng-repeat="(index, view) in views" class=" btn btn-sm-nopad" >
-                    <h4  href="#" ng-click="changeView(view.indx)"><span ng-class="{'label label-primary': (view.indx === active), 'label label-default': (view.indx !== active)} " >{{view.title}} - {{view.layout}}</span></h4>
+                    <h4  href="#" ng-click="changeView(view.indx)"><span ng-class="{'label label-primary': (active === view.indx), 'label label-default': (active !== view.indx)} " >{{view.title}} - {{view.layout}}<span href="#" ng-click="removeView(view.indx)" class="glyphicon glyphicon-remove-circle" style="padding-left: 5;" ></span></span></h4>
                 </div>
 
             </div>
