@@ -88,7 +88,7 @@ dc.chord = function(parent) {
 
     }
 
-    function changeData(graph) {
+    function renderData(graph) {
    
         _nodeData = graph.nodes.map(function(d, i) {
             d.index = i;
@@ -303,7 +303,7 @@ dc.chord = function(parent) {
         if (!arguments.length)
             return _graph;
         _graph = _;
-        changeData(_graph);
+        renderData(_graph);
         return _fgraph;
     };
 
