@@ -16,19 +16,9 @@
                     }   
                 }
                 for (var i in g.nodes) {
-                        if(g.nodes[i].data[f1] ===undefined)
-                        {
-                            g.nodes[i].data[f1] = "";
-                        }
-                        if(g.nodes[i].data[f2] ===undefined)
-                        {
-                            g.nodes[i].data[f2] = 1;
-                        }
-                        if(g.nodes[i].data[f3] ===undefined)
-                        {
-                            g.nodes[i].data[f3] =1;
-                        }
-                        
+                    g.nodes[i].data[f1] = g.nodes[i].data[f1] || "";
+                    g.nodes[i].data[f2] = g.nodes[i].data[f2] || 1;  
+                    g.nodes[i].data[f3] = g.nodes[i].data[f3] || 1;
                 }
             }
             );
