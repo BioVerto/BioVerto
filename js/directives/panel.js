@@ -50,11 +50,12 @@ angular.module("MyApp")
                     }
                     scope.cloneView = function()
                     {
-                        
+                        console.log("ToDo Clone")
                     }
                     scope.removeView = function()
                     {
                         scope.$parent.$parent.removeView(scope.index);
+                       
                     }
                     scope.colorAcessorGen = function(color)
                     {
@@ -104,7 +105,7 @@ angular.module("MyApp")
                         if(scope.activeindex === scope.index)
                         {
                           
-                            $timeout(function(){bringFront($(this), '.viewWindow')},0);
+                            $timeout(function(){bringFront($(element).find(".viewWindow"), '.viewWindow')},0);
                         }
                     });
                     if (scope.graphName)
