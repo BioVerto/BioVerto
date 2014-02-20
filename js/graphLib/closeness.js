@@ -65,6 +65,6 @@
         },
         nodeAccs: {
             "Closeness Centrality": {type: "number", fct: g5.createAccessor(f)}
-        }});
+        },visible:true});
 
 }(g5)); 

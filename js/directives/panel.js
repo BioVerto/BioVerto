@@ -33,7 +33,7 @@ angular.module("MyApp")
                     scope.refreshSidebar = function()
                     {
                         scope.acessorFns = {Node: scope.graph.listNodeAccessors(), Edge: scope.graph.listEdgeAccessors()};
-
+                        
                     }
                     scope.viewGraph = function(graphName)
                     {
@@ -45,7 +45,7 @@ angular.module("MyApp")
                         scope.graph = g5.getGraph(scope.graphName);
                         scope.refreshView();
                         scope.controls = componentGenerator.generateSidebar(configurationService.getConfig(scope.layout), scope.acessorFns);//,graphExecutionEngine.listNodeAccessors(scope.graphName),graphExecutionEngine.EdgeAccessors());
-
+                       
                     }
                     scope.removeView = function()
                     {
