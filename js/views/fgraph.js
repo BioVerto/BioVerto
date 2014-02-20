@@ -12,7 +12,7 @@ dc.fgraph = function(parent) {
                 bottom: 0,
                 left: 0
             },
-    _nodeData, // current data used by node
+            _nodeData, // current data used by node
             _edgeData, // current data used by edge
             _fCharge = -120, // charge parameter
             _nodeColorType = "cont", // is the coloring measure discrete? "cont" or "disc"
@@ -53,8 +53,6 @@ dc.fgraph = function(parent) {
             _svg, // svg element
             _link, // links
             _node, // nodes
-            _blinks, // bundle links
-            _transitionDuration = 750,
             _graph = {}, // data to be displayed
             _width = 960,
             _height = 600,
@@ -100,7 +98,7 @@ dc.fgraph = function(parent) {
     }
 
     // we can initialize the links/nodes only when we have data
-    function changeData(graph) {
+    function renderData(graph) {
 
         if (!_force)
             _force = d3.layout.force()
@@ -137,7 +135,6 @@ dc.fgraph = function(parent) {
                 weight: _weightAccessor(d)
             };
         });
-        //console.log(_nodeData);
         _edgeData = graph.edges.map(function(d, i) {
             d.index = i;
             return {
@@ -149,8 +146,6 @@ dc.fgraph = function(parent) {
                 //value: d.value                
             };
         });
-        //console.log(_edgeData);
-
         _force
                 .nodes(_nodeData)
                 .links(_edgeData)
@@ -222,7 +217,6 @@ dc.fgraph = function(parent) {
     }
  _fgraph .highlightNode=function(nodenum)
     {
-        console.log(_svg.selectAll("circle").filter(function(d){return d.data.data.id===nodenum}));
         _svg.selectAll("circle").filter(function(d){return d.data.data.id===nodenum}).style("fill","red");
     }
     _fgraph.init = function(parent, data, width, height) {
@@ -235,14 +229,6 @@ dc.fgraph = function(parent) {
     {
         $(_parentID).empty();
      }
-    _fgraph.doRender = function() {
-        // delete old content if present
-        // d3.select(_parentID).select("svg").remove();
-
-        _fgraph.doRedraw();
-
-        return _fgraph;
-    }
 
     _fgraph.updateEgdeStyle = function(style, fn) {
         _link.style(style, fn);
@@ -308,15 +294,6 @@ dc.fgraph = function(parent) {
     }
 
 
-    // Change/get inner colors
-    _fgraph.nodeColors = function(_) {
-        if (!arguments.length)
-            return _nodeColors;
-        _nodeColors = _;
-        _fgraph.updateNodeStyle("fill", _);
-        return _fgraph;
-    }
-
     _fgraph.edgeColors = function(_) {
         if (!arguments.length)
             return _edgeColors;
@@ -353,7 +330,7 @@ dc.fgraph = function(parent) {
         if (!arguments.length)
             return _graph;
         _graph = _;
-        changeData(_graph);
+        renderData(_graph);
         return _fgraph;
     };
 
@@ -457,6 +434,5 @@ dc.fgraph = function(parent) {
  
         return _fgraph;
     }
-
     return _fgraph;
 };
