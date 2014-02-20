@@ -48,6 +48,10 @@ angular.module("MyApp")
                         scope.controls = componentGenerator.generateSidebar(configurationService.getConfig(scope.layout), scope.acessorFns);//,graphExecutionEngine.listNodeAccessors(scope.graphName),graphExecutionEngine.EdgeAccessors());
                        
                     }
+                    scope.cloneView = function()
+                    {
+                        
+                    }
                     scope.removeView = function()
                     {
                         scope.$parent.$parent.removeView(scope.index);

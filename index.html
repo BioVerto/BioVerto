@@ -105,9 +105,9 @@
             </div>
         </div>
         <div class="collapse navbar-collapse center-block">
-            <div class="btn-group">
-                <div ng-repeat="(index, view) in views" class="btn" >
-                    <a  href="#" ng-click="changeView($index)" ng-class= "{active: ($index == active)}">{{view.title}}</a>
+            <div >
+                <div ng-repeat="(index, view) in views" class=" btn btn-sm-nopad" >
+                    <h4  href="#" ng-click="changeView($index)"><span ng-class="{'label label-primary': ($index == active), 'label label-default': ($index != active)} " >{{view.title}}</span></h4>
                 </div>
 
             </div>
