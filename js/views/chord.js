@@ -12,7 +12,7 @@ dc.chord = function(parent) {
                 bottom: 0,
                 left: 0
             },
-    _nodeData, // current data used by node
+            _nodeData, // current data used by node
             _edgeData, // current data used by edge
             _svg, // svg element
             _node, // nodes
@@ -35,12 +35,9 @@ dc.chord = function(parent) {
 
     function redraw()
     {
-
         innerRadius = Math.min(_width - 60, _height - 40) * .41,
                 outerRadius = innerRadius * 1.1;
-        var fill = d3.scale.ordinal()
-                .domain(d3.range(4))
-                .range(["#000000", "#FFDD89", "#957244", "#F26223"]);
+       
         d3.select(_parentID).select("svg")
                 .attr("width", _width)
                 .attr("height", _height);
@@ -50,12 +47,6 @@ dc.chord = function(parent) {
         _svg.attr("transform", "translate(" + _width / 2 + "," + (_height + 40) / 2 + ")");
         _svg.selectAll("path")
                 .data(_chord.groups)
-                .style("fill", function(d) {
-                    return fill(d.index);
-                })
-                .style("stroke", function(d) {
-                    return fill(d.index);
-                })
                 .attr("d", d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius))
         _ticks.data(_chord.groups)
                 .data(groupTicks)
@@ -85,10 +76,6 @@ dc.chord = function(parent) {
         _svg.selectAll(".chord").selectAll("path")
                 .data(_chord.chords)
                 .attr("d", d3.svg.chord().radius(innerRadius))
-                .style("fill", function(d) {
-                    return fill(d.target.index);
-                })
-                .style("opacity", 1);
         function groupTicks(d) {
             var k = (d.endAngle - d.startAngle) / d.value;
             return d3.range(0, d.value, 1000).map(function(v, i) {
