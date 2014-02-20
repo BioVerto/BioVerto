@@ -22,7 +22,6 @@ angular.module("MyApp")
                     {
                         scope.alertBox("Runnning Algorithm","warning");
                         scope.alertBox("Algorithm Complete","success");
-                        
                         g5.applyAlgorithm(g5.getGraph(scope.graphName), name);
                         scope.refreshSidebar();
                     }
@@ -43,7 +42,9 @@ angular.module("MyApp")
                         }
                         scope.heading = scope.graphName;
                         scope.graph = g5.getGraph(scope.graphName);
-                        scope.refreshView();
+                        scope.view = viewProvider.getView(scope.layout);
+                        scope.view.init("#graphNumber" + scope.index, scope.graph.getData(), scope.width, scope.height);
+                        scope.refreshSidebar();
                         scope.controls = componentGenerator.generateSidebar(configurationService.getConfig(scope.layout), scope.acessorFns);//,graphExecutionEngine.listNodeAccessors(scope.graphName),graphExecutionEngine.EdgeAccessors());
                        
                     }
@@ -67,29 +68,13 @@ angular.module("MyApp")
                         // TODO: add an else with a coding error
 
                     }
-
-                    scope.refreshView = function()
-                    {
-                        if (scope.view !== undefined)
-                        {
-                            scope.view.destroy();
-                            delete scope.view;
-                        }
-                        scope.view = viewProvider.getView(scope.layout);
-                        scope.view.init("#graphNumber" + scope.index, scope.graph.getData(), scope.width, scope.height);
-                        scope.refreshSidebar();
-
-                    };
                     scope.getAcessorFunction = function(tab, name)
                     {
                         var temp = scope.acessorFns[tab][name];
                         return temp;
                     }
 
-                    scope.updateMenu = function() {
-                        scope.listGraphs = g5.listGraphs();
-
-                    };
+                   
                     scope.setActive = function() {
                         scope.$parent.$parent.active = scope.index;
                     };
