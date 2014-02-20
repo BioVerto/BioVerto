@@ -15,47 +15,7 @@ angular.module("MyApp")
                 $scope.views[$scope.newViewIndex] = {layout: layout, title: "New View " + $scope.newViewIndex, graphName: graphName, indx: $scope.newViewIndex};
                 $scope.newViewIndex++;
             };
-            $scope.sendImage = function(e) {
-                var svgElements = $('body').find('svg');
-                svgElements.each(function() {
-                    var canvas, xml;
-                    canvas = document.createElement("canvas");
-                    canvas.className = "screenShotTempCanvas";
-                    //convert SVG into a XML string
-                    xml = (new XMLSerializer()).serializeToString(this);
-                    // Removing the name space as IE throws an error
-                    xml = xml.replace(/xmlns=\"http:\/\/www\.w3\.org\/2000\/svg\"/, '');
-                    //draw the SVG onto a canvas
-                    canvg(canvas, xml);
-                    $(canvas).insertAfter(this);
-                    //hide the SVG element
-                    this.className = "tempHide";
-                    $(this).hide();
-                });
-                html2canvas(document.body, {
-                    onrendered: function(canvas) {
-
-                        var ctx = canvas.getContext('2d');
-                        ctx.fillStyle = "#A2322E";
-                        ctx.beginPath();
-                        ctx.moveTo(e.pageX, e.pageY);
-                        ctx.lineTo(e.pageX + 20, e.pageY - 20);
-                        ctx.lineTo(e.pageX - 20, e.pageY - 20);
-                        ctx.closePath();
-                        ctx.fill();
-
-                        var img = canvas.toDataURL("image/png");
-                        img = img.substr(img.indexOf(',') + 1).toString();
-                        $scope.imgdata = img;
-                        $scope.bugreportDisable = false;
-                        $scope.alertShow = false;
-                        $scope.$digest();
-                        $('html,body').css('cursor', 'auto');
-
-                    }
-                }
-                );
-            };
+           
             $scope.removeView = function(index)
             {
                 // First delete this view
@@ -108,7 +68,7 @@ angular.module("MyApp")
                 $scope.alertShow = true;
                 $('html,body').css('cursor', 'crosshair');
                 inspectElement(document, function(e) {
-                    $scope.sendImage(e);
+                    $scope.takeImage(e);
                     var modalInstance = $modal.open({
                         templateUrl: './partials/feedback.html',
                         controller: modalCtrlProvider.getCtrl("feedback"),
@@ -147,7 +107,58 @@ angular.module("MyApp")
                     return;
                 });
             }
+                $scope.takeImage = function(e) {
+                var svgElements = $('body').find('svg');
+                svgElements.each(function() {
+                    var canvas, xml;
+                    canvas = document.createElement("canvas");
+                    canvas.className = "screenShotTempCanvas";
+                    //convert SVG into a XML string
+                    xml = (new XMLSerializer()).serializeToString(this);
+                    // Removing the name space as IE throws an error
+                    xml = xml.replace(/xmlns=\"http:\/\/www\.w3\.org\/2000\/svg\"/, '');
+                    //draw the SVG onto a canvas
+                    canvg(canvas, xml);
+                    $(canvas).insertAfter(this);
+                    //hide the SVG element
+                    this.className = "tempHide";
+                    $(this).hide();
+                });
+                html2canvas(document.body, {
+                    onrendered: function(canvas) {
 
+                        var ctx = canvas.getContext('2d');
+                        // ctx.drawImage(pinImage, e.pageX, e.pageY);
+
+                        ctx.beginPath();
+                        var startingX = e.pageX - 10 , startingY = e.pageX -130;
+
+
+                        ctx.moveTo(startingX, startingY);
+                        ctx.bezierCurveTo(startingX - 16, startingY - 20, startingX + 32, startingY - 21, startingX + 17, startingY );
+
+                        ctx.moveTo(startingX, startingY)
+                        ctx.bezierCurveTo(startingX + 12, startingY + 39, startingX + 16, startingY - 8, startingX + 17, startingY );
+                        ctx.closePath();
+                        ctx.fillStyle = 'red';
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.arc(startingX +9, startingY-5, 5, 0, 2 * Math.PI);
+                        ctx.stroke();
+                         ctx.fillStyle = 'black';
+                        ctx.fill();
+                        var img = canvas.toDataURL("image/png");
+                        img = img.substr(img.indexOf(',') + 1).toString();
+                        $scope.imgdata = img;
+                        $scope.bugreportDisable = false;
+                        $scope.alertShow = false;
+                        $scope.$digest();
+                        $('html,body').css('cursor', 'auto');
+
+                    }
+                }
+                );
+            };
 
         });
 
