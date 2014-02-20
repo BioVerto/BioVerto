@@ -32,6 +32,7 @@ angular.module("MyApp")
             $scope.changeView = function(indx)
             {
                 $scope.active = indx;
+               
             }
             $scope.fileUpload = function(plugin)
             {

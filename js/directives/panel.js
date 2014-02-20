@@ -7,7 +7,8 @@ angular.module("MyApp")
                     layout: "=",
                     heading: "=",
                     activeindex: "=",
-                    graphName: "="
+                    graphName: "=",
+                    removefn:"&"
                 },
                 templateUrl: "./partials/panel.html",
                 transclude: true,
@@ -54,7 +55,7 @@ angular.module("MyApp")
                     }
                     scope.removeView = function()
                     {
-                        scope.$parent.$parent.removeView(scope.index);
+                        scope.removefn({index:scope.index});
                        
                     }
                     scope.colorAcessorGen = function(color)
@@ -100,14 +101,14 @@ angular.module("MyApp")
                         scope.alertText = message;
                         scope.alertType = type;
                     }
-                    scope.$watch('$parent.$parent.active',function()
-                    {
-                        if(scope.activeindex === scope.index)
-                        {
-                          
-                            $timeout(function(){bringFront($(element).find(".viewWindow"), '.viewWindow')},0);
-                        }
-                    });
+//                    scope.$watch('$parent.$parent.active',function()
+//                    {
+//                        if(scope.activeindex === scope.index)
+//                        {
+//                          
+//                            $timeout(function(){bringFront($(element).find(".viewWindow"), '.viewWindow');scope.setActive();},0);
+//                        }
+//                    });
                     if (scope.graphName)
                     {
                         // now visualize the graph
