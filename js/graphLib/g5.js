@@ -70,7 +70,7 @@ g5.createGraph = function(name) {
     if (g5.graphs[name] !== undefined) {
         codingError("A graph with the name " + name + " is already present. Ignoring");
        delete g5.graphs[name];
-        return;
+       // return;
     }
 
     g5.graphs[name] = new Graph();
