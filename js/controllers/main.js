@@ -5,6 +5,7 @@ angular.module("MyApp")
             $scope.newViewIndex = 0;
             $scope.bugreportDisable = false;
             $scope.imgdata;
+            $scope.graphList =[];
             $scope.addView = function(layout, graphName)
             {
                 if ($scope.newViewIndex !== 0 && typeof graphName === 'undefined')
@@ -44,7 +45,7 @@ angular.module("MyApp")
                     controller: modalCtrlProvider.getCtrl(plugin),
                 });
                 modalInstance.result.then(function(newGraph) {
-
+                    $scope.graphList.push(newGraph.graphName);
                 }, function() {
 
                     return;
@@ -102,7 +103,7 @@ angular.module("MyApp")
                     controller: modalCtrlProvider.getCtrl(plugin),
                 });
                 modalInstance.result.then(function(newGraph) {
-
+                    $scope.graphList.push(newGraph.graphName);
                     $scope.addView(newGraph.layout, newGraph.graphName);
                 }, function() {
                     return;

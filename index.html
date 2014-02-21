@@ -93,10 +93,31 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add View <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#" ng-click="addView('force')">Force Layout View</a></li>
-                                <li><a href="#" ng-click="addView('circular')">Circular Layout View</a></li>
-                                <li><a href="#" ng-click="addView('chord')">Chord Layout View</a></li>
-                            </ul>
+                                <li class="dropdown-submenu">
+                                    <a href="#">Force Layout View</a>
+                                    <ul class="dropdown-menu">
+                                        <li ng-repeat="value in graphList">
+                                            <a href="#"ng-click="addView('force',value)">{{value}}</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#">Circular Layout View</a>
+                                    <ul class="dropdown-menu">
+                                        <li ng-repeat="value in graphList">
+                                            <a href="#"ng-click="addView('circular',value)">{{value}}</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#">Chord Layout View</a>
+                                    <ul class="dropdown-menu">
+                                        <li ng-repeat="value in graphList">
+                                            <a href="#"ng-click="addView('chord',value)">{{value}}</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                               </ul>
                         </li>
                         <li><a href="#" ng-click="contactUs()">Contact Us</a>
                         </li>
