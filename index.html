@@ -99,6 +99,7 @@
                                         <li ng-repeat="value in graphList">
                                             <a href="#"ng-click="addView('force',value)">{{value}}</a>
                                         </li>
+                                        <li ng-show="graphList.length==0"><a>No Graphs Uploaded</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu">
@@ -107,6 +108,7 @@
                                         <li ng-repeat="value in graphList">
                                             <a href="#"ng-click="addView('circular',value)">{{value}}</a>
                                         </li>
+                                          <li ng-show="graphList.length==0"><a>No Graphs Uploaded</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu">
@@ -115,6 +117,7 @@
                                         <li ng-repeat="value in graphList">
                                             <a href="#"ng-click="addView('chord',value)">{{value}}</a>
                                         </li>
+                                          <li ng-show="graphList.length==0"><a>No Graphs Uploaded</a></li>
                                     </ul>
                                 </li>
                                </ul>
