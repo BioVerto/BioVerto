@@ -5,7 +5,9 @@ angular.module("MyApp")
             $scope.newViewIndex = 0;
             $scope.bugreportDisable = false;
             $scope.imgdata;
-            $scope.graphList =[];
+            $scope.imgSnippet;
+            
+            $scope.graphList = [];
             $scope.addView = function(layout, graphName)
             {
                 if ($scope.newViewIndex !== 0 && typeof graphName === 'undefined')
@@ -16,7 +18,7 @@ angular.module("MyApp")
                 $scope.views[$scope.newViewIndex] = {layout: layout, title: "New View " + $scope.newViewIndex, graphName: graphName, indx: $scope.newViewIndex};
                 $scope.newViewIndex++;
             };
-           
+
             $scope.removeView = function(index)
             {
                 // First delete this view
@@ -33,7 +35,7 @@ angular.module("MyApp")
             $scope.changeView = function(indx)
             {
                 $scope.active = indx;
-               
+
             }
             $scope.fileUpload = function(plugin)
             {
@@ -71,21 +73,7 @@ angular.module("MyApp")
                 $('html,body').css('cursor', 'crosshair');
                 inspectElement(document, function(e) {
                     $scope.takeImage(e);
-                    var modalInstance = $modal.open({
-                        templateUrl: './partials/feedback.html',
-                        controller: modalCtrlProvider.getCtrl("feedback"),
-                    });
-                    modalInstance.result.then(function(obj) {
-                        $('body').find('.screenShotTempCanvas').remove();
-                        $('body').find('svg').show();
-                        $http.post(asanaPHPPath, {imgdata: $scope.imgdata, name: obj.name,email:obj.eid,detail:obj.detail});
-
-                    }, function() {
-                        $('body').find('.screenShotTempCanvas').remove();
-                        $('body').find('svg').show();
-                      
-                        return;
-                    });
+                    
                 }, function() {
                     console.log("asd");
                     $('html,body').css('cursor', 'auto');
@@ -109,7 +97,7 @@ angular.module("MyApp")
                     return;
                 });
             }
-                $scope.takeImage = function(e) {
+            $scope.takeImage = function(e) {
                 var svgElements = $('body').find('svg');
                 svgElements.each(function() {
                     var canvas, xml;
@@ -131,32 +119,58 @@ angular.module("MyApp")
 
                         var ctx = canvas.getContext('2d');
                         // ctx.drawImage(pinImage, e.pageX, e.pageY);
-
+                        console.log(e);
                         ctx.beginPath();
-                        var startingX = e.pageX - 10 , startingY = e.pageX -130;
+//                        var mouseX = e.clientX + document.body.scrollLeft;
+//                        var mouseY = e.clientY + document.body.scrollTop;
+                        var startingX = e.pageX - 10, startingY = e.pageY - 10;
 
 
                         ctx.moveTo(startingX, startingY);
-                        ctx.bezierCurveTo(startingX - 16, startingY - 20, startingX + 32, startingY - 21, startingX + 17, startingY );
+                        ctx.bezierCurveTo(startingX - 16, startingY - 20, startingX + 32, startingY - 21, startingX + 17, startingY);
 
                         ctx.moveTo(startingX, startingY)
-                        ctx.bezierCurveTo(startingX + 12, startingY + 39, startingX + 16, startingY - 8, startingX + 17, startingY );
+                        ctx.bezierCurveTo(startingX + 12, startingY + 39, startingX + 16, startingY - 8, startingX + 17, startingY);
                         ctx.closePath();
                         ctx.fillStyle = 'red';
                         ctx.fill();
                         ctx.beginPath();
-                        ctx.arc(startingX +9, startingY-5, 5, 0, 2 * Math.PI);
+                        ctx.arc(startingX + 9, startingY - 5, 5, 0, 2 * Math.PI);
                         ctx.stroke();
-                         ctx.fillStyle = 'black';
+                        ctx.fillStyle = 'black';
                         ctx.fill();
                         var img = canvas.toDataURL("image/png");
                         img = img.substr(img.indexOf(',') + 1).toString();
                         $scope.imgdata = img;
+                        
+                        var snippet = document.createElement('canvas');
+                         snippet.width = 200;
+                          snippet.height = 200;
+                        snippet.getContext('2d').drawImage(canvas, e.pageX-100,e.pageY-230, 400, 400,0,0,200,200);
+                        $scope.imgSnippet = snippet.toDataURL("image/png");
                         $scope.bugreportDisable = false;
                         $scope.alertShow = false;
                         $scope.$digest();
                         $('html,body').css('cursor', 'auto');
+                        var modalInstance = $modal.open({
+                        templateUrl: './partials/feedback.html',
+                        controller: modalCtrlProvider.getCtrl("feedback"),
+                        resolve: {
+                            img: function() {
+                                return $scope.imgSnippet;
+                            }}
+                    });
+                    modalInstance.result.then(function(obj) {
+                        $('body').find('.screenShotTempCanvas').remove();
+                        $('body').find('svg').show();
+                        $http.post(asanaPHPPath, {imgdata: $scope.imgdata, name: obj.name, email: obj.eid, detail: obj.detail});
 
+                    }, function() {
+                        $('body').find('.screenShotTempCanvas').remove();
+                        $('body').find('svg').show();
+
+                        return;
+                    });
                     }
                 }
                 );
