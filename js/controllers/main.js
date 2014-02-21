@@ -48,6 +48,7 @@ angular.module("MyApp")
                 });
                 modalInstance.result.then(function(newGraph) {
                     $scope.graphList.push(newGraph.graphName);
+                     $scope.addView(newGraph.layout, newGraph.graphName);
                 }, function() {
 
                     return;
