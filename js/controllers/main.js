@@ -75,7 +75,9 @@ angular.module("MyApp")
                     $scope.takeImage(e);
                     
                 }, function() {
-                    console.log("asd");
+                      $scope.bugreportDisable = false;
+                        $scope.alertShow = false;
+                        $scope.$digest();
                     $('html,body').css('cursor', 'auto');
                 })
             }
