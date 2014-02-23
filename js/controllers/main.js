@@ -6,7 +6,7 @@ angular.module("MyApp")
             $scope.bugreportDisable = false;
             $scope.imgdata;
             $scope.imgSnippet;
-            
+            $scope.test = ["a","b","c"]
             $scope.graphList = [];
             $scope.addView = function(layout, graphName)
             {
@@ -18,7 +18,7 @@ angular.module("MyApp")
                 $scope.views[$scope.newViewIndex] = {layout: layout, title: "New View " + $scope.newViewIndex, graphName: graphName, indx: $scope.newViewIndex};
                 $scope.newViewIndex++;
             };
-
+            
             $scope.removeView = function(index)
             {
                 // First delete this view
@@ -126,7 +126,7 @@ angular.module("MyApp")
                         ctx.beginPath();
 //                        var mouseX = e.clientX + document.body.scrollLeft;
 //                        var mouseY = e.clientY + document.body.scrollTop;
-                        var startingX = e.pageX - 10, startingY = e.pageY - 10;
+                        var startingX = e.pageX , startingY = e.pageY;
 
 
                         ctx.moveTo(startingX, startingY);
