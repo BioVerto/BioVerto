@@ -191,7 +191,7 @@ dc.fgraph = function(parent) {
                 .data(_edgeData.filter(function(d){return _filterFunction(d.target)&&_filterFunction(d.source)}))
                 .exit()
                 .transition()
-                .duration(400)
+                .duration(1000)
                 .style("opacity", 0)
                 .remove();
         _newLinks = _svg.selectAll(".link")
@@ -211,7 +211,11 @@ dc.fgraph = function(parent) {
                 .call(drag)
         _svg.selectAll(".node")
                 .data(_nodeData.filter(_filterFunction),_indexFunction)
-                .exit().remove();
+                .exit()
+                .transition()
+                .duration(1000)
+                .style("opacity", 0)
+                .remove();
                 
         _newNodes .append("circle")
                 .attr("class", "fgraph-circle")
