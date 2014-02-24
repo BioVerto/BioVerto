@@ -25,8 +25,9 @@ dc.cgraph = function(parent) {
     _bundle,
     _svg, // svg element
     _rootGElement, //root g element under svg
-    _line, // links
+    _line, // path
     _node, // nodes
+    _links, // links
     _graph = {}, // data to be displayed
     _root, // root node of the cluster
     _diameter = 360,
@@ -65,37 +66,40 @@ dc.cgraph = function(parent) {
 	    _rootGElement = _svg.append("g")
             .attr("transform", "translate(" + _radius + "," + _radius + ")");          
 	
-	var circularData = parserForBundle(graph);
-	var nodes = _cluster.nodes(_root = packageHierarchy(circularData)),
-            links = packageImports(nodes);
+        if(!_node || !_link) {
+            var circularData = parserForBundle(graph);
+            var nodes = _cluster.nodes(_root = packageHierarchy(circularData)),
+                links = packageImports(nodes);
 
-	_link = _rootGElement.selectAll(".link-cgraph")
-            .data(_bundle(links))
-            .enter().append("path")
-            .each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
-            .attr("class", "link-cgraph")
-            .attr("d", _line);
+            _link = _rootGElement.selectAll(".link-cgraph")
+                .data(_bundle(links))
+                .enter().append("path")
+                .each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
+                .attr("class", "link-cgraph")
+                .attr("d", _line);
 
-	_node = _rootGElement.selectAll(".node-cgraph")
-            .data(nodes.filter(function(n) { return !n.children; }))
-            .enter().append("text")
-            .attr("class", "node-cgraph")
-            .attr("dx", function(d) { return d.x < 180 ? 8 : -8; })
-            .attr("dy", ".31em")
-            .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")" + (d.x < 180 ? "" : "rotate(180)"); })
-            .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-            .text(function(d) { return d.key; })
-            .on("mouseover", mouseovered)
-            .on("mouseout", mouseouted);
-
+            _node = _rootGElement.selectAll(".node-cgraph")
+                .data(nodes.filter(function(n) { return !n.children; }))
+                .enter().append("text")
+                .attr("class", "node-cgraph")
+                .attr("dx", function(d) { return d.x < 180 ? 8 : -8; })
+                .attr("dy", ".31em")
+                .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")" + (d.x < 180 ? "" : "rotate(180)"); })
+                .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+                .text(function(d) { return d.key; })
+                .on("mouseover", mouseovered)
+                .on("mouseout", mouseouted);
+        
+            _node.append("title")
+               .text(function(d) {
+                   return d.name;
+               });	
+        }
        //TODO: Commenting out for time being
        //Need to figure out how to handle color change for cgraph
        //changeNodeColor();
        
-       _node.append("title")
-            .text(function(d) {
-		return d.name;
-            });	
+      
     }
 
     function mouseovered(d) {
