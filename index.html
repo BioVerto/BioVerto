@@ -22,6 +22,7 @@
     <script src="js/script.js"></script>
     <script src="js/directives/compile.js"></script>
     <script src="js/directives/panel.js"></script>
+    <script src="js/directives/filterSelect.js"></script>
     <script src="js/factory/d3.js"></script>
     <script src="js/libs/colorpicker/bootstrap-colorpicker-module.js"></script>
     <script src="js/libs/d3.v3.min.js" charset="utf-8"></script>
@@ -49,7 +50,6 @@
     <script src="js/controllers/modalControllers/mintPathways.js"></script>
     <script src="js/controllers/modalControllers/contactUs.js"></script>
     <script src="js/controllers/modalControllers/feedback.js"></script>
-
 
     <script src="js/libs/bugReport/select.js"></script>
     <script src="js/libs/rasterizeHTML/html2canvas.js"></script>
@@ -99,6 +99,7 @@
                                         <li ng-repeat="value in graphList">
                                             <a href="#"ng-click="addView('force',value)">{{value}}</a>
                                         </li>
+                                        <li ng-show="graphList.length==0"><a>No Graphs Uploaded</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu">
@@ -107,6 +108,7 @@
                                         <li ng-repeat="value in graphList">
                                             <a href="#"ng-click="addView('circular',value)">{{value}}</a>
                                         </li>
+                                          <li ng-show="graphList.length==0"><a>No Graphs Uploaded</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu">
@@ -115,6 +117,7 @@
                                         <li ng-repeat="value in graphList">
                                             <a href="#"ng-click="addView('chord',value)">{{value}}</a>
                                         </li>
+                                          <li ng-show="graphList.length==0"><a>No Graphs Uploaded</a></li>
                                     </ul>
                                 </li>
                                </ul>
@@ -138,7 +141,6 @@
         </div>
         <div ng-show="newViewIndex == 0" style="height:calc(100% - 30px);">
             <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                <!-- Wrapper for slides -->
                 <div class="carousel-inner" style="height:calc(100% - 30px);">
                     <div class="item active " style="background: #16a085;height: 100%">
                         <img class="center-block"src="http://placehold.it/1200x500/16a085/ffffff&text=Import Graphs">
@@ -148,7 +150,6 @@
                                 Upload graphs from Database or Upload your graph file(CSV and Excel are currently supported)</p>
                         </div>
                     </div>
-                    <!-- End Item -->
                     <div class="item" style="background:  #e67e22;height:100%;">
                         <img class="center-block" src="http://placehold.it/1200x500/e67e22/ffffff&text=Add View">
                         <div class="carousel-caption">
@@ -157,7 +158,6 @@
                                 After you add graphs to Bioverto , click on Add View above to view graph in different Layout</p>
                         </div>
                     </div>
-                    <!-- End Item -->
                     <div class="item" style="background: #2980b9;height:100%;">
                         <img class="center-block" src="http://placehold.it/1200x500/2980b9/ffffff&text=Feedback">
                         <div class="carousel-caption">
@@ -166,7 +166,6 @@
                                 This Site is in its early stage.Please report bugs and provide feedback. Your feedback is crucial for us.</p>
                         </div>
                     </div>
-                    <!-- End Item -->
                     <div class="item" style="background: #8e44ad;height:100% ;">
                         <img class="center-block" src="http://placehold.it/1200x500/8e44ad/ffffff&text=Videos">
                         <div class="carousel-caption">
@@ -176,9 +175,8 @@
                                 Coming Soon...</p>
                         </div>
                     </div>
-                    <!-- End Item -->
                 </div>
-                <!-- End Carousel Inner -->
+                
                 <ul class="nav nav-pills nav-justified">
                     <li data-target="#myCarousel" data-slide-to="0" class="active"><a href="#">Add Graphs</a></li>
                     <li data-target="#myCarousel" data-slide-to="1"><a href="#">View Graphs</a></li>
@@ -187,6 +185,7 @@
                 </ul>
             </div>
         </div>
+
     </div> 
     <div class="container navbar-fixed-bottom" id="footer" style="background: #333333">
         <p class="pull-left" style="color:#ffffff ">Bioverto 2014</p>

@@ -28,6 +28,7 @@ angular.module("MyApp")
                         temp += " <option value=''>None</option>";
                         temp += "</select>";
                         break;
+                        
                 }
                 temp += "</div><br> "
                 return temp;
