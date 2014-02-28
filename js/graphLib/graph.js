@@ -57,7 +57,8 @@ var Graph = function() {
     this.edgeFactory = new EdgeFactory();
     this.nodeAccessors = {};
     this.edgeAccessors = {};
-    this.connectedComponents = [];
+    this.connectedComponentsNodes = {};
+    this.connectedComponentsEdges = {};
     //	return graph;
 
 };

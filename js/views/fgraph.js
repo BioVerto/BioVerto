@@ -64,9 +64,7 @@ dc.fgraph = function(parent) {
             _indexFunction =function(d){
                 return d.data.index
             },
-            _sortDomElements = function(a,b){
-                console.log(a,b);
-            },
+            _theta = .9,
             _terminator; // not used, just to terminate list
 
     // partial redraw of node size
@@ -109,6 +107,7 @@ dc.fgraph = function(parent) {
         if (!_force)
             _force = d3.layout.force()
                     .charge(_fCharge)
+                    .theta(_theta)
                     .linkDistance(_linkDistance)
                     .size([_width, _height]);
 
@@ -240,7 +239,6 @@ dc.fgraph = function(parent) {
         changeNodeColor();
         changeNodeLabel();
         assignLocations();
-        _svg.selectAll("g, line").sort(_sortDomElements);
     }
     function changeNodeLabel() {
          _node.selectAll("text")

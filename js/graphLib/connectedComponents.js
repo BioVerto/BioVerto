@@ -14,12 +14,18 @@
                 components.link(g.edges[i].source.data[f], g.edges[i].target.data[f]);
             }
 
-            g.connectedComponents = {};
+            g.connectedComponentsNodes = {};
             for (i in g.nodes) {
                 var groupId = components.find(g.nodes[i].data[f]);
-                g.connectedComponents[groupId] = g.connectedComponents[groupId] || [];
-                g.connectedComponents[groupId].push(g.nodes[i]);
+                g.connectedComponentsNodes[groupId] = g.connectedComponentsNodes[groupId] || [];
+                g.connectedComponentsNodes[groupId].push(g.nodes[i]);
                 g.nodes[i].data[f] = groupId;
+            }
+             g.connectedComponentsEdges = {};
+             for (i in g.edges) {
+                var groupId = g.edges[i].source.data[f];
+                g.connectedComponentsEdges[groupId] = g.connectedComponentsEdges[groupId] || [];
+                g.connectedComponentsEdges[groupId].push(g.edges[i]);
             }
         },
         nodeAccs: {

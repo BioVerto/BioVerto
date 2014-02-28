@@ -19,31 +19,33 @@ angular.module("MyApp")
                     };
                     scope.valChanged = function()
                     {
-
+                         scope.applyFilter($.merge($.merge([],scope.filters),[{name: scope.newOption, fn: scope.acessorFns['Node'][scope.newOption], operator: scope.newOperator, threshold: scope.thresVal, apply: true}]));
                     }
-                    scope.applyFilter = function()
+                    scope.applyFilter = function(filters)
                     {
+                        filters = filters||scope.filters;
                         var tempArr = [];
                         var argArr = [];
-                        for (i = 0; i < scope.filters.length; i++) {
-                            if (scope.filters[i].apply)
+                        for (i = 0; i <filters.length; i++) {
+                            if (filters[i].apply)
                             {
-                                tempArr.push(scope.filters[i]["operator"]);
-                                tempArr.push(scope.filters[i]["threshold"]);
-                                argArr.push(scope.filters[i]["fn"])
+                                tempArr.push(filters[i]["operator"]);
+                                tempArr.push(filters[i]["threshold"]);
+                                argArr.push(filters[i]["fn"])
+                                
                             }
                         }
                         var fn = generateFilterFunction(tempArr);
                         scope.view.filterFunction(function(d) {
-                            // console.log(fn); 
                             return fn.apply(this, argArr.concat(d.data));
                         });
-
+                        
                     }
                     scope.addFilter = function()
                     {
                         scope.filters.push({name: scope.newOption, fn: scope.acessorFns['Node'][scope.newOption], operator: scope.newOperator, threshold: scope.thresVal, apply: true})
-                        scope.applyFilter();
+                        scope.applyFilter(scope.filters);
+                        scope.newOption = "";
                     }
                 }
 

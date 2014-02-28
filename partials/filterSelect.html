@@ -1,6 +1,5 @@
 
-<div >
-    Hello World!!
+<div>
     <select ng-model="newOption" ng-options="key as key for (key,value) in acessorFns['Node']|functionFilter:'number'" ng-change="updateRange()">
     </select>
     <div ng-show="newOption">
