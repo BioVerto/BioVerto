@@ -8,6 +8,8 @@ angular.module("MyApp")
                     scope.rangeMin = 0;
                     scope.rangeMax = 10;
                     scope.filters = [];
+                    scope.newOption = "";
+                    scope.newOperator=scope.operators[4];
                     scope.updateRange = function()
                     {
                         var range = d3.extent(scope.view.nodeData(), function(d) {
@@ -19,7 +21,10 @@ angular.module("MyApp")
                     };
                     scope.valChanged = function()
                     {
-               //          scope.applyFilter($.merge($.merge([],scope.filters),[{name: scope.newOption, fn: scope.acessorFns['Node'][scope.newOption], operator: scope.newOperator, threshold: scope.thresVal, apply: true}]));
+                        if(scope.newOption!=="None")
+                        {
+                       scope.applyFilter($.merge($.merge([],scope.filters),[{name: scope.newOption, fn: scope.acessorFns['Node'][scope.newOption], operator: scope.newOperator, threshold: scope.thresVal, apply: true}]));
+                       }
                     }
                     scope.applyFilter = function(filters)
                     {
@@ -46,6 +51,7 @@ angular.module("MyApp")
                         scope.filters.push({name: scope.newOption, fn: scope.acessorFns['Node'][scope.newOption], operator: scope.newOperator, threshold: scope.thresVal, apply: true})
                         scope.applyFilter(scope.filters);
                         scope.newOption = "";
+                        scope.newOperator="<="
                     }
                 }
 

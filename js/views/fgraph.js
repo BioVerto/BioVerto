@@ -64,7 +64,7 @@ dc.fgraph = function(parent) {
             _indexFunction =function(d){
                 return d.data.index
             },
-            _theta = .9,
+            _theta = 0.8,
             _terminator; // not used, just to terminate list
 
     // partial redraw of node size
@@ -190,8 +190,6 @@ dc.fgraph = function(parent) {
                 .data(_edgeData.filter(function(d){return _filterFunction(d.target)&&_filterFunction(d.source)}))
                 .exit()
                 .transition()
-                .duration(1000)
-                .style("opacity", 0)
                 .remove();
         _newLinks = _svg.selectAll(".link")
                 .data(_edgeData.filter(function(d){return _filterFunction(d.target)&&_filterFunction(d.source)}))
@@ -212,8 +210,6 @@ dc.fgraph = function(parent) {
                 .data(_nodeData.filter(_filterFunction),_indexFunction)
                 .exit()
                 .transition()
-                .duration(1000)
-                .style("opacity", 0)
                 .remove();
                 
         _newNodes .append("circle")
