@@ -8,7 +8,6 @@ angular.module("MyApp")
                     scope.rangeMin = 0;
                     scope.rangeMax = 10;
                     scope.filters = [];
-                    scope.newOption = "";
                     scope.newOperator=scope.operators[4];
                     scope.updateRange = function()
                     {
@@ -19,11 +18,21 @@ angular.module("MyApp")
                         scope.rangeMax = range[1];
                         scope.thresVal = range[1];
                     };
+                    scope.optionChange = function()
+                    {
+                        if(scope.newOption!==''){scope.updateRange()}
+                        scope.valChanged();
+                    }
                     scope.valChanged = function()
                     {
-                        if(scope.newOption!=="None")
+                        console.log("here")
+                        if(scope.newOption!=="")
                         {
-                       scope.applyFilter($.merge($.merge([],scope.filters),[{name: scope.newOption, fn: scope.acessorFns['Node'][scope.newOption], operator: scope.newOperator, threshold: scope.thresVal, apply: true}]));
+                         scope.applyFilter($.merge($.merge([],scope.filters),[{name: scope.newOption, fn: scope.acessorFns['Node'][scope.newOption], operator: scope.newOperator, threshold: scope.thresVal, apply: true}]));
+                       }
+                       else
+                       {
+                           scope.applyFilter(scope.filters);
                        }
                     }
                     scope.applyFilter = function(filters)

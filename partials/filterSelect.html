@@ -1,10 +1,11 @@
 
 <div>
-    <select ng-model="newOption" ng-options="key as key for (key,value) in acessorFns['Node']|functionFilter:'number'" ng-change="updateRange()">
+    <select ng-model="newOption"  ng-options="key as key for (key,value) in acessorFns['Node']|functionFilter:'number'" ng-change="optionChange()">
+         <option value="">None</option>
+   
     </select>
-    <div ng-show="newOption">
-       <select ng-model="newOperator"  ng-options="o for o in operators">
-           <option value = None> None </option>
+    <div ng-show="newOption" >
+       <select ng-model="newOperator" ng-change="valChanged()" ng-options="o for o in operators">
     </select>
         <input ng-model="thresVal" ng-change="valChanged()" type="range" min="{{rangeMin}}"  max="{{rangeMax}}" value="rangeMax"><span >{{thresVal}}</span>
     </div>

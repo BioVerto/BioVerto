@@ -74,14 +74,14 @@ var generateFilterFunction = function (a)
         bodyStr+="aFn"+(i/2)+"(d)"+" "+a[i]+" "+a[i+1]+" && ";
     }
     bodyStr+="true;\"";
-    console.log(bodyStr);
+    //console.log(bodyStr);
     var argList="";
     for (i = 0; i < a.length; i+=2) {
         argList+="\"aFn"+(i/2)+"\",";
     }
     argList += "\"d\",";;
-    console.log(argList);
-    console.log("var fn= new Function("+argList+bodyStr+")");
+//    console.log(argList);
+//    console.log("var fn= new Function("+argList+bodyStr+")");
     eval("var fn= new Function("+argList+bodyStr+")")
     return fn;
 }
