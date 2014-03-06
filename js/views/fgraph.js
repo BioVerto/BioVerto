@@ -126,8 +126,12 @@ dc.fgraph = function(parent) {
                     .style("fill", "none")
                     .style("pointer-events", "all")
                     .call(d3.behavior.zoom().scaleExtent([.0625, 8]).on("zoom", zoom))
-
+            
             _svg = _svg.append("g");
+            _svg.append("g")
+                    .attr("class", "links");
+            _svg.append("g")
+                    .attr("class", "nodes");
         }
 
         // wrap the info in graph so that force layout is happy
@@ -186,12 +190,12 @@ dc.fgraph = function(parent) {
        
          
          
-         _svg.selectAll(".link")
+         _svg.select(".links").selectAll(".link")
                 .data(_edgeData.filter(function(d){return _filterFunction(d.target)&&_filterFunction(d.source)}))
                 .exit()
                 .transition()
                 .remove();
-        _newLinks = _svg.selectAll(".link")
+        _newLinks = _svg.select(".links").selectAll(".link")
                 .data(_edgeData.filter(function(d){return _filterFunction(d.target)&&_filterFunction(d.source)}))
                 .enter().append("line")
                 .attr("class", "link")
@@ -201,12 +205,12 @@ dc.fgraph = function(parent) {
                 .style("stroke-width", function(d) {
                     return _edgeWidthAccessor(d.data);
                 });
-         _newNodes = _svg.selectAll(".node")
+         _newNodes = _svg.select(".nodes").selectAll(".node")
                 .data(_nodeData.filter(_filterFunction),_indexFunction)
                 .enter().append("g")
                 .attr("class", "node")
                 .call(drag)
-        _svg.selectAll(".node")
+        _svg.select(".nodes").selectAll(".node")
                 .data(_nodeData.filter(_filterFunction),_indexFunction)
                 .exit()
                 .transition()
