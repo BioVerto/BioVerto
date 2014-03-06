@@ -31,10 +31,11 @@ angular.module("MyApp")
                     return; // we got the first one
                 }
                 $scope.newViewIndex = 0;
+               
             }
             $scope.changeView = function(indx)
             {
-                $scope.active = indx;
+                $scope.active = parseInt(indx);
 
             }
             $scope.fileUpload = function(plugin)
