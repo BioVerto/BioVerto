@@ -250,5 +250,5 @@ for(var i=0;i<myEdges.length;i++)
                 }},
             nodeAccs: {
                 "MCL clustering": { type:"number", fct: g5.createAccessor(f)}
-            }});
+            },visible:true});
 }(g5));

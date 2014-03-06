@@ -40,6 +40,48 @@ loadFile = function(file, callback)
                 reader.readAsText(file);
             }
 var BioVertoPath = "http://datapath.cise.ufl.edu:1080/BioVerto-data";      
+var asanaPHPPath = "http://pranaowalekar.in/kartik/a.php";      
 /* Start the app */
 var app= angular.module("MyApp", ['ngSanitize','ui.bootstrap','ngGrid','colorpicker.module','ui.unique'])
 
+$(document).ready( function() {
+    $('#myCarousel').carousel({
+    	interval:   6000
+	});
+	
+	var clickEvent = false;
+	$('#myCarousel').on('click', '.nav a', function() {
+			clickEvent = true;
+			$('.nav-pills li').removeClass('active');
+			$(this).parent().addClass('active');		
+	}).on('slid.bs.carousel', function(e) {
+		if(!clickEvent) {
+			var count = $('.nav-pills').children().length -1;
+			var current = $('.nav-pills li.active');
+			current.removeClass('active').next().addClass('active');
+			var id = parseInt(current.data('slide-to'));
+			if(count === id) {
+				$('.nav-pills li').first().addClass('active');	
+			}
+		}
+		clickEvent = false;
+	});
+});
+var generateFilterFunction = function (a)
+{
+    var bodyStr = "\"return ";
+    for (i = 0; i < a.length; i+=2) {
+        bodyStr+="aFn"+(i/2)+"(d)"+" "+a[i]+" "+a[i+1]+" && ";
+    }
+    bodyStr+="true;\"";
+    //console.log(bodyStr);
+    var argList="";
+    for (i = 0; i < a.length; i+=2) {
+        argList+="\"aFn"+(i/2)+"\",";
+    }
+    argList += "\"d\",";;
+//    console.log(argList);
+//    console.log("var fn= new Function("+argList+bodyStr+")");
+    eval("var fn= new Function("+argList+bodyStr+")")
+    return fn;
+}

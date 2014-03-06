@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.link {
+  fill: none;
+  stroke: #0f0;
+  stroke-width: 1.5px;
+}
+
+#msgType2 {
+  fill: green;
+}
+
+.link.msgType2 {
+  stroke: green;
+}
+
+.link.resolved {
+  stroke-dasharray: 0,2 1;
+}
+
+circle {
+  fill: #f00;
+  stroke: #0f0;
+  stroke-width: 1px;
+}
+
+text {
+  font: 15px sans-serif;
+  pointer-events: none;
+  text-shadow: 0 1px 0 #00f, 1px 0 0 #00f, 0 -1px 0 #00f, -1px 0 0 #00f;
+}
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"> </script>
+<script>
+var links = [
+	{source: "a", target: "b", type: "msgType2"},
+	{source: "a", target: "c", type: "msgType2"},
+	{source: "b", target: "c", type: "msgType2"},
+	{source: "c", target: "d", type: "msgType2"},
+	{source: "d", target: "e", type: "msgType2"},
+	{source: "e", target: "f", type: "msgType2"},
+	{source: "e", target: "g", type: "msgType2"},
+	{source: "e", target: "h", type: "msgType2"},
+	{source: "f", target: "h", type: "msgType2"},
+	{source: "g", target: "h", type: "msgType2"},
+	{source: "i", target: "k", type: "msgType2"},
+	{source: "j", target: "k", type: "msgType2"},
+	{source: "k", target: "l", type: "msgType2"},
+	{source: "j", target: "l", type: "msgType2"}
+];
+
+var nodes = {};
+
+// Compute the distinct nodes from the links.
+links.forEach(function(link) {
+  link.source = nodes[link.source] || (nodes[link.source] = {name: link.source});
+  link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
+});
+
+var width = 1250,
+    height = 730;
+
+var lnkdist = 100;
+var chrgval = -1000;
+
+var force = d3.layout.force()
+    .nodes(d3.values(nodes))
+    .links(links)
+    .size([width, height])
+    .linkDistance(lnkdist)
+    .charge(chrgval)
+	.on("tick", tick)
+    .start();
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+// Per-type markers, as they don't inherit styles.
+svg.append("defs").selectAll("marker")
+    .data(["msgType1", "msgType2", "resolved"])
+  .enter().append("marker")
+    .attr("id", function(d) { return d; })
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 15)
+    .attr("refY", -1.5)
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 6)
+    .attr("orient", "auto")
+  .append("path")
+    .attr("d", "M0,-5L10,0L0,5");
+
+var path = svg.append("g").selectAll("path")
+    .data(force.links())
+  .enter().append("path")
+    .attr("class", function(d) { return "link " + d.type; })
+    .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });
+
+var circle = svg.append("g").selectAll("circle")
+    .data(force.nodes())
+  .enter().append("circle")
+    .attr("r", 6)
+    .call(force.drag);
+
+var text = svg.append("g").selectAll("text")
+    .data(force.nodes())
+  .enter().append("text")
+    .attr("x", 8)
+    .attr("y", ".31em")
+    .text(function(d) { return d.name; });
+
+// Use elliptical arc path segments to doubly-encode directionality.
+function tick() {
+  path.attr("d", linkArc);
+  circle.attr("transform", transform);
+  text.attr("transform", transform);
+}
+
+function linkArc(d) {
+  var dx = d.target.x - d.source.x,
+      dy = d.target.y - d.source.y,
+      dr = 3*Math.sqrt(dx * dx + dy * dy);
+  return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+}
+
+function transform(d) {
+  return "translate(" + d.x + "," + d.y + ")";
+}
+
+
+var fs = require('fs');
+
+function readLines(input, func) {
+  var remaining = '';
+
+  input.on('data', function(data) {
+    remaining += data;
+    var index = remaining.indexOf('\n');
+    while (index > -1) {
+      var line = remaining.substring(0, index);
+      remaining = remaining.substring(index + 1);
+      func(line);
+      index = remaining.indexOf('\n');
+    }
+  });
+
+  input.on('end', function() {
+    if (remaining.length > 0) {
+      func(remaining);
+    }
+  });
+}
+
+function func(data) {
+  document.write('Line: ' + data);
+}
+
+var input = fs.createReadStream('file:///C:/Users/hp/Desktop/weed/DOS/js/d3/input.json');
+readLines(input, func);
+
+/*function readTextFile("file:///C:/Users/hp/Desktop/weed/DOS/js/d3/input.json")
+{
+    var rawFile = new XMLHttpRequest();
+	//var allText;
+    rawFile.open("GET", file, true);
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState == 4)
+        {
+            if(rawFile.status == 200 || rawFile.status == 0)
+            {
+                var allText = rawFile.responseText;
+                alert(allText);
+            }
+        }
+    };
+    rawFile.send(null);
+}*/
+
+</script>

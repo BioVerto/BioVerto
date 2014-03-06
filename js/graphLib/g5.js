@@ -30,10 +30,19 @@ g5.addAlgoPlugin = function(obj) {
     return g5;
 };
 // function to list available algorithms
-g5.listAlgorithms = function(){
+g5.listAlgorithms = function() {
     var rez = [];
     for (var alg in g5.algoPlugins)
-        rez.push(alg);
+    {
+        if(typeof g5.algoPlugins[alg].visible === undefined)
+        {
+            g5.algoPlugins[alg].visible = true;
+        }
+        if (g5.algoPlugins[alg].visible)
+        {
+            rez.push(alg);
+        }
+    }
     return rez;
 };
 
@@ -60,6 +69,7 @@ g5.addIOPlugin = function(name, inputFct, outputFct) {
 g5.createGraph = function(name) {
     if (g5.graphs[name] !== undefined) {
         codingError("A graph with the name " + name + " is already present. Ignoring");
+      // delete g5.graphs[name];
         return;
     }
 
@@ -108,6 +118,10 @@ g5.loadGraphFromObjArray = function(data, graphName, source, target,directed)
     source = source || "source";
     target = target || "target";
     var graph = g5.createGraph(graphName);
+    if(!graph)
+    {
+        return g5.graphs[graphName];
+    }
     data.forEach(function(d) {
         // assuming that source and target columns are defined
         var s = d[source];
@@ -117,9 +131,11 @@ g5.loadGraphFromObjArray = function(data, graphName, source, target,directed)
         graph.addEdge(s, t, d,directed);
     });
     graph.addInitialAccFunctions();
-    g5.applyAlgorithm(graph,"Degree Centrality");
-    g5.applyAlgorithm(graph,"Uniprot Data");
     
+    g5.applyAlgorithm(graph,"Degree Centrality");
+    
+    g5.applyAlgorithm(graph,"Uniprot Data");
+    g5.applyAlgorithm(graph,"Connected Components");
     return graph;
 };
 
@@ -141,7 +157,9 @@ g5.listGraphs = function()
 
     for (var name in g5.graphs)
     {
+          
         result.push(name);
+        
     }
     return result;
 };

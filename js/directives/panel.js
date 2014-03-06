@@ -7,7 +7,8 @@ angular.module("MyApp")
                     layout: "=",
                     heading: "=",
                     activeindex: "=",
-                    graphName: "="
+                    graphName: "=",
+                    removefn:"&"
                 },
                 templateUrl: "./partials/panel.html",
                 transclude: true,
@@ -18,22 +19,23 @@ angular.module("MyApp")
                     scope.alertText = "";
                     scope.alertType = "info";
                     scope.algorithmList = g5.listAlgorithms();
+                    
                     scope.runAlgo = function(name)
                     {
                         scope.alertBox("Runnning Algorithm","warning");
                         scope.alertBox("Algorithm Complete","success");
-                        
                         g5.applyAlgorithm(g5.getGraph(scope.graphName), name);
                         scope.refreshSidebar();
                     }
                     scope.highlightNode = function(nodenum)
                     {
-                        scope.view.highlightNode(nodenum);
+                       // scope.view.highlightNode(nodenum);
+                       scope.view.filterFunction(function(d,i){return true;});//function(d,i){console.log(d);console.log(d.index===1||d.index===0);return d.index===1||d.index===0;});
                     }
                     scope.refreshSidebar = function()
                     {
                         scope.acessorFns = {Node: scope.graph.listNodeAccessors(), Edge: scope.graph.listEdgeAccessors()};
-
+                        
                     }
                     scope.viewGraph = function(graphName)
                     {
@@ -43,13 +45,25 @@ angular.module("MyApp")
                         }
                         scope.heading = scope.graphName;
                         scope.graph = g5.getGraph(scope.graphName);
-                        scope.refreshView();
+                        scope.view = viewProvider.getView(scope.layout);
+                        scope.view.init("#graphNumber" + scope.index, scope.graph.getData(), scope.width, scope.height);
+                        scope.refreshSidebar();
+                       
                         scope.controls = componentGenerator.generateSidebar(configurationService.getConfig(scope.layout), scope.acessorFns);//,graphExecutionEngine.listNodeAccessors(scope.graphName),graphExecutionEngine.EdgeAccessors());
-
+                       
+                    };
+                    scope.cloneView = function()
+                    {
+                        console.log("ToDo Clone")
                     }
                     scope.removeView = function()
                     {
-                        scope.$parent.$parent.removeView(scope.index);
+                        scope.removefn({index:scope.index});
+                       
+                    }
+                    scope.filterFunction=function()
+                    {
+                        
                     }
                     scope.colorAcessorGen = function(color)
                     {
@@ -67,29 +81,13 @@ angular.module("MyApp")
                         // TODO: add an else with a coding error
 
                     }
-
-                    scope.refreshView = function()
-                    {
-                        if (scope.view !== undefined)
-                        {
-                            scope.view.destroy();
-                            delete scope.view;
-                        }
-                        scope.view = viewProvider.getView(scope.layout);
-                        scope.view.init("#graphNumber" + scope.index, scope.graph.getData(), scope.width, scope.height);
-                        scope.refreshSidebar();
-
-                    };
                     scope.getAcessorFunction = function(tab, name)
                     {
                         var temp = scope.acessorFns[tab][name];
                         return temp;
                     }
 
-                    scope.updateMenu = function() {
-                        scope.listGraphs = g5.listGraphs();
-
-                    };
+                   
                     scope.setActive = function() {
                         scope.$parent.$parent.active = scope.index;
                     };
@@ -109,15 +107,7 @@ angular.module("MyApp")
                         scope.alertShow = true;
                         scope.alertText = message;
                         scope.alertType = type;
-                    }
-                    scope.$watch('$parent.$parent.active',function()
-                    {
-                        if(scope.activeindex === scope.index)
-                        {
-                          
-                            $timeout(function(){bringFront($(this), '.viewWindow')},0);
-                        }
-                    });
+                    }   
                     if (scope.graphName)
                     {
                         // now visualize the graph

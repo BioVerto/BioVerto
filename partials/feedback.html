@@ -1,0 +1,32 @@
+<div class="modal-dialog">
+    <div class="modal-header">
+        <h3>Bug Report/Feedback </h3>
+    </div>
+    <div class="modal-body">
+        <div >
+        <a class="span4">Image:</a>
+         <image class="span3"id="snippetimg" src="">
+        </div>
+            <div>
+            <a class="pull-left" > Name</a>
+            <input type="text" class="pull-right" ng-model="userName" ng-change="changedUserName(userName)"  placeholder="Name">
+            <br>
+            <br>
+            <a class="pull-left">Email:</a>
+            <input type="text" class="pull-right"ng-model="eid" ng-change="changedEmail(eid)"  placeholder="Email Id">
+            <br>
+            <br>
+            <a class="pull-left">Bug/Feature Description:</a>
+            <textarea rows="4" cols="50" ng-model="details" class="pull-right" ng-change="changedDetails(details)"></textarea>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>   
+            
+    </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-disabled="!(details&&eid&&userName)" ng-click="submitFeedback()">Submit Feedback</button>
+            <button class="btn btn-warning"  ng-click="cancel()">Cancel</button>
+        </div>
+    </div>

@@ -11,24 +11,14 @@
                     if (g.nodes[rows[i][0]] !== undefined)
                     {   
                         g.nodes[rows[i][0]].data[f1] = rows[i][1];
-                        g.nodes[rows[i][0]].data[f2] = rows[i][2];
-                        g.nodes[rows[i][0]].data[f3] = rows[i][3];
+                        g.nodes[rows[i][0]].data[f2] = parseInt(rows[i][2]);
+                        g.nodes[rows[i][0]].data[f3] = parseInt(rows[i][3]);
                     }   
                 }
                 for (var i in g.nodes) {
-                        if(g.nodes[i].data[f1] ===undefined)
-                        {
-                            g.nodes[i].data[f1] = "";
-                        }
-                        if(g.nodes[i].data[f2] ===undefined)
-                        {
-                            g.nodes[i].data[f2] = 1;
-                        }
-                        if(g.nodes[i].data[f3] ===undefined)
-                        {
-                            g.nodes[i].data[f3] =1;
-                        }
-                        
+                    g.nodes[i].data[f1] = g.nodes[i].data[f1] || "";
+                    g.nodes[i].data[f2] = g.nodes[i].data[f2] || 1;  
+                    g.nodes[i].data[f3] = g.nodes[i].data[f3] || 1;
                 }
             }
             );
@@ -37,6 +27,6 @@
             "Name": {type: "character", fct: g5.createAccessor(f1)},
             "Sequence Length": {type: "number", fct: g5.createAccessor(f2)},
             "GO Terms": {type: "number", fct: g5.createAccessor(f3)}
-        }
+        },visible:false
     });
 }(g5));

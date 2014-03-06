@@ -22,6 +22,7 @@
     <script src="js/script.js"></script>
     <script src="js/directives/compile.js"></script>
     <script src="js/directives/panel.js"></script>
+    <script src="js/directives/filterSelect.js"></script>
     <script src="js/factory/d3.js"></script>
     <script src="js/libs/colorpicker/bootstrap-colorpicker-module.js"></script>
     <script src="js/libs/d3.v3.min.js" charset="utf-8"></script>
@@ -42,83 +43,156 @@
     <script src="js/graphLib/mcl.js"></script>
     <script src="js/graphLib/betweenness.js"></script>
     <script src="js/graphLib/closeness.js"></script>
-    <script src="js/graphLib/uniprotPropertyAlgorithm.js"></script>
-   
+	<script src="js/graphLib/uniprotPropertyAlgorithm.js"></script>
+    <script src="js/graphLib/connectedComponents.js"></script>
     <script src="js/controllers/main.js"></script>
     <script src="js/controllers/modalControllers/csv.js"></script>
     <script src="js/controllers/modalControllers/mintFullNetworks.js"></script>
     <script src="js/controllers/modalControllers/mintPathways.js"></script>
     <script src="js/controllers/modalControllers/contactUs.js"></script>
-    
+    <script src="js/controllers/modalControllers/feedback.js"></script>
+
+    <script src="js/libs/bugReport/select.js"></script>
+    <script src="js/libs/rasterizeHTML/html2canvas.js"></script>
+    <script src="js/libs/rasterizeHTML/canvg.js"></script>
+    <script src="js/libs/unionfind/index.js"></script>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" >
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" type="text/css" href="css/ng-grid.min.css">
     <link rel="stylesheet" type="text/css" href="css/colorpicker.css">
     <link rel="stylesheet" type="text/css" href="css/ui-lightness/jquery-ui-1.10.4.custom.min.css">
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 
 </head>
-<body ng-app="MyApp" style="padding-top: 50px;"  ng-controller="mainController">
-
-    <div class="navbar navbar-fixed-top navbar-inverse" style="margin-bottom: 0px !important; padding-bottom: 0px" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button> <a class="navbar-brand" href="#">BioVerto</a>
+<body ng-app="MyApp" style="padding-top: 50px;"  ng-controller="mainController" >
+    <div id="maincontent">
+        <div class="navbar navbar-fixed-top navbar-inverse" style="margin-bottom: 0px !important; padding-bottom: 0px" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button> <a class="navbar-brand" href="#">BioVerto</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Home</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Upload File<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" ng-click="fileUpload('csv')">Import CSV</a></li>
+                                <li><a href="#" ng-click="fileUpload('xls')">Import Excel(XLS)</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Upload From Database<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" ng-click="databaseDownload('mintPathways')">MINT Pathways</a></li>
+                                <li><a href="#" ng-click="databaseDownload('mintFullNetworks')">MINT Full Networks</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add View <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-submenu">
+                                    <a href="#">Force Layout View</a>
+                                    <ul class="dropdown-menu">
+                                        <li ng-repeat="value in graphList">
+                                            <a href="#"ng-click="addView('force',value)">{{value}}</a>
+                                        </li>
+                                        <li ng-show="graphList.length==0"><a>No Graphs Uploaded</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#">Circular Layout View</a>
+                                    <ul class="dropdown-menu">
+                                        <li ng-repeat="value in graphList">
+                                            <a href="#"ng-click="addView('circular',value)">{{value}}</a>
+                                        </li>
+                                          <li ng-show="graphList.length==0"><a>No Graphs Uploaded</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#">Chord Layout View</a>
+                                    <ul class="dropdown-menu">
+                                        <li ng-repeat="value in graphList">
+                                            <a href="#"ng-click="addView('chord',value)">{{value}}</a>
+                                        </li>
+                                          <li ng-show="graphList.length==0"><a>No Graphs Uploaded</a></li>
+                                    </ul>
+                                </li>
+                               </ul>
+                        </li>
+                        <li><a href="#" ng-click="contactUs()">Contact Us</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Upload File<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#" ng-click="fileUpload('csv')">Import CSV</a></li>
-                            <li><a href="#" ng-click="fileUpload('xls')">Import Excel(XLS)</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Upload From Database<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#" ng-click="databaseDownload('mintPathways')">MINT Pathways</a></li>
-                            <li><a href="#" ng-click="databaseDownload('mintFullNetworks')">MINT Full Networks</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add View <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#" ng-click="addView('force')">Force Layout View</a></li>
-                            <li><a href="#" ng-click="addView('circular')">Circular Layout View</a></li>
-                            <li><a href="#" ng-click="addView('chord')">Chord Layout View</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#" ng-click="contactUs()">Contact Us</a>
-                    </li>
+        </div>
+        <div class="collapse navbar-collapse center-block">
+            <div >
+                <div ng-repeat="(index, view) in views" class=" btn btn-sm-nopad" >
+                    <h4  href="#" ng-click="changeView(view.indx)"><span ng-class="{'label label-primary': (active === view.indx), 'label label-default': (active !== view.indx)} " >{{view.title}} - {{view.layout}}<span href="#" ng-click="removeView(view.indx)" class="glyphicon glyphicon-remove-circle" style="padding-left: 5;" ></span></span></h4>
+                </div>
+
+            </div>
+        </div>
+        <div  ng-repeat="(index, view) in views" style="position:absolute">
+            <panel activeindex=active layout = view.layout index =view.indx heading=view.title graph-name=view.graphName removefn= "removeView(index)"href="#"></panel>
+        </div>
+        <div ng-show="newViewIndex == 0" style="height:calc(100% - 30px);">
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner" style="height:calc(100% - 30px);">
+                    <div class="item active " style="background: #16a085;height: 100%">
+                        <img class="center-block"src="http://placehold.it/1200x500/16a085/ffffff&text=Import Graphs">
+                        <div class="carousel-caption ">
+                            <h3>Add Graphs to Bioverto</h3>
+                            <p>
+                                Upload graphs from Database or Upload your graph file(CSV and Excel are currently supported)</p>
+                        </div>
+                    </div>
+                    <div class="item" style="background:  #e67e22;height:100%;">
+                        <img class="center-block" src="http://placehold.it/1200x500/e67e22/ffffff&text=Add View">
+                        <div class="carousel-caption">
+                            <h3>View Graphs</h3>
+                            <p>
+                                After you add graphs to Bioverto , click on Add View above to view graph in different Layout</p>
+                        </div>
+                    </div>
+                    <div class="item" style="background: #2980b9;height:100%;">
+                        <img class="center-block" src="http://placehold.it/1200x500/2980b9/ffffff&text=Feedback">
+                        <div class="carousel-caption">
+                            <h3>Use the Feedback button below</h3>
+                            <p>
+                                This Site is in its early stage.Please report bugs and provide feedback. Your feedback is crucial for us.</p>
+                        </div>
+                    </div>
+                    <div class="item" style="background: #8e44ad;height:100% ;">
+                        <img class="center-block" src="http://placehold.it/1200x500/8e44ad/ffffff&text=Videos">
+                        <div class="carousel-caption">
+                            <h3>
+                                Video Tutorial</h3>
+                            <p>
+                                Coming Soon...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <ul class="nav nav-pills nav-justified">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"><a href="#">Add Graphs</a></li>
+                    <li data-target="#myCarousel" data-slide-to="1"><a href="#">View Graphs</a></li>
+                    <li data-target="#myCarousel" data-slide-to="2"><a href="#">Feedback</a></li>
+                    <li data-target="#myCarousel" data-slide-to="3"><a href="#">Videos</a></li>
                 </ul>
             </div>
         </div>
-    </div>
-    <div class="collapse navbar-collapse center-block">
-        <div class="btn-group">
-            <div ng-repeat="(index, view) in views" class="btn" >
-                <a  href="#" ng-click="changeView($index)" ng-class= "{active: ($index == active)}">{{view.title}}</a>
-            </div>
 
-        </div>
-    </div>
-    <div  ng-repeat="(index, view) in views" style="position:absolute">
-        <panel activeindex=active layout = view.layout index =view.indx heading=view.title graph-name=view.graphName href="#"></panel>
-    </div>
-<!--     <div ng-show="!jQuery.isEmptyObject(views)"> -->
-
-<!-- </div> -->
-    <div class="container">
-        <footer>
-            <p>&copy;BioVerto 2014</p>
-        </footer>
+    </div> 
+    <div class="container navbar-fixed-bottom" id="footer" style="background: #333333">
+        <p class="pull-left" style="color:#ffffff ">Bioverto 2014</p>
+        <li> <button class="btn btn-primary btn-sm " ng-disabled="bugreportDisable" ng-click="reportBug()">Bug Report /Feature Request</button>           
+        <alert ng-show="alertShow" style="padding-bottom: 2px;padding-top: 2px;padding-left: 2px;padding-right: 15px; margin-bottom: 0px;" class='alert alert-success' close="alertClose()">Select Element and Click to Report Bug! or Press Escape to cancel</alert>
     </div>
 </body>
-
+<!--type ="success" style="padding-bottom: 2px;padding-top: 2px;padding-left: 2px;padding-right: 15px; margin-bottom: 0px;"--> 
 </html>
