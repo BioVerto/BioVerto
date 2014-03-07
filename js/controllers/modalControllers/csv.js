@@ -9,8 +9,8 @@
                 }
                 $scope.ok = function(graphName) {
                     g5.loadGraphFromObjArray($scope.objArr, graphName, $scope.source, $scope.target);
-                    $modalInstance.close();
-                }
+                    $modalInstance.close({layout: "force", graphName:graphName});
+                };
                 var myHeaderCellTemplate = '<div class="ngHeaderSortColumn {{col.headerClass}}"><div>{{col.displayName}} </div>' +
                         '<input type="radio" ng-model=\"$parent.$parent.$parent.$parent.source\" value="{{col.displayName}}">  Source <br/>' +
                         '<input type="radio" ng-model=\"$parent.$parent.$parent.$parent.target\" value="{{col.displayName}}"> Target <br/></div>';

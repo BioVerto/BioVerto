@@ -5,11 +5,11 @@ angular.module("MyApp")
            
             {controltype: "select",      datatype: "character", tab: "Node", label: "Node Label",      func: "nodeLabelAcessor",ignore:false},
             {controltype: "select",      datatype: "number",    tab: "Node", label: "Node Size",       func: "nodeSizeAcessor", ignore:false},
-            {controltype: "range",       datatype: "number",     tab:"Node",label: "Min node size",    func: "minNodeSize",    ignore:false,options:{min:5,max:30,default:10,step:1}},
-            {controltype: "range",       datatype: "number",     tab:"Node",label: "Max node size",    func: "maxNodeSize",    ignore:false,options:{min:10,max:30,default:15,step:1}},
+            {controltype: "range",       datatype: "number",     tab:"Node",label: "Min node size",    func: "minNodeSize",    ignore:false,options:{min:5,max:40,default:10,step:1}},
+            {controltype: "range",       datatype: "number",     tab:"Node",label: "Max node size",    func: "maxNodeSize",    ignore:false,options:{min:10,max:40,default:15,step:1}},
 	    {controltype: "select",      datatype: "number",     tab: "Node", label: "Color Attribute",func: "nodeColorAcessor", ignore:false},
-            {controltype: "colorpicker", datatype: "color",     tab: "Node", label: "Cold Color",func: "minNodeColor",      ignore:false,options:{default:"#9674cf"}},
-            {controltype: "colorpicker", datatype: "color",      tab: "Node", label: "Hot Color",func: "maxNodeColor",      ignore:false,options:{default:"#CC0033"}},            
+            {controltype: "colorpicker", datatype: "color",     tab: "Node", label: "Cold Color",      func: "minNodeColor",      ignore:false,options:{default:"#9674cf"}},
+            {controltype: "colorpicker", datatype: "color",      tab: "Node", label: "Hot Color",      func: "maxNodeColor",      ignore:false,options:{default:"#CC0033"}},            
 
             {controltype: "colorpicker", datatype: "color",     tab: "Edge", label: "Edge Color Range",func: "edgeColors",      ignore:false,options:{default:"blue"}},
             {controltype: "select",      datatype: "number",    tab: "Edge", label: "Edge Color ",     func: "edgeColorAccessor",ignore:false},
@@ -20,6 +20,7 @@ angular.module("MyApp")
             {controltype: "range",       datatype: "number",    tab:"Global",label: "Link Strength",   func: "strength",    ignore:false,options:{min:0,max:1,default:1,step:.01}},
             {controltype: "range",       datatype: "number",     tab:"Global",label: "Distance",       func: "distance",    ignore:false,options:{min:0,max:100,default:30,step:1}},
 	    
+            
         ];
 
         var circularLayoutControlsObj = [

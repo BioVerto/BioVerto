@@ -6,7 +6,7 @@ angular.module("MyApp")
             $scope.bugreportDisable = false;
             $scope.imgdata;
             $scope.imgSnippet;
-            
+            $scope.test = ["a","b","c"]
             $scope.graphList = [];
             $scope.addView = function(layout, graphName)
             {
@@ -18,7 +18,7 @@ angular.module("MyApp")
                 $scope.views[$scope.newViewIndex] = {layout: layout, title: "New View " + $scope.newViewIndex, graphName: graphName, indx: $scope.newViewIndex};
                 $scope.newViewIndex++;
             };
-
+            
             $scope.removeView = function(index)
             {
                 // First delete this view
@@ -31,10 +31,11 @@ angular.module("MyApp")
                     return; // we got the first one
                 }
                 $scope.newViewIndex = 0;
+               
             }
             $scope.changeView = function(indx)
             {
-                $scope.active = indx;
+                $scope.active = parseInt(indx);
 
             }
             $scope.fileUpload = function(plugin)
@@ -48,6 +49,7 @@ angular.module("MyApp")
                 });
                 modalInstance.result.then(function(newGraph) {
                     $scope.graphList.push(newGraph.graphName);
+                     $scope.addView(newGraph.layout, newGraph.graphName);
                 }, function() {
 
                     return;
@@ -75,7 +77,9 @@ angular.module("MyApp")
                     $scope.takeImage(e);
                     
                 }, function() {
-                    console.log("asd");
+                      $scope.bugreportDisable = false;
+                        $scope.alertShow = false;
+                        $scope.$digest();
                     $('html,body').css('cursor', 'auto');
                 })
             }
@@ -123,7 +127,7 @@ angular.module("MyApp")
                         ctx.beginPath();
 //                        var mouseX = e.clientX + document.body.scrollLeft;
 //                        var mouseY = e.clientY + document.body.scrollTop;
-                        var startingX = e.pageX - 10, startingY = e.pageY - 10;
+                        var startingX = e.pageX , startingY = e.pageY;
 
 
                         ctx.moveTo(startingX, startingY);

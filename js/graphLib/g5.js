@@ -69,8 +69,8 @@ g5.addIOPlugin = function(name, inputFct, outputFct) {
 g5.createGraph = function(name) {
     if (g5.graphs[name] !== undefined) {
         codingError("A graph with the name " + name + " is already present. Ignoring");
-       delete g5.graphs[name];
-       // return;
+      // delete g5.graphs[name];
+        return;
     }
 
     g5.graphs[name] = new Graph();
@@ -118,6 +118,10 @@ g5.loadGraphFromObjArray = function(data, graphName, source, target,directed)
     source = source || "source";
     target = target || "target";
     var graph = g5.createGraph(graphName);
+    if(!graph)
+    {
+        return g5.graphs[graphName];
+    }
     data.forEach(function(d) {
         // assuming that source and target columns are defined
         var s = d[source];

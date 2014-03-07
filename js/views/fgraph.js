@@ -12,7 +12,7 @@ dc.fgraph = function(parent) {
                 bottom: 0,
                 left: 0
             },
-            _nodeData, // current data used by node
+    _nodeData, // current data used by node
             _edgeData, // current data used by edge
             _fCharge = -120, // charge parameter
             _nodeColorType = "cont", // is the coloring measure discrete? "cont" or "disc"
@@ -57,9 +57,14 @@ dc.fgraph = function(parent) {
             _width = 960,
             _height = 600,
             _displayNames = true, // should we display names
+            _filterFunction= function(d,i){return true;},//function(d,i){return true;},
             _dblclickHandler = function(d) { // handler for what happens under a dbouleclick
                 // do nothing
             },
+            _indexFunction =function(d){
+                return d.data.index
+            },
+            _theta = 0.8,
             _terminator; // not used, just to terminate list
 
     // partial redraw of node size
@@ -75,7 +80,7 @@ dc.fgraph = function(parent) {
                     return _nodeSizeScale(_nodeSizeAccessor(d.data));
                 });
     }
-   
+
     // partial redraw for node colors
     function changeNodeColor() {
         if (_nodeColorType === "cont") {
@@ -97,19 +102,18 @@ dc.fgraph = function(parent) {
         }
     }
 
-    // we can initialize the links/nodes only when we have data
-    function renderData(graph) {
-
+   
+    function initData(graph) {
         if (!_force)
             _force = d3.layout.force()
                     .charge(_fCharge)
+                    .theta(_theta)
                     .linkDistance(_linkDistance)
                     .size([_width, _height]);
 
         function zoom() {
             _svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
         }
-
         if (!_svg) {
             _svg = d3.select(_parentID)
                     .append("svg")
@@ -122,10 +126,13 @@ dc.fgraph = function(parent) {
                     .style("fill", "none")
                     .style("pointer-events", "all")
                     .call(d3.behavior.zoom().scaleExtent([.0625, 8]).on("zoom", zoom))
-
+            
             _svg = _svg.append("g");
+            _svg.append("g")
+                    .attr("class", "links");
+            _svg.append("g")
+                    .attr("class", "nodes");
         }
-
 
         // wrap the info in graph so that force layout is happy
         _nodeData = graph.nodes.map(function(d, i) {
@@ -150,54 +157,12 @@ dc.fgraph = function(parent) {
                 .nodes(_nodeData)
                 .links(_edgeData)
                 .start();
-
-        _link = _svg.selectAll(".link")
-                .data(_edgeData)
-                .enter().append("line")
-                .attr("class", "link")
-                .style("stroke", function(d) {
-                    return _edgeColors(d.data);
-                })
-                .style("stroke-width", function(d) {
-                    return _edgeWidthAccessor(d.data);
-                });
-
-        var drag = _force.drag()
-                .on("dragstart", function(d) {
-                    d.fixed = true;
-                    d3.select(this).select("circle").classed("sticky", d.fixed);
-                });
-
-        _node = _svg.selectAll(".node")
-                .data(_nodeData)
-                .enter().append("g")
-                .attr("class", "node")
-                .call(drag)
-                ;
-
-        _node.append("circle")
-                .attr("class", "fgraph-circle")
-                .on("dblclick", function(d) {
-                            d.fixed = false;
-                    d3.select(this).classed("sticky", d.fixed);
-                    _force.start();
-                });
-        changeNodeSize();
-        changeNodeColor();
-
-        _node.append("title")
-                .text(function(d) {
-                    return d.name;
-                });
-
-        _node.append("text")
-                .attr("class", "fgraph-text")
-                .text(function(d) {
-                    return _nodeLabelAccessor(d);
-                });
-
-        _force.on("tick", function() {
-            _link.attr("x1", function(d) {
+         _force.on("tick", assignLocations);
+        
+    }
+    function assignLocations()
+    {
+        _link.attr("x1", function(d) {
                 return d.source.x;
             })
                     .attr("y1", function(d) {
@@ -213,40 +178,130 @@ dc.fgraph = function(parent) {
             _node.attr("transform", function(d) {
                 return "translate(" + d.x + "," + d.y + ")";
             });
-        });
     }
- _fgraph .highlightNode=function(nodenum)
+    function drawData(){
+
+        var drag = _force.drag()
+                .on("dragstart", function(d) {
+                    d.fixed = true;
+                    d3.select(this).select("circle").classed("sticky", d.fixed);
+                });
+
+       
+         
+         
+         _svg.select(".links").selectAll(".link")
+                .data(_edgeData.filter(function(d){return _filterFunction(d.target)&&_filterFunction(d.source)}))
+                .exit()
+                .transition()
+                .remove();
+        _newLinks = _svg.select(".links").selectAll(".link")
+                .data(_edgeData.filter(function(d){return _filterFunction(d.target)&&_filterFunction(d.source)}))
+                .enter().append("line")
+                .attr("class", "link")
+                .style("stroke", function(d) {
+                    return _edgeColors(d.data);
+                })
+                .style("stroke-width", function(d) {
+                    return _edgeWidthAccessor(d.data);
+                });
+         _newNodes = _svg.select(".nodes").selectAll(".node")
+                .data(_nodeData.filter(_filterFunction),_indexFunction)
+                .enter().append("g")
+                .attr("class", "node")
+                .call(drag)
+        _svg.select(".nodes").selectAll(".node")
+                .data(_nodeData.filter(_filterFunction),_indexFunction)
+                .exit()
+                .transition()
+                .remove();
+                
+        _newNodes .append("circle")
+                .attr("class", "fgraph-circle")
+                .on("dblclick", function(d) {
+                    d.fixed = false;
+                    d3.select(this).classed("sticky", d.fixed);
+                    _force.start();
+                });       
+        _newNodes.append("title")
+                .text(function(d) {
+                    return d.name;
+                });
+
+        _newNodes.append("text")
+                .attr("class", "fgraph-text")
+                .text(function(d) {
+                    return _nodeLabelAccessor(d);
+                });
+         _node = _svg.selectAll(".node");
+         _link = _svg.selectAll(".link");
+        changeNodeSize();
+        changeNodeColor();
+        changeNodeLabel();
+        assignLocations();
+    }
+    function changeNodeLabel() {
+         _node.selectAll("text")
+                .text(function(d) {
+                    return _nodeLabelAccessor(d.data);
+                });
+    }
+           
+    _fgraph.filterFunction = function(_)
     {
-        _svg.selectAll("circle").filter(function(d){return d.data.data.id===nodenum}).style("fill","red");
+        _filterFunction = _;
+        drawData();
     }
     _fgraph.init = function(parent, data, width, height) {
         _parentID = parent;
         _fgraph.graphView(data)
                 .resize(width, height);
+       drawData();
         return _fgraph;
     }
     _fgraph.destroy = function()
     {
         $(_parentID).empty();
-     }
+    }
+    _fgraph.graphView = function(_) {
+        if (!arguments.length)
+            return _graph;
+        _graph = _;
+        initData(_graph);
+        return _fgraph;
+    };
 
+    _fgraph.resize = function(width, height) {
+        _width = width;
+        _height = height;
+
+        if (_svg)
+            d3.select(_parentID)
+                    .select("svg")
+                    .attr("width", _width)
+                    .attr("height", _height)
+                    .select("rect")
+                    .attr("width", _width)
+                    .attr("height", _height)
+                    ;
+
+        if (_force)
+            _force.size([width, height]).start();
+        return _fgraph;
+    };
+    _fgraph.nodeData = function()
+    {
+        return _nodeData;
+    }
+    _fgraph.highlightNode = function(nodenum)
+    {
+        _svg.selectAll("circle").filter(function(d) {
+            return d.data.data.id === nodenum
+        }).style("fill", "red");
+    }
     _fgraph.updateEgdeStyle = function(style, fn) {
         _link.style(style, fn);
     }
-    _fgraph.updateNodeStyle = function(style, fn) {
-        _node.selectAll("circle").style(style, fn);
-    }
-    _fgraph.updateNodeAttr = function(style, fn) {
-        _node.selectAll("circle").attr(style, fn);
-    }
-
-    _fgraph.doRedraw = function() {
-        //need to include jquery for following line to work
-        var parent = $(_parentID); //$(_parentID+"-inner").parent();
-        _width = parent.width() - _margins.left - _margins.right;
-        _height = parent.height() - _margins.top - _margins.bottom;
-    }
-
     // should we display names for nodes?
     _fgraph.displayNames = function(_) {
         if (!arguments.length)
@@ -303,12 +358,7 @@ dc.fgraph = function(parent) {
         return _fgraph;
     }
 
-    _fgraph.nodeColorAccessor = function(_) {
-        if (!arguments.length)
-            return _nodeColorAccessor;
-        _nodeColorAccessor = _;
-        return _fgraph;
-    };
+
 
     _fgraph.edgeColorAccessor = function(_) {
         if (!arguments.length)
@@ -325,56 +375,12 @@ dc.fgraph = function(parent) {
         return _fgraph;
     };
 
-    // Change/get data
-    _fgraph.graphView = function(_) {
+    _fgraph.nodeColorAccessor = function(_) {
         if (!arguments.length)
-            return _graph;
-        _graph = _;
-        renderData(_graph);
+            return _nodeColorAccessor;
+        _nodeColorAccessor = _;
         return _fgraph;
     };
-
-    _fgraph.resize = function(width, height) {
-        _width = width;
-        _height = height;
-
-        if (_svg)
-            d3.select(_parentID)
-                    .select("svg")
-                    .attr("width", _width)
-                    .attr("height", _height)
-                    .select("rect")
-                    .attr("width", _width)
-                    .attr("height", _height)
-                    ;
-
-        if (_force)
-            _force.size([width, height]).start();
-        return _fgraph;
-    };
-
-    _fgraph.minEdgeWidth = function(_) {
-        var range = _edgeWidthScale.range();
-        if (!arguments.length)
-            return range[0];
-
-        range[0] = _;
-        _edgeWidthScale.range(range);
-
-        return _fgraph;
-    };
-
-    _fgraph.maxEdgeWidth = function(_) {
-        var range = _edgeWidthScale.range();
-        if (!arguments.length)
-            return range[1];
-
-        range[1] = _;
-        _edgeWidthScale.range(range);
-
-        return _fgraph;
-    };
-
     _fgraph.nodeSizeAcessor = function(_) {
         _nodeSizeAccessor = (typeof _ === 'function') ? _ : function(d) {
             return _minNodeSize;
@@ -396,12 +402,10 @@ dc.fgraph = function(parent) {
 
     _fgraph.nodeLabelAcessor = function(_) {
         _nodeLabelAccessor = (typeof _ === 'function') ? _ : function(d) {
+            
             return "";
         };
-        _node.selectAll("text")
-                .text(function(d) {
-                    return _nodeLabelAccessor(d.data);
-                });
+        changeNodeLabel();
     };
 
     _fgraph.nodeColorAcessor = function(_) {
@@ -430,8 +434,8 @@ dc.fgraph = function(parent) {
 
     _fgraph.dblclickHandler = function(_) {
         _dblclickHandler = (typeof _ === 'function') ? _ :
-                function(d){};
- 
+                function(d) {
+                };
         return _fgraph;
     }
     return _fgraph;

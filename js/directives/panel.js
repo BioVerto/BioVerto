@@ -19,6 +19,7 @@ angular.module("MyApp")
                     scope.alertText = "";
                     scope.alertType = "info";
                     scope.algorithmList = g5.listAlgorithms();
+                    
                     scope.runAlgo = function(name)
                     {
                         scope.alertBox("Runnning Algorithm","warning");
@@ -28,7 +29,8 @@ angular.module("MyApp")
                     }
                     scope.highlightNode = function(nodenum)
                     {
-                        scope.view.highlightNode(nodenum);
+                       // scope.view.highlightNode(nodenum);
+                       scope.view.filterFunction(function(d,i){return true;});//function(d,i){console.log(d);console.log(d.index===1||d.index===0);return d.index===1||d.index===0;});
                     }
                     scope.refreshSidebar = function()
                     {
@@ -46,9 +48,10 @@ angular.module("MyApp")
                         scope.view = viewProvider.getView(scope.layout);
                         scope.view.init("#graphNumber" + scope.index, scope.graph.getData(), scope.width, scope.height);
                         scope.refreshSidebar();
+                       
                         scope.controls = componentGenerator.generateSidebar(configurationService.getConfig(scope.layout), scope.acessorFns);//,graphExecutionEngine.listNodeAccessors(scope.graphName),graphExecutionEngine.EdgeAccessors());
                        
-                    }
+                    };
                     scope.cloneView = function()
                     {
                         console.log("ToDo Clone")
@@ -57,6 +60,10 @@ angular.module("MyApp")
                     {
                         scope.removefn({index:scope.index});
                        
+                    }
+                    scope.filterFunction=function()
+                    {
+                        
                     }
                     scope.colorAcessorGen = function(color)
                     {
