@@ -6,24 +6,39 @@
  */
 
 
-
-
-
-
-
-(function(g5) {
-    var f = g5.newField(); 
-    g5.addAlgoPlugin({ name: "MCL clustering Algorithm", 
-    algo: function(g) {
  
-            for(var k in g.connectedComponentsNodes){   
-                var myEdges = g.connectedComponentsEdges[k]; 
-                var myNodes = g.connectedComponentsNodes[k]; 
-                    var n=myNodes.length;
+var mclTest= function ()
+{
+  var a=[[0,.25,.33,.33,0,0,0],[.33,0,.33,.33,.33,0,0],[.33,.25,0,.33,0,0,0],[.33,.25,.33,0,0,0,0],[0,.25,0,0,0,.5,.5],[0,0,0,0,.33,0,.5],[0,0,0,0,.33,.5,0]];
+ var table= mclStart(a,7);
+    
+  
+ 
+ if(table[0]==2 && table[1]==1 && table[2]==2 && table[3]==2 && table[4]==3 && table[5]==4 && table[6]==4  )
+ {
+     
+    return true;
+ }
+ else
+ {
+     return false;
+ }
+    
+};
+ /*
+     * @param {Graph Object} g
+     * @returns {function call} mcl
+     * @functionDescription:creates the adjecancy matrix for the given input of array of nodes and Edge array
+     */
+ function  mclMain(g)
+    {
+        var myNodes=g.listNodes();
+        var myEdges=g.listEdges();
+        var n=myNodes.length;
         var table= new Array(n);
     var input= new Array(n);
     for(var i=0;i<n;i++)
-   input[i]= new Int32Array(n);
+    input[i]= new Int32Array(n);
 
 for(var i=0;i<n;i++)
 {
@@ -33,8 +48,7 @@ for(var i=0;i<n;i++)
         {
                 input[i][j]=1;
         }
-        else
-         input[i][j]=0;
+        input[i][j]=0;
     }
 }
 
@@ -47,23 +61,16 @@ for(var i=0;i<n;i++)
 //create the adjecancy matrix for the graph
 for(var i=0;i<myEdges.length;i++)
 {
-    input[table[myEdges[i].source.data.id]][table[myEdges[i].target.data.id]]=1;
-    input[table[myEdges[i].target.data.id]][table[myEdges[i].source.data.id]]=1;
+    input[myEdges[i].source.data.id][myEdges[i].target.data.id]=1;
+    input[myEdges[i].target.data.id][myEdges[i].source.data.id]=1;
 }
-         var tab= mcl(input,n);
-          var ct=0;
-          for (var key in myNodes)  
-          { 
-          
-          myNodes[key].data[f] = tab[ct];
-          ct=ct+1;
-	 }
- }//end of component for loop
-          
-         
-         
-        function mcl(a,n)
-    {
+        
+      return  mclStart(input,n);
+        
+}//end of mclmain1
+    
+   function mclStart(a,n)
+ {
             
    
         
@@ -71,14 +78,14 @@ for(var i=0;i<myEdges.length;i++)
         while(count<8)
         {
             count++;
-			a= powerOfTwo(a,n);
-         }
-        return  makeClusters(a,n);
+          
+           a= powerOfTwo(a,n);           
+        }
+  print(a, n);
+   return makeClusters(a,n);
         
-  }
-
-
-
+ }
+   
 
 /*
      * @param {Float32Array} a
@@ -87,18 +94,17 @@ for(var i=0;i<myEdges.length;i++)
      * @functionDescription : Raise the power of the given matrix by two.
      * perform the infaltion step which will rearrage the matrix according to its cluster properties.
      */
-  
-   function makeClusters(a,n)
+  function makeClusters(a,n)
     {
-        var result=[];
-            result[result.length]=(a[0][0]).toFixed(2);
+                var result=new Array();
+            result[result.lengt]=(a[0][0]);
       
         for(var i=1;i<n;i++)
         {
                 var flag=false;  
             for(var j=0;j<result.length;j++)
             {
-                if(result[j]===(a[i][0]).toFixed(2))
+                if(result[j]===(a[i][0]))
                 {
                     flag=true;
                     break;
@@ -106,33 +112,35 @@ for(var i=0;i<myEdges.length;i++)
             }
             if(flag===false)
             {
-            result[result.length]=(a[i][0]).toFixed(2);
+            result[result.length]=(a[i][0]);
             }
         }
         
-          var table= new Int32Array(n);
+        var table= new Int32Array(n);
         
         for(var i=0;i<n;i++)
         {    
         for(var j=0;j<result.length;j++)
         {
-            if((a[i][0]).toFixed(2)===result[j])
+            if((a[i][0])===result[j])
             {
-                 table[i]=j+1;
-                
+               
+               table[i]=j+1;
+                console.log("Node "+i+" is in the cluster #"+(j+1));
                 break;
             }
         }
         }   
         
-        return table;
-            
+ 
+
+            return table;
     }
-
-//**********************End of Make Cluster*******************
-   
-
-  /*
+    
+    
+    
+    
+    /*
      * 
      * @param {Float32Array} a
      * @param {int} n
@@ -141,21 +149,20 @@ for(var i=0;i<myEdges.length;i++)
      * perform the infaltion step which will rearrage the matrix according to its cluster properties.
      */
     
-     function powerOfTwo(a,n)
+  function powerOfTwo(a,n)
     {
         
         var c1= new Array(n);
         for(var i=0;i<n;i++)
         {
-             c1[i]= new Float32Array(n);
+            c1[i]= new Float32Array(n);
             
         }
-      
-              var c= multiplyMatrix(a,a);
+         var c= multiplyMatrix(a,a);
               
 
          //inflation step
-        var sum=new  Float32Array(n);
+          var sum=new  Float32Array(n);
           
           for(var i=0;i<n;i++)
           {
@@ -180,46 +187,65 @@ for(var i=0;i<myEdges.length;i++)
         }
           
       a=c1;
-    
+     //   print(a,7);
        return c1;
     
          
        
     }
-
-//**********************End of PowerofTwo*******************
-
-
-
-
-   /*
+    
+    
+    
+    
+    
+     /*
      * @param {Float32Array} m1
      * @param {Float32Array} m2
      * @returns {Float32Array}
      * @functionDescription :Multiply given two matrices.
      */
-    
-     function multiplyMatrix(m1, m2) {
-    var result = [];
+      function multiplyMatrix(m1, m2) {
+    var result = new Array(m1.length);
     for(var j = 0; j < m2.length; j++) {
-        result[j] = [];
+        result[j] = new Float32Array(m1.length);
         for(var k = 0; k < m1[0].length; k++) {
             var sum = 0;
             for(var i = 0; i < m1.length; i++) {
                 sum += m1[i][k] * m2[j][i];
             }
-            result[j].push(sum);
+        
+            result[j][k]=(sum);
         }
     }
     return result;
 }
 
-//**********************End MultiplyMatrix*******************
-           
-    },  nodeAccs: {
-                "MCL clustering": { type:"number", fct: g5.createAccessor(f)}
-            },visible:true});
 
-       
-         
-}(g5));
+ /*
+     * @param {Float32Array} m1
+     * @param {Int} n
+     * @returns {void}
+     * @functionDescription :Prints the given matrix to console log.
+     */
+
+function  print( a, n)
+    {
+      
+        for(var i=0;i<n;i++)
+        {
+            console.log("\n");
+            for(var j=0;j<n;j++)
+            {
+             
+               //  BigDecimal bd= new BigDecimal(a[i][j]);
+               // a[i][j]= Double.parseDouble((bd.setScale(2, BigDecimal.ROUND_UP)).toString());
+                console.log(" "+(a[i][j]).toFixed(2));
+            }
+        }
+        console.log("\n\n\n\n");
+        
+      
+    }
+    
+    
+    
