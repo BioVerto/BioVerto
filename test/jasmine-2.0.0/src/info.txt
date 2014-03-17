@@ -1,0 +1,5 @@
+keep your source files in
+BioVerto/js/graphLib/
+
+put the jasmine Spec files in
+BioVerto/js/jasmine-2.0.0/spec/
