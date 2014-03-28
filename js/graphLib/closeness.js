@@ -26,7 +26,7 @@
 
 	function constructAdjacencyMatrix(currentNodes, currentEdges) { //no point in moving this function to graph.js since there's separate adjacency matrix for each component
             var nc = currentNodes.length;
-            var map = new Float32Array(nc);
+            var map = [];
             var adjMatrix = new Float32Array(nc*nc);
             for (var i = 0; i < nc; i++) {
                 map[currentNodes[i].data.id] = i;   //initialize the map with with temporary node indexes (actual node ids are chemical names)
@@ -56,11 +56,14 @@
     g5.addAlgoPlugin({
         name: "Closeness Centrality",
         algo: function(g) {
-            N = Object.keys(g.nodes).length
-            for(var k in g.connectedComponentsNodes){   //kth component/subgraph of the entire graph will henceforth be accessed as g.connectedComponentNodes[k]
-                var currentEdges = g.connectedComponentsEdges[k]; //g.connectedComponentsNodes is at the same level as g. To access subgraph, we're gonna have to replace all g's
-                var currentNodes = g.connectedComponentsNodes[k]; //... with something one level below it, that means replace g by g.connectedComponentsNodes[k]
-            	nc = currentNodes.length;
+            //N = Object.keys(g.nodes).length
+            for(var k in g.connectedComponentsNodes){   
+			
+                var currentEdges = g.connectedComponentsEdges[k]; 
+				
+                var currentNodes = g.connectedComponentsNodes[k];
+				
+				nc = currentNodes.length;
 				
 				var closenessVal = new Array(nc);
 				
@@ -74,7 +77,7 @@
 					for (j = 0; j < nc; j++){
 						sum1 += dist[(i*nc)+j];
 					}
-					sum1 = (1/sum1)*((nc*nc)/(N*N));				// normalization
+					sum1 = (1/sum1); 
 					closenessVal[i] = truncateDecimals(sum1,4);		// truncate to 4 decimal places
 				}
 				
