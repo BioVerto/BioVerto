@@ -41,7 +41,7 @@
 
         function constructAdjacencyMatrix(currentNodes, currentEdges) { //no point in moving this function to graph.js since there's separate adjacency matrix for each component
             var nc = currentNodes.length;
-            var map = new Float32Array(nc);
+            var map = [];
             var adjMatrix = new Float32Array(nc*nc);
             for (var i = 0; i < nc; i++) {
                 map[currentNodes[i].data.id] = i;   //initialize the map with with temporary node indexes (actual node ids are chemical names)
