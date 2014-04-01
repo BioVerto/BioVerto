@@ -19,8 +19,15 @@ dc.fgraph = function(parent) {
             _nodeColorScaleD = d3.scale.category20(), // colors to be used for nodes when nodeAccessor is discret
             _minNodeColor = "#9674cf",
             _maxNodeColor = "#CC0033",
-            _nodeColorScaleC = d3.scale.linear() // same for continous
+               _nodeColorScaleC = d3.scale.linear() // same for continous
             .range([_minNodeColor, _maxNodeColor])
+            .interpolate(d3.interpolateHcl),
+            _edgeColorType = "cont", // is the coloring measure discrete? "cont" or "disc"
+            _edgeColorScaleD = d3.scale.category20(), // colors to be used for nodes when nodeAccessor is discret
+            _minEdgeColor = "#9674cf",
+            _maxEdgeColor = "#CC0033",
+            _edgeColorScaleC = d3.scale.linear() // same for continous
+            .range([_minEdgeColor, _maxEdgeColor])
             .interpolate(d3.interpolateHcl),
             _edgeColors = d3.scale.category20(), // colors to be used for edges
             _nodeLabelAccessor = function(d) {
@@ -40,9 +47,15 @@ dc.fgraph = function(parent) {
             _nodeSizeScale = d3.scale.linear()
             .domain([_minNodeSize, _minNodeSize])
             .range([_minNodeSize, _maxNodeSize]),
+            _minEdgeWidth = 2,
+            _maxEdgeWidth = 10,
             _edgeWidthAccessor = function(d) { // edge color accessor
                 return 2;
-            }, // controlls the width of the link
+            },
+             _edgeWidthScale = d3.scale.linear()
+            .domain([_minEdgeWidth, _minEdgeWidth])
+            .range([_minEdgeWidth, _maxEdgeWidth]),       
+             // controlls the width of the link
             _weightAccessor = function(d) {
                 return 2;
             }, // controlls the weight of the node
@@ -80,7 +93,21 @@ dc.fgraph = function(parent) {
                     return _nodeSizeScale(_nodeSizeAccessor(d.data));
                 });
     }
-
+    function changeEdgeWidth() {
+        // recompute the normalization
+          var extent= d3.extent(_edgeData,
+                            function(d) {
+                                return _edgeWidthAccessor(d);
+                            })
+                            if(extent[0]==="-")
+                            {
+                               extent[0] = 0; 
+                            }
+        _edgeWidthScale.domain(extent);
+        _link.style("stroke-width", function(d) {
+                    return  _edgeWidthScale(_edgeWidthAccessor(d));
+                });
+    }
     // partial redraw for node colors
     function changeNodeColor() {
         if (_nodeColorType === "cont") {
@@ -98,6 +125,28 @@ dc.fgraph = function(parent) {
                     .style("fill", function(d) {
                         return _nodeColorScaleD(_nodeColorAccessor(d.data));
                     });
+
+        }
+    }
+   function changeEdgeColor() {
+        if (_edgeColorType === "cont") {
+          var extent= d3.extent(_edgeData,
+                            function(d) {
+                                return _edgeColorAccessor(d);
+                            })
+                            if(extent[0]==="-")
+                            {
+                               extent[0] = 0; 
+                            }
+           _edgeColorScaleC.domain( extent);
+            _link.style("stroke", function(d) {
+                    return _edgeColorScaleC(_edgeColorAccessor(d));
+                })
+                    
+        } else {
+             _link.style("stroke", function(d) {
+                    return _edgeColorScaleD(_edgeColorAccessor(d));
+                })
 
         }
     }
@@ -198,13 +247,8 @@ dc.fgraph = function(parent) {
         _newLinks = _svg.select(".links").selectAll(".link")
                 .data(_edgeData.filter(function(d){return _filterFunction(d.target)&&_filterFunction(d.source)}))
                 .enter().append("line")
-                .attr("class", "link")
-                .style("stroke", function(d) {
-                    return _edgeColors(d.data);
-                })
-                .style("stroke-width", function(d) {
-                    return _edgeWidthAccessor(d.data);
-                });
+                .attr("class", "link");
+                
          _newNodes = _svg.select(".nodes").selectAll(".node")
                 .data(_nodeData.filter(_filterFunction),_indexFunction)
                 .enter().append("g")
@@ -238,6 +282,8 @@ dc.fgraph = function(parent) {
         changeNodeSize();
         changeNodeColor();
         changeNodeLabel();
+        changeEdgeColor();
+        changeEdgeWidth();
         assignLocations();
     }
     function changeNodeLabel() {
@@ -364,6 +410,7 @@ dc.fgraph = function(parent) {
         if (!arguments.length)
             return _edgeColorAccessor;
         _edgeColorAccessor = _;
+         changeEdgeColor();
         return _fgraph;
     };
 
@@ -387,7 +434,12 @@ dc.fgraph = function(parent) {
         };
         changeNodeSize();
     };
-
+    _fgraph.edgeWidthAcessor = function(_) {
+        _edgeWidthAccessor = (typeof _ === 'function') ? _ : function(d) {
+            return _minEdgeWidth;
+        };
+        changeEdgeWidth();
+    };
     _fgraph.minNodeSize = function(_) {
         _minNodeSize = (typeof _ === 'number') ? _ : 5;
         _nodeSizeScale.range([_minNodeSize, _maxNodeSize]);
@@ -398,6 +450,17 @@ dc.fgraph = function(parent) {
         _maxNodeSize = (typeof _ === 'number') ? _ : 15;
         _nodeSizeScale.range([_minNodeSize, _maxNodeSize]);
         changeNodeSize();
+    };
+     _fgraph.minEdgeWidth = function(_) {
+        _minEdgeWidth = (typeof _ === 'number') ? _ : 2;
+        _edgeWidthScale.range([_minEdgeWidth, _maxEdgeWidth]);
+        changeEdgeWidth();
+    };
+
+    _fgraph.maxEdgeWidth = function(_) {
+        _maxEdgeWidth = (typeof _ === 'number') ? _ : 10;
+        _edgeWidthScale.range([_minEdgeWidth, _maxEdgeWidth]);
+        changeEdgeWidth();
     };
 
     _fgraph.nodeLabelAcessor = function(_) {
@@ -429,6 +492,29 @@ dc.fgraph = function(parent) {
         _maxNodeColor = (typeof _ === 'string') ? _ : "red";
         _nodeColorScaleC.range([_minNodeColor, _maxNodeColor]);
         changeNodeColor();
+        return _fgraph;
+    };
+        _fgraph.edgeColorAcessor = function(_) {
+        _edgeColorAccessor = (typeof _ === 'function') ? _ : function(d) {
+            return 1;
+        };
+        // if function and type defined is continous
+        _edgeColorType = (typeof _ === 'function' && _.returnType === "number") ? "cont" : "disc";
+        changeEdgeColor();
+        return _fgraph;
+    };
+
+    _fgraph.minEdgeColor = function(_) {
+        _minEdgeColor = (typeof _ === 'string') ? _ : "blue";
+        _edgeColorScaleC.range([_minEdgeColor, _maxEdgeColor]);
+        changeEdgeColor();
+        return _fgraph;
+    };
+
+    _fgraph.maxEdgeColor = function(_) {
+        _maxEdgeColor = (typeof _ === 'string') ? _ : "red";
+        _edgeColorScaleC.range([_minEdgeColor, _maxEdgeColor]);
+        changeEdgeColor();
         return _fgraph;
     };
 

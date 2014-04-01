@@ -11,8 +11,12 @@ angular.module("MyApp")
             {controltype: "colorpicker", datatype: "color",     tab: "Node", label: "Cold Color",      func: "minNodeColor",      ignore:false,options:{default:"#9674cf"}},
             {controltype: "colorpicker", datatype: "color",      tab: "Node", label: "Hot Color",      func: "maxNodeColor",      ignore:false,options:{default:"#CC0033"}},            
 
-            {controltype: "colorpicker", datatype: "color",     tab: "Edge", label: "Edge Color Range",func: "edgeColors",      ignore:false,options:{default:"blue"}},
+            {controltype: "select",      datatype: "number",    tab: "Edge", label: "Edge Size",       func: "edgeWidthAcessor", ignore:false},
+            {controltype: "range",       datatype: "number",     tab:"Edge",label: "Min Edge size",    func: "minEdgeWidth",    ignore:false,options:{min:2,max:10,default:2,step:1}},
+            {controltype: "range",       datatype: "number",     tab:"Edge",label: "Max Edge size",    func: "maxEdgeWidth",    ignore:false,options:{min:2,max:10,default:5,step:1}},
             {controltype: "select",      datatype: "number",    tab: "Edge", label: "Edge Color ",     func: "edgeColorAccessor",ignore:false},
+            {controltype: "colorpicker", datatype: "color",     tab: "Edge", label: "Cold Color",      func: "minEdgeColor",      ignore:false,options:{default:"#9674cf"}},
+            {controltype: "colorpicker", datatype: "color",      tab: "Edge", label: "Hot Color",      func: "maxEdgeColor",      ignore:false,options:{default:"#CC0033"}},            
             {controltype: "select",      datatype: "character", tab: "Edge", label: "Edge Text ",      func: "edgeTextAcessor", ignore:false},
 
           
