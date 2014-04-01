@@ -17,7 +17,7 @@ angular.module("MyApp")
             {controltype: "select",      datatype: "number",    tab: "Edge", label: "Edge Color ",     func: "edgeColorAccessor",ignore:false},
             {controltype: "colorpicker", datatype: "color",     tab: "Edge", label: "Cold Color",      func: "minEdgeColor",      ignore:false,options:{default:"#9674cf"}},
             {controltype: "colorpicker", datatype: "color",      tab: "Edge", label: "Hot Color",      func: "maxEdgeColor",      ignore:false,options:{default:"#CC0033"}},            
-            {controltype: "select",      datatype: "character", tab: "Edge", label: "Edge Text ",      func: "edgeTextAcessor", ignore:false},
+            {controltype: "select",      datatype: "character", tab: "Edge", label: "Edge Label ",      func: "edgeLabelAcessor", ignore:true},
 
           
             {controltype: "range",       datatype: "number",    tab:"Global",label: "Charge",          func: "charge",     ignore:false,options:{min:-200,max:10,default:-120,step:5}},

@@ -48,13 +48,28 @@ angular.module("MyApp")
                         scope.view = viewProvider.getView(scope.layout);
                         scope.view.init("#graphNumber" + scope.index, scope.graph.getData(), scope.width, scope.height);
                         scope.refreshSidebar();
-                       
+                        scope.numOptions = configurationService.getConfig(scope.layout).length;
+                        for(i =0;i<scope.numOptions;i++)
+                        {
+                            scope["P"+i] ={};
+                        }    
                         scope.controls = componentGenerator.generateSidebar(configurationService.getConfig(scope.layout), scope.acessorFns);//,graphExecutionEngine.listNodeAccessors(scope.graphName),graphExecutionEngine.EdgeAccessors());
                        
                     };
                     scope.cloneView = function()
                     {
-                        console.log("ToDo Clone")
+                        //console.log("ToDo Clone")
+                        if(scope.flg)
+                        {
+                             scope.view.resumeState(document.a );
+                             
+                        }
+                        else{
+                        document.a = scope.view.getState();
+                         
+                            scope.flg = true;
+                        }
+                        
                     }
                     scope.removeView = function()
                     {

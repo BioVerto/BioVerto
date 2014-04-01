@@ -19,7 +19,7 @@ dc.fgraph = function(parent) {
             _nodeColorScaleD = d3.scale.category20(), // colors to be used for nodes when nodeAccessor is discret
             _minNodeColor = "#9674cf",
             _maxNodeColor = "#CC0033",
-               _nodeColorScaleC = d3.scale.linear() // same for continous
+            _nodeColorScaleC = d3.scale.linear() // same for continous
             .range([_minNodeColor, _maxNodeColor])
             .interpolate(d3.interpolateHcl),
             _edgeColorType = "cont", // is the coloring measure discrete? "cont" or "disc"
@@ -52,10 +52,10 @@ dc.fgraph = function(parent) {
             _edgeWidthAccessor = function(d) { // edge color accessor
                 return 2;
             },
-             _edgeWidthScale = d3.scale.linear()
+            _edgeWidthScale = d3.scale.linear()
             .domain([_minEdgeWidth, _minEdgeWidth])
-            .range([_minEdgeWidth, _maxEdgeWidth]),       
-             // controlls the width of the link
+            .range([_minEdgeWidth, _maxEdgeWidth]),
+            // controlls the width of the link
             _weightAccessor = function(d) {
                 return 2;
             }, // controlls the weight of the node
@@ -66,15 +66,18 @@ dc.fgraph = function(parent) {
             _svg, // svg element
             _link, // links
             _node, // nodes
+            _linkLabels, //link Labels
             _graph = {}, // data to be displayed
             _width = 960,
             _height = 600,
             _displayNames = true, // should we display names
-            _filterFunction= function(d,i){return true;},//function(d,i){return true;},
+            _filterFunction = function(d, i) {
+                return true;
+            }, //function(d,i){return true;},
             _dblclickHandler = function(d) { // handler for what happens under a dbouleclick
                 // do nothing
             },
-            _indexFunction =function(d){
+            _indexFunction = function(d) {
                 return d.data.index
             },
             _theta = 0.8,
@@ -95,18 +98,18 @@ dc.fgraph = function(parent) {
     }
     function changeEdgeWidth() {
         // recompute the normalization
-          var extent= d3.extent(_edgeData,
-                            function(d) {
-                                return _edgeWidthAccessor(d);
-                            })
-                            if(extent[0]==="-")
-                            {
-                               extent[0] = 0; 
-                            }
+        var extent = d3.extent(_edgeData,
+                function(d) {
+                    return _edgeWidthAccessor(d);
+                })
+        if (extent[0] === "-")
+        {
+            extent[0] = 0;
+        }
         _edgeWidthScale.domain(extent);
         _link.style("stroke-width", function(d) {
-                    return  _edgeWidthScale(_edgeWidthAccessor(d));
-                });
+            return  _edgeWidthScale(_edgeWidthAccessor(d));
+        });
     }
     // partial redraw for node colors
     function changeNodeColor() {
@@ -128,30 +131,30 @@ dc.fgraph = function(parent) {
 
         }
     }
-   function changeEdgeColor() {
+    function changeEdgeColor() {
         if (_edgeColorType === "cont") {
-          var extent= d3.extent(_edgeData,
-                            function(d) {
-                                return _edgeColorAccessor(d);
-                            })
-                            if(extent[0]==="-")
-                            {
-                               extent[0] = 0; 
-                            }
-           _edgeColorScaleC.domain( extent);
+            var extent = d3.extent(_edgeData,
+                    function(d) {
+                        return _edgeColorAccessor(d);
+                    })
+            if (extent[0] === "-")
+            {
+                extent[0] = 0;
+            }
+            _edgeColorScaleC.domain(extent);
             _link.style("stroke", function(d) {
-                    return _edgeColorScaleC(_edgeColorAccessor(d));
-                })
-                    
+                return _edgeColorScaleC(_edgeColorAccessor(d));
+            })
+
         } else {
-             _link.style("stroke", function(d) {
-                    return _edgeColorScaleD(_edgeColorAccessor(d));
-                })
+            _link.style("stroke", function(d) {
+                return _edgeColorScaleD(_edgeColorAccessor(d));
+            })
 
         }
     }
 
-   
+
     function initData(graph) {
         if (!_force)
             _force = d3.layout.force()
@@ -175,7 +178,7 @@ dc.fgraph = function(parent) {
                     .style("fill", "none")
                     .style("pointer-events", "all")
                     .call(d3.behavior.zoom().scaleExtent([.0625, 8]).on("zoom", zoom))
-            
+
             _svg = _svg.append("g");
             _svg.append("g")
                     .attr("class", "links");
@@ -206,67 +209,76 @@ dc.fgraph = function(parent) {
                 .nodes(_nodeData)
                 .links(_edgeData)
                 .start();
-         _force.on("tick", assignLocations);
-        
+        _force.on("tick", assignLocations);
+
     }
     function assignLocations()
     {
         _link.attr("x1", function(d) {
-                return d.source.x;
-            })
-                    .attr("y1", function(d) {
-                        return d.source.y;
-                    })
-                    .attr("x2", function(d) {
-                        return d.target.x;
-                    })
-                    .attr("y2", function(d) {
-                        return d.target.y;
-                    });
+            return d.source.x;
+        })
+                .attr("y1", function(d) {
+                    return d.source.y;
+                })
+                .attr("x2", function(d) {
+                    return d.target.x;
+                })
+                .attr("y2", function(d) {
+                    return d.target.y;
+                });
 
-            _node.attr("transform", function(d) {
-                return "translate(" + d.x + "," + d.y + ")";
-            });
+        _node.attr("transform", function(d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        });
+//            _linkLabels.attr("transform", function(d) {
+//                return "translate(" + d.source.x + "," + d.source.y + ")rotate("+(Math.atan2((d.source.x-d.target.x), (d.source.y-d.target.y)) * 180 / Math.PI + 180)+")";
+//            });
     }
-    function drawData(){
+    function drawData() {
 
         var drag = _force.drag()
                 .on("dragstart", function(d) {
                     d.fixed = true;
                     d3.select(this).select("circle").classed("sticky", d.fixed);
                 });
-
-       
-         
-         
-         _svg.select(".links").selectAll(".link")
-                .data(_edgeData.filter(function(d){return _filterFunction(d.target)&&_filterFunction(d.source)}))
+        _svg.select(".links").selectAll(".link")
+                .data(_edgeData.filter(function(d) {
+                    return _filterFunction(d.target) && _filterFunction(d.source)
+                }))
                 .exit()
                 .transition()
                 .remove();
         _newLinks = _svg.select(".links").selectAll(".link")
-                .data(_edgeData.filter(function(d){return _filterFunction(d.target)&&_filterFunction(d.source)}))
-                .enter().append("line")
+                .data(_edgeData.filter(function(d) {
+                    return _filterFunction(d.target) && _filterFunction(d.source)
+                }))
+                .enter();
+        _newLinks.append("line")
                 .attr("class", "link");
-                
-         _newNodes = _svg.select(".nodes").selectAll(".node")
-                .data(_nodeData.filter(_filterFunction),_indexFunction)
+//                _newLinks.append("text")
+//                .attr("class", "fgraph-text")
+//                .text(function(d) {
+//                    return "afsdsdfsdfdf";//_edgeLabelAccessor(d);
+//                });
+        _newLinks = _svg.select(".links").selectAll(".link")
+        _newNodes = _svg.select(".nodes").selectAll(".node")
+                .data(_nodeData.filter(_filterFunction), _indexFunction)
                 .enter().append("g")
                 .attr("class", "node")
                 .call(drag)
         _svg.select(".nodes").selectAll(".node")
-                .data(_nodeData.filter(_filterFunction),_indexFunction)
+                .data(_nodeData.filter(_filterFunction), _indexFunction)
                 .exit()
                 .transition()
                 .remove();
-                
-        _newNodes .append("circle")
+
+        _newNodes.append("circle")
                 .attr("class", "fgraph-circle")
                 .on("dblclick", function(d) {
                     d.fixed = false;
                     d3.select(this).classed("sticky", d.fixed);
                     _force.start();
-                });       
+                });
         _newNodes.append("title")
                 .text(function(d) {
                     return d.name;
@@ -277,8 +289,9 @@ dc.fgraph = function(parent) {
                 .text(function(d) {
                     return _nodeLabelAccessor(d);
                 });
-         _node = _svg.selectAll(".node");
-         _link = _svg.selectAll(".link");
+        _node = _svg.selectAll(".node");
+        _link = _svg.selectAll(".link");
+        _linkLabels = _svg.select(".links").selectAll("text")
         changeNodeSize();
         changeNodeColor();
         changeNodeLabel();
@@ -287,22 +300,36 @@ dc.fgraph = function(parent) {
         assignLocations();
     }
     function changeNodeLabel() {
-         _node.selectAll("text")
+        _node.selectAll("text")
                 .text(function(d) {
                     return _nodeLabelAccessor(d.data);
                 });
     }
-           
+    function changeEdgeLabel() {
+        _svg.select("links").selectAll("text")
+                .text(function(d) {
+                    return _edgeLabelAccessor(d);
+                });
+        assignEdgeLabelLocation();
+    }
+    function assignEdgeLabelLocation()
+    {
+
+    }
     _fgraph.filterFunction = function(_)
     {
         _filterFunction = _;
         drawData();
     }
-    _fgraph.init = function(parent, data, width, height) {
+    _fgraph.init = function(parent, data, width, height,state) {
         _parentID = parent;
         _fgraph.graphView(data)
                 .resize(width, height);
-       drawData();
+        drawData();
+        if(state!==undefined)
+        {
+            _fgraph.resumeState(state);
+        }
         return _fgraph;
     }
     _fgraph.destroy = function()
@@ -410,7 +437,7 @@ dc.fgraph = function(parent) {
         if (!arguments.length)
             return _edgeColorAccessor;
         _edgeColorAccessor = _;
-         changeEdgeColor();
+        changeEdgeColor();
         return _fgraph;
     };
 
@@ -451,7 +478,7 @@ dc.fgraph = function(parent) {
         _nodeSizeScale.range([_minNodeSize, _maxNodeSize]);
         changeNodeSize();
     };
-     _fgraph.minEdgeWidth = function(_) {
+    _fgraph.minEdgeWidth = function(_) {
         _minEdgeWidth = (typeof _ === 'number') ? _ : 2;
         _edgeWidthScale.range([_minEdgeWidth, _maxEdgeWidth]);
         changeEdgeWidth();
@@ -465,7 +492,7 @@ dc.fgraph = function(parent) {
 
     _fgraph.nodeLabelAcessor = function(_) {
         _nodeLabelAccessor = (typeof _ === 'function') ? _ : function(d) {
-            
+
             return "";
         };
         changeNodeLabel();
@@ -494,7 +521,7 @@ dc.fgraph = function(parent) {
         changeNodeColor();
         return _fgraph;
     };
-        _fgraph.edgeColorAcessor = function(_) {
+    _fgraph.edgeColorAcessor = function(_) {
         _edgeColorAccessor = (typeof _ === 'function') ? _ : function(d) {
             return 1;
         };
@@ -524,5 +551,51 @@ dc.fgraph = function(parent) {
                 };
         return _fgraph;
     }
+    _fgraph.getState = function() {
+        var size = _nodeData.length;
+        var x = [];
+        var y = [];
+        var px = [];
+        var py = [];
+        
+        var fixed = [];
+        for (i = 0; i < size; i++)
+        {
+            x.push(_nodeData[i].x);
+            y.push(_nodeData[i].y);
+            px.push(_nodeData[i].px);
+            py.push(_nodeData[i].py);
+            
+            fixed.push (_nodeData[i].fixed);
+        }
+        return {alpha: _force.alpha(), x: x, y: y,px: px, py: py,fixed:fixed};
+    };
+    _fgraph.resumeState = function(_) {
+        var size = _nodeData.length;
+        var x = _.x;
+        var y = _.y;
+        var px = _.px;
+        var py = _.py;
+        
+        var fixed = _.fixed;
+       
+        for (i = 0; i < size; i++)
+        {
+         _nodeData[i].x = x[i];
+         _nodeData[i].y = y[i];
+         _nodeData[i].px = px[i];
+         _nodeData[i].py = py[i];
+         
+         _nodeData[i].fixed= fixed[i];
+      
+        }
+      
+ _svg.select(".nodes").selectAll(".node").select("circle").classed("sticky",function(d){return d.fixed})
+        
+        assignLocations();
+         _force.alpha(_.alpha);
+     
+    };
+    
     return _fgraph;
 };

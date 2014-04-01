@@ -6,7 +6,7 @@ angular.module("MyApp")
             $scope.bugreportDisable = false;
             $scope.imgdata;
             $scope.imgSnippet;
-            $scope.test = ["a","b","c"]
+            $scope.test = ["a", "b", "c"]
             $scope.graphList = [];
             $scope.addView = function(layout, graphName)
             {
@@ -18,7 +18,7 @@ angular.module("MyApp")
                 $scope.views[$scope.newViewIndex] = {layout: layout, title: "New View " + $scope.newViewIndex, graphName: graphName, indx: $scope.newViewIndex};
                 $scope.newViewIndex++;
             };
-            
+
             $scope.removeView = function(index)
             {
                 // First delete this view
@@ -31,7 +31,7 @@ angular.module("MyApp")
                     return; // we got the first one
                 }
                 $scope.newViewIndex = 0;
-               
+
             }
             $scope.changeView = function(indx)
             {
@@ -48,8 +48,11 @@ angular.module("MyApp")
                     controller: modalCtrlProvider.getCtrl(plugin),
                 });
                 modalInstance.result.then(function(newGraph) {
-                    $scope.graphList.push(newGraph.graphName);
-                     $scope.addView(newGraph.layout, newGraph.graphName);
+                    if ($scope.graphList.indexOf(newGraph.graphName) === -1)
+                    {
+                        $scope.graphList.push(newGraph.graphName);
+                    }
+                    $scope.addView(newGraph.layout, newGraph.graphName);
                 }, function() {
 
                     return;
@@ -75,11 +78,11 @@ angular.module("MyApp")
                 $('html,body').css('cursor', 'crosshair');
                 inspectElement(document, function(e) {
                     $scope.takeImage(e);
-                    
+
                 }, function() {
-                      $scope.bugreportDisable = false;
-                        $scope.alertShow = false;
-                        $scope.$digest();
+                    $scope.bugreportDisable = false;
+                    $scope.alertShow = false;
+                    $scope.$digest();
                     $('html,body').css('cursor', 'auto');
                 })
             }
@@ -95,7 +98,10 @@ angular.module("MyApp")
                     controller: modalCtrlProvider.getCtrl(plugin),
                 });
                 modalInstance.result.then(function(newGraph) {
-                    $scope.graphList.push(newGraph.graphName);
+                    if ($scope.graphList.indexOf(newGraph.graphName) === -1)
+                    {
+                        $scope.graphList.push(newGraph.graphName);
+                    }
                     $scope.addView(newGraph.layout, newGraph.graphName);
                 }, function() {
                     return;
@@ -127,7 +133,7 @@ angular.module("MyApp")
                         ctx.beginPath();
 //                        var mouseX = e.clientX + document.body.scrollLeft;
 //                        var mouseY = e.clientY + document.body.scrollTop;
-                        var startingX = e.pageX , startingY = e.pageY;
+                        var startingX = e.pageX, startingY = e.pageY;
 
 
                         ctx.moveTo(startingX, startingY);
@@ -146,35 +152,35 @@ angular.module("MyApp")
                         var img = canvas.toDataURL("image/png");
                         img = img.substr(img.indexOf(',') + 1).toString();
                         $scope.imgdata = img;
-                        
+
                         var snippet = document.createElement('canvas');
-                         snippet.width = 200;
-                          snippet.height = 200;
-                        snippet.getContext('2d').drawImage(canvas, e.pageX-100,e.pageY-230, 400, 400,0,0,200,200);
+                        snippet.width = 200;
+                        snippet.height = 200;
+                        snippet.getContext('2d').drawImage(canvas, e.pageX - 100, e.pageY - 230, 400, 400, 0, 0, 200, 200);
                         $scope.imgSnippet = snippet.toDataURL("image/png");
                         $scope.bugreportDisable = false;
                         $scope.alertShow = false;
                         $scope.$digest();
                         $('html,body').css('cursor', 'auto');
                         var modalInstance = $modal.open({
-                        templateUrl: './partials/feedback.html',
-                        controller: modalCtrlProvider.getCtrl("feedback"),
-                        resolve: {
-                            img: function() {
-                                return $scope.imgSnippet;
-                            }}
-                    });
-                    modalInstance.result.then(function(obj) {
-                        $('body').find('.screenShotTempCanvas').remove();
-                        $('body').find('svg').show();
-                        $http.post(asanaPHPPath, {imgdata: $scope.imgdata, name: obj.name, email: obj.eid, detail: obj.detail});
+                            templateUrl: './partials/feedback.html',
+                            controller: modalCtrlProvider.getCtrl("feedback"),
+                            resolve: {
+                                img: function() {
+                                    return $scope.imgSnippet;
+                                }}
+                        });
+                        modalInstance.result.then(function(obj) {
+                            $('body').find('.screenShotTempCanvas').remove();
+                            $('body').find('svg').show();
+                            $http.post(asanaPHPPath, {imgdata: $scope.imgdata, name: obj.name, email: obj.eid, detail: obj.detail});
 
-                    }, function() {
-                        $('body').find('.screenShotTempCanvas').remove();
-                        $('body').find('svg').show();
+                        }, function() {
+                            $('body').find('.screenShotTempCanvas').remove();
+                            $('body').find('svg').show();
 
-                        return;
-                    });
+                            return;
+                        });
                     }
                 }
                 );

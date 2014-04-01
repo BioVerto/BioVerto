@@ -9,7 +9,7 @@ g5.graphs = {};
 g5.version = .1;
 g5.nCnt = 0; // counter for generated variables
 
-g5.newField =  function() {
+g5.newField = function() {
     return "_" + (g5.nCnt++);
 }
 // plugins with algorithms suported by the framework. Algorithmic
@@ -34,7 +34,7 @@ g5.listAlgorithms = function() {
     var rez = [];
     for (var alg in g5.algoPlugins)
     {
-        if(typeof g5.algoPlugins[alg].visible === undefined)
+        if (typeof g5.algoPlugins[alg].visible === undefined)
         {
             g5.algoPlugins[alg].visible = true;
         }
@@ -69,8 +69,17 @@ g5.addIOPlugin = function(name, inputFct, outputFct) {
 g5.createGraph = function(name) {
     if (g5.graphs[name] !== undefined) {
         codingError("A graph with the name " + name + " is already present. Ignoring");
-      // delete g5.graphs[name];
-        return;
+        if (confirm("A graph with same name exits. Do you want to overwrite the existing graph"))
+        {
+             delete g5.graphs[name];
+           
+        }
+        else
+        {
+            return;
+        }
+        // delete g5.graphs[name];
+
     }
 
     g5.graphs[name] = new Graph();
@@ -85,7 +94,7 @@ g5.returnGraph = function(name) {
 g5.applyAlgorithm = function(g, algoName) {
     var alg = g5.algoPlugins[algoName]; // TODO: check for error 
     alg.algo(g); // apply the algorithm on the graph
-    if (alg.nodeAccs!== undefined) // register node accessors with the graph
+    if (alg.nodeAccs !== undefined) // register node accessors with the graph
         for (var nA in alg.nodeAccs)
             g.addNodeAccessor(nA, alg.nodeAccs[nA].type,
                     alg.nodeAccs[nA].fct);
@@ -99,7 +108,7 @@ g5.applyAlgorithm = function(g, algoName) {
 // @blob: the blob containing the content
 g5.loadGraphFromFile = function(plugin, blob, graphName, source, target, directed) {
     // Look for the input function of the pluggin and call it
-    g5.loadGraphFromObjArray(g5.generateObjArray(plugin, blob), graphName, source, target,directed);
+    g5.loadGraphFromObjArray(g5.generateObjArray(plugin, blob), graphName, source, target, directed);
 };
 g5.generateObjArray = function(plugin, blob)
 {
@@ -109,16 +118,16 @@ g5.generateObjArray = function(plugin, blob)
     }
     return g5.ioPlugins[plugin].input(blob);
 };
-g5.loadGraphFromObjArray = function(data, graphName, source, target,directed)
+g5.loadGraphFromObjArray = function(data, graphName, source, target, directed)
 {
-    if(typeof directed==='undefined')
+    if (typeof directed === 'undefined')
     {
         directed = false;
     }
     source = source || "source";
     target = target || "target";
     var graph = g5.createGraph(graphName);
-    if(!graph)
+    if (!graph)
     {
         return g5.graphs[graphName];
     }
@@ -128,14 +137,14 @@ g5.loadGraphFromObjArray = function(data, graphName, source, target,directed)
         var t = d[target];
         delete d[source];
         delete d[target];
-        graph.addEdge(s, t, d,directed);
+        graph.addEdge(s, t, d, directed);
     });
     graph.addInitialAccFunctions();
-    
-    g5.applyAlgorithm(graph,"Degree Centrality");
-    
-    g5.applyAlgorithm(graph,"Uniprot Data");
-    g5.applyAlgorithm(graph,"Connected Components");
+
+    g5.applyAlgorithm(graph, "Degree Centrality");
+
+    g5.applyAlgorithm(graph, "Uniprot Data");
+    g5.applyAlgorithm(graph, "Connected Components");
     return graph;
 };
 
@@ -157,9 +166,9 @@ g5.listGraphs = function()
 
     for (var name in g5.graphs)
     {
-          
+
         result.push(name);
-        
+
     }
     return result;
 };
