@@ -433,13 +433,6 @@ dc.fgraph = function(parent) {
 
 
 
-    _fgraph.edgeColorAccessor = function(_) {
-        if (!arguments.length)
-            return _edgeColorAccessor;
-        _edgeColorAccessor = _;
-        changeEdgeColor();
-        return _fgraph;
-    };
 
     _fgraph.weightAccessor = function(_) {
         if (!arguments.length)
@@ -452,6 +445,9 @@ dc.fgraph = function(parent) {
     _fgraph.nodeColorAccessor = function(_) {
         if (!arguments.length)
             return _nodeColorAccessor;
+        _nodeSizeAccessor = (typeof _ === 'function') ? _ : function(d) {
+            return 1;
+        };
         _nodeColorAccessor = _;
         return _fgraph;
     };
@@ -521,7 +517,7 @@ dc.fgraph = function(parent) {
         changeNodeColor();
         return _fgraph;
     };
-    _fgraph.edgeColorAcessor = function(_) {
+    _fgraph.edgeColorAccessor = function(_) {
         _edgeColorAccessor = (typeof _ === 'function') ? _ : function(d) {
             return 1;
         };

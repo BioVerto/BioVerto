@@ -44,7 +44,23 @@
 <!--                <button ng-click="highlightNode(debugindex)" class="btn-sm btn-info">Highlight Node</button>   -->
             </div>
              <tabset justified="true">
-             <tab heading="Properties"><div compile="controls"></div></tab>
+             <tab heading="Properties">
+                 <div compile="controls"></div>
+<!--                 <div ng-repeat="obj in myData">
+                     <div ng-switch on="obj.controltype">
+                         <div ng-switch-when="range">
+                             <input type='range' min='{{obj.options.min }}' max='{{obj.options.max}}'  ng-init="setNumber('{{obj.func}}','{{obj.options.default}}') ;{{obj.name}}= {{obj.options.default}}" ng-change = "setNumber({{ obj.func}} , {{obj.name}})" step='{{ obj.options.step }}' class ='pull-right' >
+                             <input type='range' min='{{obj.options.min }}' max='{{obj.options.max}}'  ng-init="setNumber('{{obj.func}}','{{obj.options.default}}') ;{{obj.name}}= {{obj.options.default}}" ng-change = "setNumber({{ obj.func}} , {{obj.name}})" ng-model='{{obj.name }}' step='{{ obj.options.step }}' class ='pull-right'></input>" //name=\""+obj.name+"\"
+                         </div>
+                     <div ng-switch-when="select">
+                         <select class='pull-right' ng-options= "key as key for (key , value) in acessorFns[{{obj.tab}}]|functionFilter:{{obj.datatype}}" ng-change = "view.{{obj.func }}(getAcessorFunction('{{obj.tab }}',{{obj.name}} ))" ng-model= "{{obj.name }}" >";
+                         <option value = Reset n> Reset </option>
+                         <option value=''>None</option>
+                        </select>
+                     </div>
+                    </div>
+                 </div>   -->
+             </tab>
              <tab ng-show="layout==='force'" heading="Filters"><filterselect  ></filterselect></tab>
             </tabset>
             

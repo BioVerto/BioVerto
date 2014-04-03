@@ -140,7 +140,7 @@
             </div>
         </div>
         <div  ng-repeat="(index, view) in views " style="position:absolute">
-            <panel activeindex=active layout = view.layout index =view.indx heading=view.title graph-name=view.graphName removefn= "removeView(index)"href="#"></panel>
+            <panel activeindex=active layout = view.layout index =view.indx heading=view.title state=view.state graph-name=view.graphName rootfn= "panelFn(fntype,args)" href="#"></panel>
         </div>
         <div ng-show="newViewIndex == 0" style="height:calc(100% - 30px);">
             <div id="myCarousel" class="carousel slide" data-ride="carousel">

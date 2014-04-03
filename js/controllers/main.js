@@ -8,17 +8,20 @@ angular.module("MyApp")
             $scope.imgSnippet;
             $scope.test = ["a", "b", "c"]
             $scope.graphList = [];
-            $scope.addView = function(layout, graphName)
+            $scope.addView = function(layout, graphName,state)
             {
                 if ($scope.newViewIndex !== 0 && typeof graphName === 'undefined')
                 {
                     graphName = $scope.views[$scope.active].graphName;
                 }
                 ;
-                $scope.views[$scope.newViewIndex] = {layout: layout, title: "New View " + $scope.newViewIndex, graphName: graphName, indx: $scope.newViewIndex};
+                $scope.views[$scope.newViewIndex] = {layout: layout, title: "New View " + $scope.newViewIndex, graphName: graphName, indx: $scope.newViewIndex,state:state};
                 $scope.newViewIndex++;
             };
-
+            $scope.removeView = function(state)
+            {
+            
+            }
             $scope.removeView = function(index)
             {
                 // First delete this view
@@ -33,10 +36,18 @@ angular.module("MyApp")
                 $scope.newViewIndex = 0;
 
             }
+            $scope.panelFn=function(fntype,args)
+            {
+                $scope[fntype](args);
+            };
             $scope.changeView = function(indx)
             {
                 $scope.active = parseInt(indx);
 
+            };
+            $scope.cloneView = function(state)
+            {
+                $scope.addView(state.layout,state.graphName,state)
             }
             $scope.fileUpload = function(plugin)
             {

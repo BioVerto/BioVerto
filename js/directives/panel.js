@@ -8,7 +8,8 @@ angular.module("MyApp")
                     heading: "=",
                     activeindex: "=",
                     graphName: "=",
-                    removefn:"&"
+                    state:"=",
+                    rootfn:"&"
                 },
                 templateUrl: "./partials/panel.html",
                 transclude: true,
@@ -19,7 +20,8 @@ angular.module("MyApp")
                     scope.alertText = "";
                     scope.alertType = "info";
                     scope.algorithmList = g5.listAlgorithms();
-                    
+                    //scope.myData = [{controltype: "range", v:"a",      datatype: "number",     tab:"Node",label: "Min node size",    func: "minNodeSize", name:"aaa",   ignore:false,options:{min:5,max:40,default:10,step:1}},
+            //];
                     scope.runAlgo = function(name)
                     {
                         scope.alertBox("Runnning Algorithm","warning");
@@ -48,33 +50,56 @@ angular.module("MyApp")
                         scope.view = viewProvider.getView(scope.layout);
                         scope.view.init("#graphNumber" + scope.index, scope.graph.getData(), scope.width, scope.height);
                         scope.refreshSidebar();
-                        scope.numOptions = configurationService.getConfig(scope.layout).length;
-                        for(i =0;i<scope.numOptions;i++)
+                        var config = configurationService.getConfig(scope.layout);
+                        if(scope.state!==undefined)
                         {
-                            scope["P"+i] ={};
-                        }    
-                        scope.controls = componentGenerator.generateSidebar(configurationService.getConfig(scope.layout), scope.acessorFns);//,graphExecutionEngine.listNodeAccessors(scope.graphName),graphExecutionEngine.EdgeAccessors());
-                       
-                    };
-                    scope.cloneView = function()
-                    {
-                        //console.log("ToDo Clone")
-                        if(scope.flg)
-                        {
-                             scope.view.resumeState(document.a );
-                             
+                            for(i=0;i<config.length;i++)
+                            {    
+                                config[i].default = scope.state.config["P"+i];
+                            }
+                           
                         }
-                        else{
-                        document.a = scope.view.getState();
-                         
-                            scope.flg = true;
-                        }
+                         scope.controls = componentGenerator.generateSidebar(config, scope.acessorFns);//,graphExecutionEngine.listNodeAccessors(scope.graphName),graphExecutionEngine.EdgeAccessors());
                         
+                        if(scope.state!==undefined)
+                        {scope.resumeState(scope.state) ;
+                        }   
+                    };
+                    
+                    scope.resumeState = function(state)
+                    {
+                         scope.view.resumeState(state.viewState );
+                         var panelscope = scope.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling;
+                         var filterscope = scope.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling;
+                         var numOptions = configurationService.getConfig(scope.layout).length; 
+                        for(i = 0 ; i <numOptions;i++)
+                            {
+                             panelscope["P"+i] = state.config["P"+i]
+                            }
+                            filterscope.filters = state.filters;
+                    filterscope.applyFilter();
                     }
                     scope.removeView = function()
                     {
-                        scope.removefn({index:scope.index});
-                       
+                        scope.rootfn({fntype:"removeView",args:scope.index});  
+                    }
+                    scope.cloneView = function()
+                    {
+                         scope.rootfn({fntype:"cloneView",args:scope.getState()});
+                        
+                    }
+                    scope.getState = function()
+                    {
+                       var panelscope = scope.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling;
+                         var filterscope = scope.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling;
+                            var numOptions = configurationService.getConfig(scope.layout).length;
+                           var config = {}
+                            for(i = 0 ; i <numOptions;i++)
+                            {
+                               config["P"+i] =  panelscope["P"+i]
+                            }
+                            return {layout:scope.layout,graphName:scope.graphName,config:config,filters:filterscope.filters,viewState:scope.view.getState()}
+                           
                     }
                     scope.filterFunction=function()
                     {
