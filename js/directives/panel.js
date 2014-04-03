@@ -62,12 +62,14 @@ angular.module("MyApp")
                          scope.controls = componentGenerator.generateSidebar(config, scope.acessorFns);//,graphExecutionEngine.listNodeAccessors(scope.graphName),graphExecutionEngine.EdgeAccessors());
                         
                         if(scope.state!==undefined)
-                        {scope.resumeState(scope.state) ;
+                        {
+                             $timeout(scope.resumeState,0) ;
                         }   
                     };
                     
-                    scope.resumeState = function(state)
-                    {
+                    scope.resumeState = function()
+                    { 
+                        var state = scope.state;
                          scope.view.resumeState(state.viewState );
                          var panelscope = scope.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling;
                          var filterscope = scope.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling;
