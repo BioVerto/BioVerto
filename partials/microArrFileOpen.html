@@ -1,0 +1,38 @@
+<div class="modal-dialog">
+    <div class="modal-header">
+        <h3>Upload Microarray Data file</h3>
+    </div>
+    <div class="modal-body">
+        <div ng-show="state=='uploadState'">
+        <input type="file" name='files[]' ng-model="fileName" onchange="angular.element(this).scope().handleFileSelect(this)"/>
+        <br>
+        <button class="btn btn-primary " ng-disabled="!(fileName&&uploadButtonEnable)" ng-click="fileUpload()">Upload</button>
+        </div>
+            
+        <div ng-show="state=='previewState'">
+            <h4>Preview of the file</h4>
+            <h6>Note: All the elements are not shown</h6>
+            
+            <div class="gridStyle" ng-grid="previewGridOptions"></div>
+          <button class="btn btn-warning pull-left"  ng-click="transposeData()">Transpose Data</button> 
+          <button class="btn btn-primary pull-right"  ng-click="calculateCorr();state='resultState';">Next</button>           
+        </div>
+        <div ng-show="state=='resultState'">
+          <div class="gridStyle" ng-grid="resultGridOptions"></div>
+          
+          <input type="range" min="-1" max="1" ng-init="threshold = 0;setThreshold(threshold);" ng-change="setThreshold(threshold)" ng-model="threshold" step=".05" class="pull-left">Threshold :{{threshold}} Number of Node : {{numNodes}}
+          <br>
+          <button class="btn btn-primary pull-right" ng-disabled="!(target&&source)" ng-click="state='graphName';graphName=file.name.split('.')[0]">Next</button>           
+        </div>
+        <div ng-show="state=='graphName'">
+        <div> <h5>Graph Name</h5>
+           
+            <input type="checkbox" ng-model="defaultName" ng-init="defaultName=true"> Default : Filename<br>
+            <input  type="text" ng-disabled="defaultName" ng-model="graphName"></div>
+        </div>
+        </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-disabled="!graphName" ng-click="ok(graphName)">OK</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

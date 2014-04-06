@@ -9,7 +9,7 @@
     <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
     <meta http-equiv="pragma" content="no-cache" />
 
-
+    
     <script type="text/javascript" src="js/libs/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="js/libs/jquery/jqueryui.min.js"></script>
     <script src="js/libs/bootstrap/bootstrap.min.js"></script>
@@ -17,6 +17,7 @@
     <script src="js/libs/angularjs/angular-sanitize.min.js"></script>
     <script src="js/libs/ui-bootstrap-tpls-0.10.0.min.js"></script>
     <script src="js/libs/nggrid/ng-grid-2.0.7.debug.js"></script> 
+   
     <script src="js/libs/uiunique/unique.js"></script>
     <script src="js/libs/pixijs/pixi.dev.js"></script>
     <script src="js/libs/catiline/catiline.js"></script>
@@ -45,14 +46,18 @@
     <script src="js/graphLib/mcl.js"></script>
     <script src="js/graphLib/betweenness.js"></script>
     <script src="js/graphLib/closeness.js"></script>
-	<script src="js/graphLib/uniprotPropertyAlgorithm.js"></script>
+    <script src="js/graphLib/uniprotPropertyAlgorithm.js"></script>
+    <script src="js/graphLib/correlation.js"></script>
     <script src="js/graphLib/connectedComponents.js"></script>
+    
     <script src="js/controllers/main.js"></script>
     <script src="js/controllers/modalControllers/csv.js"></script>
     <script src="js/controllers/modalControllers/mintFullNetworks.js"></script>
     <script src="js/controllers/modalControllers/mintPathways.js"></script>
     <script src="js/controllers/modalControllers/contactUs.js"></script>
     <script src="js/controllers/modalControllers/feedback.js"></script>
+    <script src="js/controllers/modalControllers/microArr.js"></script>
+
 
     <script src="js/libs/bugReport/select.js"></script>
     <script src="js/libs/rasterizeHTML/html2canvas.js"></script>
@@ -63,7 +68,7 @@
     <link rel="stylesheet" type="text/css" href="css/ng-grid.min.css">
     <link rel="stylesheet" type="text/css" href="css/colorpicker.css">
     <link rel="stylesheet" type="text/css" href="css/ui-lightness/jquery-ui-1.10.4.custom.min.css">
-
+    
 </head>
 <body ng-app="MyApp" style="padding-top: 50px;"  ng-controller="mainController" >
     <div id="maincontent">
@@ -93,6 +98,9 @@
                                 <li><a href="#" ng-click="databaseDownload('mintFullNetworks')">MINT Full Networks</a></li>
                             </ul>
                         </li>
+                        <li><a href="#" ng-click="fileUpload('blast')">Blast </a></li>
+                        <li><a href="#" ng-click="fileUpload('microArr')">MicroArray Data</a></li>
+                                
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add View <b class="caret"></b></a>
                             <ul class="dropdown-menu">
