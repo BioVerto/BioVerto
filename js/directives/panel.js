@@ -50,7 +50,7 @@ angular.module("MyApp")
                         scope.view = viewProvider.getView(scope.layout);
                         scope.view.init("#graphNumber" + scope.index, scope.graph.getData(), scope.width, scope.height);
                         scope.refreshSidebar();
-                        var config = configurationService.getConfig(scope.layout);
+                        var config = jQuery.extend(true, [], configurationService.getConfig(scope.layout));
                         if(scope.state!==undefined)
                         {
                             for(i=0;i<config.length;i++)
@@ -71,15 +71,9 @@ angular.module("MyApp")
                     { 
                         var state = scope.state;
                          scope.view.resumeState(state.viewState );
-                         var panelscope = scope.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling;
                          var filterscope = scope.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling;
-                         var numOptions = configurationService.getConfig(scope.layout).length; 
-                        for(i = 0 ; i <numOptions;i++)
-                            {
-                             panelscope["P"+i] = state.config["P"+i]
-                            }
                             filterscope.filters = state.filters;
-                    filterscope.applyFilter();
+                            filterscope.applyFilter();
                     }
                     scope.removeView = function()
                     {

@@ -12,7 +12,7 @@ modalControllers.microArr = function($scope, $modalInstance) {
        for(i=0;i<col;i++){
                for(j=i+1;j<col;j++){
                                
-                       if(corr_matrix[i*col+j]>threshold){
+                       if(getElement(corr_matrix,i,j,col)>threshold){
                                if(!obj[i])
                                        obj[i]= true;
                                if(!obj[j])
@@ -80,12 +80,44 @@ $scope.setThreshold = function(threshold)
             }
             return objArr;
     };
+		var previewDataCorr = function(corr_data,numRows,numCols)
+    {
+         var objArr = [];
+         var maxRows = 10;
+         var maxCols = 10;
+         
+         var numPreviewRows = (numRows >maxRows ) ? maxRows : numRows;
+         var numPreviewCols = (numCols >maxCols ) ?maxCols : numCols;
+         
+                for (var i = 0; i < numPreviewRows; i++)
+                {
+                    objArr.push({});
+                    for (j = 0; j < numPreviewCols; j++) {
+                    objArr[i]["Gene"+j] = getElement(corr_data,i,j,numCols);
+                }
+            }
+            return objArr;
+    };
+	
+		var getElement = function(corr_matrix,i,j,col)
+		{
+			if(i==j)
+				return 1;
+			if(j<i)
+				return getElement(corr_matrix,j,i, col)
+			//get the number of element to skip based on row number
+			var totalNumberOfElements = ((col-2)*(col-1))/2;
+			var numElementAfterRow = ((col-(i+1))*(col-(i+2)))/2;
+
+			return corr_matrix[(totalNumberOfElements-numElementAfterRow)+(j-(i+1))];	
+		};
+	
     $scope.transposeData = function() {
 
     };
     $scope.calculateCorr = function() {
        $scope.corrResult = findCorrelation($scope.parsedData.data,$scope.parsedData.row,$scope.parsedData.col)
-        $scope.corrData = previewData($scope.corrResult.data,$scope.corrResult.col,$scope.corrResult.col);
+        $scope.corrData = previewDataCorr($scope.corrResult.data,$scope.corrResult.col,$scope.corrResult.col);
     };
     function findCorrelation(matrix, row, col) {
         if (row == 0 || col == 0) {
@@ -93,9 +125,10 @@ $scope.setThreshold = function(threshold)
             return null;
         }
         console.log("finding correlation");
-        var corr_matrix = new Float32Array(col * col);
-
-        get_correlation = Module.cwrap('get_correlation', 'number', ['number', 'number', 'number', 'number']);
+        var totalElement = ((col-2)*(col-1))/2;
+				var corr_matrix = new Float32Array(totalElement);
+        
+				get_correlation = Module.cwrap('get_correlation', 'number', ['number', 'number', 'number', 'number']);
 
         // Get data byte size, allocate memory on Emscripten heap, and get pointer
         var dataBytes = matrix.length * matrix.BYTES_PER_ELEMENT;

@@ -6,12 +6,16 @@
         <div ng-show="state=='uploadState'">
         <input type="file" name='files[]' ng-model="fileName" onchange="angular.element(this).scope().handleFileSelect(this)"/>
         <br>
-        <button class="btn btn-primary " ng-disabled="!(fileName&&uploadButtonEnable)" ng-click="fileUpload()">Upload</button>
+        <input type="checkbox" ng-model="evalue" />{{evalue}} e value<br>
+          <input type="checkbox" ng-model="bitscore"/>{{bitscore}} bitscore<br>
+           <input type="checkbox" ng-model="pident"/>{{pident}}pident<br>
+        <button class="btn btn-primary " ng-disabled="(!(fileName&&uploadButtonEnable))||(!evalue&&!bitscore&&!pident)" ng-click="fileUpload(evalue,bitscore,pident)">Upload</button>
+       
         </div>
             
         <div ng-show="state=='previewState'">
-            
-          <button class="btn btn-primary pull-right"  ng-click="calculateCorr();state='resultState';">Next</button>           
+                 <div class="gridStyle" ng-grid="previewGridOptions"></div>  
+          <button class="btn btn-primary pull-right"  ng-click="state='graphName';">Next</button>           
         </div>
         
         <div ng-show="state=='graphName'">
