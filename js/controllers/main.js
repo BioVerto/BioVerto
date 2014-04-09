@@ -18,8 +18,31 @@ angular.module("MyApp")
                 $scope.views[$scope.newViewIndex] = {layout: layout, title: "New View " + $scope.newViewIndex, graphName: graphName, indx: $scope.newViewIndex,state:state};
                 $scope.newViewIndex++;
             };
-            $scope.removeView = function(state)
+            $scope.loginUser = function(username,password)
             {
+            
+                var formData = new FormData();
+		formData.append('username', $scope.file);
+                formData.append('password', Math.floor(Math.random() * (10000)));
+		$http({method: 'POST', url: '/runblast', data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
+		.success(function(data, status, headers, config) {
+                       $scope.results = data.data;
+                       $scope.state = 'previewState';
+                      
+		});
+            
+            }
+            $scope.registerUser = function(email)
+            {
+            
+                var formData = new FormData();
+		formData.append('email',email);
+                $http({method: 'POST', url: '/runblast', data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
+		.success(function(data, status, headers, config) {
+                       $scope.results = data.data;
+                       $scope.state = 'previewState';
+                      
+		});
             
             }
             $scope.removeView = function(index)

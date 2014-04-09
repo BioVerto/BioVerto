@@ -34,7 +34,6 @@ modalControllers.blast = function($scope, $modalInstance,$http) {
                     p+="-pident"
                 }  
                 formData.append('p',p);
-		console.log(formData);
 		$http({method: 'POST', url: '/runblast', data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
 		.success(function(data, status, headers, config) {
                        $scope.results = data.data;

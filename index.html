@@ -9,7 +9,7 @@
     <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
     <meta http-equiv="pragma" content="no-cache" />
 
-    
+
     <script type="text/javascript" src="js/libs/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="js/libs/jquery/jqueryui.min.js"></script>
     <script src="js/libs/bootstrap/bootstrap.min.js"></script>
@@ -17,11 +17,11 @@
     <script src="js/libs/angularjs/angular-sanitize.min.js"></script>
     <script src="js/libs/ui-bootstrap-tpls-0.10.0.min.js"></script>
     <script src="js/libs/nggrid/ng-grid-2.0.7.debug.js"></script> 
-   
+
     <script src="js/libs/uiunique/unique.js"></script>
     <script src="js/libs/pixijs/pixi.dev.js"></script>
     <script src="js/libs/catiline/catiline.js"></script>
-   
+
     <script src="js/script.js"></script>
     <script src="js/directives/compile.js"></script>
     <script src="js/directives/panel.js"></script>
@@ -49,7 +49,7 @@
     <script src="js/graphLib/uniprotPropertyAlgorithm.js"></script>
     <script src="js/graphLib/correlation.js"></script>
     <script src="js/graphLib/connectedComponents.js"></script>
-    
+
     <script src="js/controllers/main.js"></script>
     <script src="js/controllers/modalControllers/csv.js"></script>
     <script src="js/controllers/modalControllers/mintFullNetworks.js"></script>
@@ -58,7 +58,7 @@
     <script src="js/controllers/modalControllers/feedback.js"></script>
     <script src="js/controllers/modalControllers/microArr.js"></script>
     <script src="js/controllers/modalControllers/blast.js"></script>
-    
+
     <script src="js/libs/bugReport/select.js"></script>
     <script src="js/libs/rasterizeHTML/html2canvas.js"></script>
     <script src="js/libs/rasterizeHTML/canvg.js"></script>
@@ -68,7 +68,7 @@
     <link rel="stylesheet" type="text/css" href="css/ng-grid.min.css">
     <link rel="stylesheet" type="text/css" href="css/colorpicker.css">
     <link rel="stylesheet" type="text/css" href="css/ui-lightness/jquery-ui-1.10.4.custom.min.css">
-    
+
 </head>
 <body ng-app="MyApp" style="padding-top: 50px;"  ng-controller="mainController" >
     <div id="maincontent">
@@ -100,7 +100,7 @@
                         </li>
                         <li><a href="#" ng-click="fileUpload('blast')">Blast </a></li>
                         <li><a href="#" ng-click="fileUpload('microArr')">MicroArray Data</a></li>
-                                
+
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add View <b class="caret"></b></a>
                             <ul class="dropdown-menu">
@@ -108,33 +108,74 @@
                                     <a href="#">Force Layout View</a>
                                     <ul class="dropdown-menu">
                                         <li ng-repeat="value in graphList">
-                                            <a href="#"ng-click="addView('force',value)">{{value}}</a>
+                                            <a href="#"ng-click="addView('force', value)">{{value}}</a>
                                         </li>
-                                        <li ng-show="graphList.length==0"><a>No Graphs Uploaded</a></li>
+                                        <li ng-show="graphList.length == 0"><a>No Graphs Uploaded</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu">
                                     <a href="#">Circular Layout View</a>
                                     <ul class="dropdown-menu">
                                         <li ng-repeat="value in graphList">
-                                            <a href="#"ng-click="addView('circular',value)">{{value}}</a>
+                                            <a href="#"ng-click="addView('circular', value)">{{value}}</a>
                                         </li>
-                                          <li ng-show="graphList.length==0"><a>No Graphs Uploaded</a></li>
+                                        <li ng-show="graphList.length == 0"><a>No Graphs Uploaded</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu">
                                     <a href="#">Chord Layout View</a>
                                     <ul class="dropdown-menu">
                                         <li ng-repeat="value in graphList">
-                                            <a href="#"ng-click="addView('chord',value)">{{value}}</a>
+                                            <a href="#"ng-click="addView('chord', value)">{{value}}</a>
                                         </li>
-                                          <li ng-show="graphList.length==0"><a>No Graphs Uploaded</a></li>
+                                        <li ng-show="graphList.length == 0"><a>No Graphs Uploaded</a></li>
                                     </ul>
                                 </li>
-                               </ul>
+                            </ul>
                         </li>
                         <li><a href="#" ng-click="contactUs()">Contact Us</a>
                         </li>
+                    </ul>
+                    
+                    <li class=" nav pull-right">
+                        <div class="dropdown pull-right ">
+                            <button type="button" class="btn btn-primary navbar-btn" data-toggle="dropdown">Login</button>
+
+                            <div class="dropdown-menu " style="padding: 10px; background: #ddd">
+                                <div ng-show="!register" class="container">
+                                    <div class="row">
+                                        <div class="span4 offset4 well">
+                                            <legend>Please Sign In</legend>
+                                            <form>
+                                                <input type="text" id="username" style="margin-bottom: 10px;" ng-model="username" class="span4" name="username" placeholder="Username">
+                                       
+                                            <input type="password" id="password" style="margin-bottom: 10px;" ng-model="password" class="span4" name="password" placeholder="Password">
+                                            
+                                            <button type="submit" name="submit" class="btn btn-info btn-block" ng-click="loginUser(username,password)">Sign in</button>
+                                            <button  class="btn btn-success btn-block" ng-click="register = true;">Register</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-show="register" class="container">
+                                    <div class="row">
+                                        <div class="span4 offset4 well">
+                                           
+                                            <legend>Enter Email </legend>
+                                            <form>
+                                                <input type="text" class="span4" style="margin-bottom: 20px;" ng-model="emailID" placeholder="Email id">
+                                            
+                                            <button type="submit" name="submit" class="btn btn-info btn-block" ng-click="registerUser(emailID)">Create Account</button>
+                                            <button  class="btn btn-success btn-block" ng-click="register = false;">Log In</button>       
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                    
                     </ul>
                 </div>
             </div>
@@ -187,7 +228,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <ul class="nav nav-pills nav-justified">
                     <li data-target="#myCarousel" data-slide-to="0" class="active"><a href="#">Add Graphs</a></li>
                     <li data-target="#myCarousel" data-slide-to="1"><a href="#">View Graphs</a></li>
