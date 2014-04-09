@@ -22,15 +22,23 @@ angular.module("MyApp")
             {
             
                 var formData = new FormData();
-		formData.append('username', $scope.file);
-                formData.append('password', Math.floor(Math.random() * (10000)));
+		formData.append('username', username);
+                formData.append('password', password);
 		$http({method: 'POST', url: '/runblast', data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
 		.success(function(data, status, headers, config) {
-                       $scope.results = data.data;
-                       $scope.state = 'previewState';
+                        console.log(data);//$scope.state = 'previewState';
                       
 		});
             
+            }
+            $scope.isLoggedIn = function()
+            {
+                $http({method: 'POST', url: '/runblast', data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
+		.success(function(data, status, headers, config) {
+                       console.log(data);
+                      // $scope.state = 'previewState';
+                      
+		});
             }
             $scope.registerUser = function(email)
             {
@@ -39,9 +47,7 @@ angular.module("MyApp")
 		formData.append('email',email);
                 $http({method: 'POST', url: '/runblast', data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
 		.success(function(data, status, headers, config) {
-                       $scope.results = data.data;
-                       $scope.state = 'previewState';
-                      
+                        console.log(data);
 		});
             
             }
