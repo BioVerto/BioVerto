@@ -21,9 +21,8 @@ angular.module("MyApp")
                 $scope.newViewIndex++;
             };
             
-            $scope.loginUser = function(username,password)
+                       $scope.loginUser = function(username,password)
             {
-            
                 var formData = new FormData();
 		formData.append('username', username);
                 formData.append('password', password);
@@ -32,7 +31,7 @@ angular.module("MyApp")
                         //$scope.state = 'previewState';
                       $scope.loggedUser = loggedUser = data;
                       $scope.logged=logged = true;
-                      updateUser();
+                      
 		});
             
             }
@@ -56,7 +55,18 @@ angular.module("MyApp")
                         console.log(data);
 		});
             
-            }
+            };
+             $scope.logout = function()
+             {
+                var formData = new FormData();
+		
+                $http({method: 'GET', url: '/logout', data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
+		.success(function(data, status, headers, config) {
+                        $scope.loggedUser = loggedUser = null;
+                      $scope.logged=logged = false;
+		});
+                 
+             }
             $scope.removeView = function(index)
             {
                 // First delete this view
