@@ -33,7 +33,7 @@ angular.module("MyApp")
             }
             $scope.isLoggedIn = function()
             {
-                $http({method: 'POST', url: '/getUser', data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
+                $http({method: 'POST', url: '/getUser', headers: {'Content-Type': undefined}, transformRequest: angular.identity})
 		.success(function(data, status, headers, config) {
                        console.log(data);
                       // $scope.state = 'previewState';
