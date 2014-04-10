@@ -9,9 +9,6 @@ g5.graphs = {};
 g5.version = .1;
 g5.nCnt = 0; // counter for generated variables
 
-g5.newField = function() {
-    return "_" + (g5.nCnt++);
-}
 // plugins with algorithms suported by the framework. Algorithmic
 // plugins run algorithms on the graph to compute new properties
 g5.algoPlugins = {};

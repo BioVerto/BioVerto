@@ -1,11 +1,15 @@
 (function(g5) {
-    var f1 = g5.newField();
-    var f2 = g5.newField();
-    var f3 = g5.newField();
+    var f1 = " ";
+    var f2 = " ";
+    var f3 = " ";
     g5.addAlgoPlugin({
         name: "Uniprot Data",
         algo: function(g) {
-            d3.text(BioVertoPath+"/MINT-full/uniprot.list", function(result) {
+                  f1 = g.newField();
+                  f2 = g.newField();
+                  f3 = g.newField();
+           
+                d3.text(BioVertoPath+"/MINT-full/uniprot.list", function(result) {
                 var rows = d3.csv.parseRows(result);
                 for (i = 0; i < rows.length; i++) {
                     if (g.nodes[rows[i][0]] !== undefined)

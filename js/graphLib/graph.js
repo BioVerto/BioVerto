@@ -60,7 +60,7 @@ var Graph = function() {
     this.connectedComponentsNodes = {};
     this.connectedComponentsEdges = {};
     //	return graph;
-
+    this.nCnt = 0;
 };
 
 Graph.prototype = {
@@ -78,6 +78,29 @@ Graph.prototype = {
         temp.edges = this.listEdges();
         temp.nodes = this.listNodes();
         return temp;
+    },
+    getState: function()
+    {
+        
+        return {
+            nodes:this.nodes,
+            edges:this.edges,
+            nodeAccessors:stringifyAccessorFn(this.nodeAccessors),
+            edgeAccessors:stringifyAccessorFn(this.edgeAccessors),
+            connectedComponentsNodes:this.connectedComponentsNodes,
+            connectedComponentsEdges:this.connectedComponentsEdges,
+            nCnt:this.nCnt
+        };
+    },
+    resumeState:function(state)
+    {
+        this.nodes = state.nodes;
+        this.edges = state.edges;
+        this.nodeAccessors = parseAccessorFn(state.nodeAccessors);
+        this.edgeAccessors = parseAccessorFn(state.nodeAccessors);
+        this.connectedComponentsNodes=   state.connectedComponentsNodes;
+        this.connectedComponentsEdges=   state.connectedComponentsEdges;
+        this.nCnt = state.nCnt;
     },
     listNodes: function() {
         var nodes = [];
@@ -154,6 +177,9 @@ Graph.prototype = {
             return obj.data[member];
         };
         return f;
+    },
+    newField : function() {
+    return "_" + (this.nCnt++);
     },
     addInitialAccFunctions: function() {
         // select the first element and add accessor functions for mebers

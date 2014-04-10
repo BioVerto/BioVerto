@@ -238,11 +238,13 @@ for(var i=0;i<myEdges.length;i++)
         
       
     }
-    var f = g5.newField();
+    var f = " ";
     g5.addAlgoPlugin({
             name: "MCL clustering Algorithm",
             algo:function(g){
-                   var results = mclMain(g);
+                f = g.newField();
+           
+                var results = mclMain(g);
                    var j=0;
                     for (i in g.nodes) {
                     var node = g.nodes[i];

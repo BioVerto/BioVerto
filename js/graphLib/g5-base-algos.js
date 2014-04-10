@@ -32,10 +32,11 @@
 //}(g5));
 (function(g5) {
     // new field and register accessor for it under algo name
-    var f = g5.newField();
+    var f = " ";
     g5.addAlgoPlugin({
         name: "Degree Centrality",
         algo: function(g) {
+            f = g.newField();
             for (var i in g.nodes) {
                 g.nodes[i].data[f] = 0;
             }
@@ -63,10 +64,12 @@
     var randomNumber = function() {
         return Math.floor(Math.random() * (9)) + 1;
     };
-    var f = g5.newField();
+    var f =" ";
     g5.addAlgoPlugin({
         name: "Random Data Generator",
         algo: function(g) {
+              f = g.newField();
+           
             for (i in g.nodes) {
                 var node = g.nodes[i];
                 node.data[f] = randomNumber();

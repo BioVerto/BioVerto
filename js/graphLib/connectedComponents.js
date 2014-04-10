@@ -1,8 +1,10 @@
 (function(g5) {
-    var f = g5.newField();
+    var f = " ";
     g5.addAlgoPlugin({
         name: "Connected Components",
         algo: function(g) {
+              f = g.newField();
+           
             var j = 0;
             for (i in g.nodes) {
                 g.nodes[i].data[f] = j++;

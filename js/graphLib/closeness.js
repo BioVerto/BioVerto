@@ -52,10 +52,11 @@
 		return parseFloat(finalResult);
 	}
 	
-    var f = g5.newField();
+    var f = " ";
     g5.addAlgoPlugin({
         name: "Closeness Centrality",
         algo: function(g) {
+              f = g.newField();
             //N = Object.keys(g.nodes).length
             for(var k in g.connectedComponentsNodes){   
 			

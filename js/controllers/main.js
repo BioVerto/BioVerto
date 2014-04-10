@@ -10,63 +10,63 @@ angular.module("MyApp")
             $scope.graphList = [];
             $scope.logged = false;
             $scope.username = null;
-            $scope.addView = function(layout, graphName,state)
+            $scope.addView = function(layout, graphName, state)
             {
                 if ($scope.newViewIndex !== 0 && typeof graphName === 'undefined')
                 {
                     graphName = $scope.views[$scope.active].graphName;
                 }
                 ;
-                $scope.views[$scope.newViewIndex] = {layout: layout, title: "New View " + $scope.newViewIndex, graphName: graphName, indx: $scope.newViewIndex,state:state};
+                $scope.views[$scope.newViewIndex] = {layout: layout, title: "New View " + $scope.newViewIndex, graphName: graphName, indx: $scope.newViewIndex, state: state};
                 $scope.newViewIndex++;
             };
-            
-                       $scope.loginUser = function(username,password)
+
+            $scope.loginUser = function(username, password)
             {
                 var formData = new FormData();
-		formData.append('username', username);
+                formData.append('username', username);
                 formData.append('password', password);
-		$http({method: 'POST', url: '/authenticate/userpass', data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
-		.success(function(data, status, headers, config) {
-                        //$scope.state = 'previewState';
-                      $scope.loggedUser = loggedUser = data;
-                      $scope.logged=logged = true;
-                      
-		});
-            
+                $http({method: 'POST', url: '/authenticate/userpass', data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
+                        .success(function(data, status, headers, config) {
+                            //$scope.state = 'previewState';
+                            $scope.loggedUser = loggedUser = data;
+                            $scope.logged = logged = true;
+
+                        });
+
             }
-           
+
             $scope.isLoggedIn = function()
             {
                 $http({method: 'POST', url: '/getUser', headers: {'Content-Type': undefined}, transformRequest: angular.identity})
-		.success(function(data, status, headers, config) {
-                       console.log(data);
-                      // $scope.state = 'previewState';
-                      
-		});
+                        .success(function(data, status, headers, config) {
+                            console.log(data);
+                            // $scope.state = 'previewState';
+
+                        });
             }
             $scope.registerUser = function(email)
             {
-            
+
                 var formData = new FormData();
-		formData.append('email',email);
+                formData.append('email', email);
                 $http({method: 'POST', url: '/signup', data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
-		.success(function(data, status, headers, config) {
-                        console.log(data);
-		});
-            
+                        .success(function(data, status, headers, config) {
+                            console.log(data);
+                        });
+
             };
-             $scope.logout = function()
-             {
+            $scope.logout = function()
+            {
                 var formData = new FormData();
-		
+
                 $http({method: 'GET', url: '/logout', data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
-		.success(function(data, status, headers, config) {
-                        $scope.loggedUser = loggedUser = null;
-                      $scope.logged=logged = false;
-		});
-                 
-             }
+                        .success(function(data, status, headers, config) {
+                            $scope.loggedUser = loggedUser = null;
+                            $scope.logged = logged = false;
+                        });
+
+            }
             $scope.removeView = function(index)
             {
                 // First delete this view
@@ -81,7 +81,7 @@ angular.module("MyApp")
                 $scope.newViewIndex = 0;
 
             }
-            $scope.panelFn=function(fntype,args)
+            $scope.panelFn = function(fntype, args)
             {
                 $scope[fntype](args);
             };
@@ -92,13 +92,13 @@ angular.module("MyApp")
             };
             $scope.cloneView = function(state)
             {
-                $scope.addView(state.layout,state.graphName,state)
+                $scope.addView(state.layout, state.graphName, state)
             }
-                $scope.saveView = function(state)
+            $scope.saveView = function(state)
             {
                 var graphJson = CircularJSON.stringify(g5.graphs[state.graphName]);
-                var viewJson  = CircularJSON.stringify(state);
-             
+                var viewJson = CircularJSON.stringify(state);
+
             }
             $scope.fileUpload = function(plugin)
             {

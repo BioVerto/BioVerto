@@ -1,7 +1,8 @@
 (function(g5) {
-    var Bfield = g5.newField(); //new field in the graph, at the same level in hierarchy/structure as g5.graphs
+    var Bfield = ""; //new field in the graph, at the same level in hierarchy/structure as g5.graphs
     g5.addAlgoPlugin({ name: "Betweenness Centrality",  //addAlgoPlugin is at the same level in hierarchy/structure as g5.graphs and g5.newField()
     algo: function(g) {
+            Bfield = g.newField();
             var dist=null; var next=null; var betwnss=null;
             for(var k in g.connectedComponentsNodes){   //kth component/subgraph of the entire graph will henceforth be accessed as g.connectedComponentNodes[k]
                 var currentEdges = g.connectedComponentsEdges[k]; //g.connectedComponentsNodes is at the same level as g. To access subgraph, we're gonna have to replace all g's
