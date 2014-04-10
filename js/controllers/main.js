@@ -8,6 +8,8 @@ angular.module("MyApp")
             $scope.imgSnippet;
             $scope.test = ["a", "b", "c"]
             $scope.graphList = [];
+            $scope.logged = false;
+            $scope.username = null;
             $scope.addView = function(layout, graphName,state)
             {
                 if ($scope.newViewIndex !== 0 && typeof graphName === 'undefined')
@@ -18,6 +20,7 @@ angular.module("MyApp")
                 $scope.views[$scope.newViewIndex] = {layout: layout, title: "New View " + $scope.newViewIndex, graphName: graphName, indx: $scope.newViewIndex,state:state};
                 $scope.newViewIndex++;
             };
+            
             $scope.loginUser = function(username,password)
             {
             
@@ -26,11 +29,14 @@ angular.module("MyApp")
                 formData.append('password', password);
 		$http({method: 'POST', url: '/authenticate/userpass', data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
 		.success(function(data, status, headers, config) {
-                        console.log(data);//$scope.state = 'previewState';
-                      
+                        //$scope.state = 'previewState';
+                      $scope.loggedUser = loggedUser = data;
+                      $scope.logged=logged = true;
+                      updateUser();
 		});
             
             }
+           
             $scope.isLoggedIn = function()
             {
                 $http({method: 'POST', url: '/getUser', headers: {'Content-Type': undefined}, transformRequest: angular.identity})

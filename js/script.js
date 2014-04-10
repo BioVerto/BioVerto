@@ -17,7 +17,8 @@ function bringFront(elem, stack){
     if(elem == undefined) return;
     $(elem).css({'zIndex' : min + group.length});
 }
-
+var loggedUser = null;
+var logged = false;
 /* global error function*/
 var debugMode = false;
 function codingError(text){
