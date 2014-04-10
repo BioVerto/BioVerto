@@ -84,6 +84,12 @@ angular.module("MyApp")
             {
                 $scope.addView(state.layout,state.graphName,state)
             }
+                $scope.saveView = function(state)
+            {
+                var graphJson = CircularJSON.stringify(g5.graphs[state.graphName]);
+                var viewJson  = CircularJSON.stringify(state);
+             
+            }
             $scope.fileUpload = function(plugin)
             {
                 $scope.fileType;

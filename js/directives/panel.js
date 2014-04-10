@@ -84,6 +84,11 @@ angular.module("MyApp")
                          scope.rootfn({fntype:"cloneView",args:scope.getState()});
                         
                     }
+                    scope.saveView = function()
+                    {
+                         scope.rootfn({fntype:"saveView",args:scope.getState()});
+                        
+                    }
                     scope.getState = function()
                     {
                        var panelscope = scope.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling;
