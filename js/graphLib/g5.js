@@ -161,11 +161,25 @@ g5.createAccessor = function(member) {
     return f;
 };
 g5.stringifyAccessorFn = function(accessorFns){
-    
-    
+    var result =[];
+    for (var acc in accessorFns)
+    {
+       var fn = accessorFns[acc];
+        result.push({member:fn.member,returnType:fn.returnType,name:acc});
+    }
+    return result;
 };
-g5.parseAccessorFn = function(accessorFns){
-    
+g5.parseAccessorFn = function(accessorFns)
+{ 
+    var result = {};
+    for(i = 0;i<accessorFns.length;i++)
+    {
+       var fnObj =  accessorFns[i];
+       result[fnObj.name] = g5.createAccessor(fnObj.member);
+       result[fnObj.name].returnType = fnObj.name.returnType;
+       
+    }
+    return result;
 }
 
 g5.listGraphs = function()

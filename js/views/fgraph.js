@@ -30,6 +30,8 @@ dc.fgraph = function(parent) {
             .range([_minEdgeColor, _maxEdgeColor])
             .interpolate(d3.interpolateHcl),
             _edgeColors = d3.scale.category20(), // colors to be used for edges
+            _translate = 0,
+            _scale =1,
             _nodeLabelAccessor = function(d) {
                 return "";
             },
@@ -164,6 +166,8 @@ dc.fgraph = function(parent) {
                     .size([_width, _height]);
 
         function zoom() {
+            _translate = d3.event.translate;
+            _scale = d3.event.scale;
             _svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
         }
         if (!_svg) {
@@ -564,7 +568,7 @@ dc.fgraph = function(parent) {
             
             fixed.push (_nodeData[i].fixed);
         }
-        return {alpha: _force.alpha(), x: x, y: y,px: px, py: py,fixed:fixed};
+        return {alpha: _force.alpha(), x: x, y: y,px: px, py: py,fixed:fixed,translate:_translate,scale:_scale};
     };
     _fgraph.resumeState = function(_) {
         var size = _nodeData.length;
@@ -587,7 +591,7 @@ dc.fgraph = function(parent) {
         }
       
  _svg.select(".nodes").selectAll(".node").select("circle").classed("sticky",function(d){return d.fixed})
-        
+  _svg.attr("transform", "translate(" +_.translate + ")scale(" + _.scale + ")");      
         assignLocations();
          _force.alpha(_.alpha);
      

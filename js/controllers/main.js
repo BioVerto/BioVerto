@@ -92,13 +92,24 @@ angular.module("MyApp")
             };
             $scope.cloneView = function(state)
             {
-                $scope.addView(state.layout, state.graphName, state)
+                $scope.addView(state.layout, state.graphName, state);
             }
             $scope.saveView = function(state)
             {
-                var graphJson = CircularJSON.stringify(g5.graphs[state.graphName]);
+                var graphJson = CircularJSON.stringify(g5.graphs[state.graphName].getState());
                 var viewJson = CircularJSON.stringify(state);
 
+            }
+            $scope.addViewFromJson = function(stateJson)
+            {
+            $scope.cloneView (CircularJSON.parse(stateJson));
+                
+            }
+            $scope.addGraphFromJson = function(graphJson,name)
+            {
+              var tempGraph = new Graph();
+              tempGraph.resumeState( CircularJSON.parse(graphJson))
+               g5.graphs[name] = tempGraph;
             }
             $scope.fileUpload = function(plugin)
             {
