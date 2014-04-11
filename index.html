@@ -177,7 +177,19 @@
                         </div>
 
                     </li>
-                      <div class="pull-right"  ng-show="logged">
+               <div  ng-show="logged">
+                <ul style="margin-top: 5px;" class="nav pull-left">
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">My views <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                             <li ng-repeat="value in savedGraphList">
+                                  <a href="#"ng-click="loadViewFromServer('force', value)">{{value}}</a>
+                             </li>
+                             <li><a>No Graphs Uploaded</a></li>
+                        </ul>
+                    </li>
+                </ul>
+              </div>
+               <div class="pull-right"  ng-show="logged">
                 <ul style="margin-top: 5px;" class="nav pull-right">
                     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"> Welcome {{loggedUser}} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
