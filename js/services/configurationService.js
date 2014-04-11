@@ -27,7 +27,7 @@ angular.module("MyApp")
         ];
 
         var circularLayoutControlsObj = [
-	    {controltype: "range",       datatype: "number",   tab:"Global",label: "Text radius",  func: "textRadius",     ignore:false,options:{min:10,max:100,default:30,step:1}},
+	    {controltype: "range",       datatype: "number", default:30,  tab:"Global",label: "Text radius",  func: "textRadius",     ignore:false,options:{min:10,max:100,step:1}},
             
 	];
         
