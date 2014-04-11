@@ -19,7 +19,6 @@ modalControllers.blast = function($scope, $modalInstance,$http) {
             var formData = new FormData();
 		
 	        formData.append('file', $scope.file);
-                formData.append('id', Math.floor(Math.random() * (10000)));
                 var p ="";
                 if(evalue)
                 {
@@ -33,8 +32,8 @@ modalControllers.blast = function($scope, $modalInstance,$http) {
                 {
                     p+="-pident"
                 }  
-                formData.append('p',p);
-		$http({method: 'POST', url: '/runblast?p=evalue&id=1233', data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
+                
+		$http({method: 'POST', url: '/runblast?p='+p+'&id='+Math.floor(Math.random() * (10000)), data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
 		.success(function(data, status, headers, config) {
                        $scope.results = data.data;
                        $scope.state = 'previewState';
