@@ -38,7 +38,7 @@ modalControllers.blast = function($scope, $modalInstance, $http) {
                     $scope.state = 'previewState';
                     $scope.previewColumns = [];
                     var map = {s:"Source",t:"Target",bs:"Bitscore",p:"pident",e:"evalue"};
-                    for (key in $scope.previewObjArr[0])
+                    for (key in $scope.results[0])
                     {
                         var tempObj = {field: key.toString(), displayName: map[key.toString()], width: "50"};
                         $scope.previewColumns.push(tempObj);
