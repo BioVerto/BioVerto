@@ -98,8 +98,8 @@
                                 <li><a href="#" ng-click="databaseDownload('mintFullNetworks')">MINT Full Networks</a></li>
                             </ul>
                         </li>
-                        <li><a href="#" ng-click="fileUpload('blast')">Blast </a></li>
-                        <li><a href="#" ng-click="fileUpload('microArr')">MicroArray Data</a></li>
+                        <li><a href="#"  ng-show="!logged&&false" ng-click="fileUpload('blast')">Blast </a></li>
+                        <li><a href="#"  ng-show="!logged&&false" ng-click="fileUpload('microArr')">MicroArray Data</a></li>
 
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add View <b class="caret"></b></a>
@@ -137,7 +137,7 @@
                         </li>
                     </ul>
                     
-                    <li class=" nav pull-right" ng-show="!logged">
+                    <li class=" nav pull-right" ng-show="!logged&&false">
                         <div class="dropdown pull-right ">
                             <button type="button" class="btn btn-primary navbar-btn" data-toggle="dropdown">Login</button>
 
