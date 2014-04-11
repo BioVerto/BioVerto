@@ -38,7 +38,7 @@
                     return Path(i, intermediate) + intermediate + Path(intermediate, j);
                 }
             }
-    }, nodeAccs: { "Betweenness Centrality": {type: "number", fct: g5.createAccessor(Bfield)} },visible:true});
+    }, nodeAccs:function(){return { "Betweenness Centrality": {type: "number", fct: g5.createAccessor(Bfield)} }},visible:true});
 
         function constructAdjacencyMatrix(currentNodes, currentEdges) { //no point in moving this function to graph.js since there's separate adjacency matrix for each component
             var nc = currentNodes.length;

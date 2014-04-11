@@ -22,8 +22,9 @@ describe("Betweenness Centrality", function() {
 		var alg = g5.algoPlugins["Betweenness Centrality"];
                 alg.algo(testg1);
                 var accFn = null;
-		for (var nA in alg.nodeAccs) {
-            accFn = alg.nodeAccs[nA].fct;
+                var temp = alg.nodeAccs()
+		for (var nA in temp) {
+            accFn = temp[nA].fct;
             break;
 		}
 		for (var i in testg1.nodes)

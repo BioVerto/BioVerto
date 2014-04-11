@@ -91,14 +91,17 @@ g5.returnGraph = function(name) {
 g5.applyAlgorithm = function(g, algoName) {
     var alg = g5.algoPlugins[algoName]; // TODO: check for error 
     alg.algo(g); // apply the algorithm on the graph
+    
     if (alg.nodeAccs !== undefined) // register node accessors with the graph
-        for (var nA in alg.nodeAccs)
-            g.addNodeAccessor(nA, alg.nodeAccs[nA].type,
-                    alg.nodeAccs[nA].fct);
+    var nodeAccs = alg.nodeAccs()
+        for (var nA in nodeAccs)
+            g.addNodeAccessor(nA, nodeAccs[nA].type,
+                    nodeAccs[nA].fct);
     if (alg.edgeAccs !== undefined) // register node accessors with the graph
-        for (var eA in alg.edgeAccs)
-            g.addEdgeAccessor(eA, alg.edgeAccs[eA].type,
-                    alg.edgeAccs[eA].fct);
+    var edgeAccs = alg.nodeAccs()     
+    for (var eA in edgeAccs)
+            g.addEdgeAccessor(eA, edgeAccs[eA].type,
+                    edgeAccs[eA].fct);
 };
 // create a graph from a blog using an IO plugin
 // @pluggin: the name of the IO plugin
@@ -154,8 +157,16 @@ g5.createAccessor = function(member) {
     var f = function(obj) {
         return obj.data[member];
     };
+    f.member = member;
     return f;
 };
+g5.stringifyAccessorFn = function(accessorFns){
+    
+    
+};
+g5.parseAccessorFn = function(accessorFns){
+    
+}
 
 g5.listGraphs = function()
 {

@@ -54,9 +54,9 @@
                 }
             }
         },
-        nodeAccs: {
+        nodeAccs:function(){return {
             "Degree": {type: "number", fct: g5.createAccessor(f)},
-        },visible:false});
+        }},visible:false});
 }(g5));
 
 // Random data node algo
@@ -75,8 +75,8 @@
                 node.data[f] = randomNumber();
             }
         },
-        nodeAccs: {
+        nodeAccs:function(){return  {
             "Random Data": {type: "number", fct: g5.createAccessor(f)}
-        },visible:false
+        }},visible:false
     });
 }(g5));

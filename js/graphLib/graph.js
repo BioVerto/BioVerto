@@ -85,8 +85,8 @@ Graph.prototype = {
         return {
             nodes:this.nodes,
             edges:this.edges,
-            nodeAccessors:stringifyAccessorFn(this.nodeAccessors),
-            edgeAccessors:stringifyAccessorFn(this.edgeAccessors),
+            nodeAccessors:g5.stringifyAccessorFn(this.nodeAccessors),
+            edgeAccessors:g5.stringifyAccessorFn(this.edgeAccessors),
             connectedComponentsNodes:this.connectedComponentsNodes,
             connectedComponentsEdges:this.connectedComponentsEdges,
             nCnt:this.nCnt
@@ -96,8 +96,8 @@ Graph.prototype = {
     {
         this.nodes = state.nodes;
         this.edges = state.edges;
-        this.nodeAccessors = parseAccessorFn(state.nodeAccessors);
-        this.edgeAccessors = parseAccessorFn(state.nodeAccessors);
+        this.nodeAccessors = g5.parseAccessorFn(state.nodeAccessors);
+        this.edgeAccessors = g5.parseAccessorFn(state.nodeAccessors);
         this.connectedComponentsNodes=   state.connectedComponentsNodes;
         this.connectedComponentsEdges=   state.connectedComponentsEdges;
         this.nCnt = state.nCnt;

@@ -22,8 +22,9 @@ describe("Closeness Centrality", function() {
 		var alg = g5.algoPlugins["Closeness Centrality"];
 		alg.algo(testg4);
 		var accFn = null;
-		for (var nA in alg.nodeAccs) {			// Why for loop ?
-            accFn = alg.nodeAccs[nA].fct;
+		var temp = alg.nodeAccs()
+		for (var nA in temp) {
+            accFn = temp[nA].fct;
             break;
 		}
 		for (var i in testg4.nodes)

@@ -30,9 +30,9 @@
                 g.connectedComponentsEdges[groupId].push(g.edges[i]);
             }
         },
-        nodeAccs: {
+        nodeAccs: function(){return {
             "Connected Components": {type: "number", fct: g5.createAccessor(f)}
-        },
+        }},
         visible: false});
 
 }(g5)); 

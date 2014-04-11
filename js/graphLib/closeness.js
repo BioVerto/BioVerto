@@ -88,8 +88,8 @@
 	            
         	}	
         },
-        nodeAccs: {
+        nodeAccs:function(){return  {
             "Closeness Centrality": {type: "number", fct: g5.createAccessor(f)}
-        },visible:true});
+        }},visible:true});
 
 }(g5)); 

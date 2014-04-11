@@ -250,7 +250,7 @@ for(var i=0;i<myEdges.length;i++)
                     var node = g.nodes[i];
                     node.data[f] = results[j++] ;
                 }},
-            nodeAccs: {
+            nodeAccs:function(){return  {
                 "MCL clustering": { type:"number", fct: g5.createAccessor(f)}
-            },visible:true});
+            }},visible:true});
 }(g5));
