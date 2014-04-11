@@ -40,7 +40,7 @@ modalControllers.blast = function($scope, $modalInstance, $http) {
                     var map = {s:"Source",t:"Target",bs:"Bitscore",p:"pident",e:"evalue"};
                     for (key in $scope.results[0])
                     {
-                        var tempObj = {field: key.toString(), displayName: map[key.toString()], width: "50"};
+                        var tempObj = {field: key.toString(), displayName: map[key.toString()], width: "auto"};
                         $scope.previewColumns.push(tempObj);
                     }
                 });
