@@ -25,8 +25,7 @@ angular.module("MyApp")
                     }
                     scope.valChanged = function()
                     {
-                        console.log("here")
-                        if(scope.newOption!==null)
+                         if(scope.newOption!==null)
                         {
                          scope.applyFilter($.merge($.merge([],scope.filters),[{name: scope.newOption, fn: scope.acessorFns['Node'][scope.newOption], operator: scope.newOperator, threshold: scope.thresVal, apply: true}]));
                        }

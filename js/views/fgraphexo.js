@@ -241,16 +241,10 @@ dc.fgraph = function(parent) {
     function drawData() {
 
         var drag = _force.drag()
-                   .on("dragstart", function(d) {
+                .on("dragstart", function(d) {
                     d.fixed = true;
                     d3.select(this).select("circle").classed("sticky", d.fixed);
                 });
-          _force
-                .nodes(_nodeData.filter(_filterFunction))
-                .links(_edgeData.filter(function(d) {
-                    return _filterFunction(d.target) && _filterFunction(d.source)
-                }));
-          _force.resume();      
         _svg.select(".links").selectAll(".link")
                 .data(_edgeData.filter(function(d) {
                     return _filterFunction(d.target) && _filterFunction(d.source)
@@ -265,6 +259,11 @@ dc.fgraph = function(parent) {
                 .enter();
         _newLinks.append("line")
                 .attr("class", "link");
+//                _newLinks.append("text")
+//                .attr("class", "fgraph-text")
+//                .text(function(d) {
+//                    return "afsdsdfsdfdf";//_edgeLabelAccessor(d);
+//                });
         _newLinks = _svg.select(".links").selectAll(".link")
         _newNodes = _svg.select(".nodes").selectAll(".node")
                 .data(_nodeData.filter(_filterFunction), _indexFunction)
