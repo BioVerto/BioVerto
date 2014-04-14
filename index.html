@@ -29,11 +29,13 @@
     <script src="js/factory/d3.js"></script>
     <script src="js/libs/colorpicker/bootstrap-colorpicker-module.js"></script>
     <script src="js/libs/d3.v3.min.js" charset="utf-8"></script>
-
+    
     <script src="js/views/fgraph.js"></script>
     <script src="js/views/cgraph.js"></script>
     <script src="js/views/chord.js"></script>
     <script src="js/filters/filterAccessorFn.js"></script>
+    <script src="js/filters/sortviews.js"></script>
+    
     <script src="js/services/configurationService.js"></script> 
     <script src="js/services/componentGenerator.js"></script>
     <script src="js/services/viewProvider.js"></script>
@@ -213,7 +215,7 @@
 
             </div>
         </div>
-        <div  ng-repeat="(index, view) in views " style="position:absolute">
+        <div  ng-repeat=" view in views |sortViews:active" style="position:absolute">
             <panel activeindex=active layout = view.layout index =view.indx heading=view.title state=view.state graph-name=view.graphName rootfn= "panelFn(fntype,args)" href="#"></panel>
         </div>
         <div ng-show="newViewIndex == 0" style="height:calc(100% - 30px);">

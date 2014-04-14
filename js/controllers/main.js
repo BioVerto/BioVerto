@@ -1,6 +1,6 @@
 angular.module("MyApp")
         .controller('mainController', function($scope, $modal, modalCtrlProvider, $http) {
-            $scope.views = {};
+            $scope.views ={};
             $scope.active = 0;
             $scope.newViewIndex = 0;
             $scope.bugreportDisable = false;
@@ -10,6 +10,10 @@ angular.module("MyApp")
             $scope.graphList = [];
             $scope.logged = false;
             $scope.username = null;
+           
+$scope.randomSort = function(view) {
+  return Math.random();
+};
             $scope.addView = function(layout, graphName, state)
             {
                 if ($scope.newViewIndex !== 0 && typeof graphName === 'undefined')
@@ -17,7 +21,9 @@ angular.module("MyApp")
                     graphName = $scope.views[$scope.active].graphName;
                 }
                 ;
+                $scope.active = $scope.newViewIndex;
                 $scope.views[$scope.newViewIndex] = {layout: layout, title: "New View " + $scope.newViewIndex, graphName: graphName, indx: $scope.newViewIndex, state: state};
+                
                 $scope.newViewIndex++;
             };
 
