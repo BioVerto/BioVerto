@@ -3,6 +3,11 @@ angular.module("MyApp")
             var prevActiveView = 0;
             var orderedView = [];
             return function(views, active) {
+                if(Object.keys(views).length ===0 )
+                {
+                    orderedView = []
+                    return orderedView;
+                }
                 if (active !== prevActiveView||(Object.keys(views).length ===1))
                 {
                     orderedView = [];
