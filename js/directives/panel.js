@@ -10,6 +10,7 @@ angular.module("MyApp")
                     graphName: "=",
                     state:"=",
                     rootfn:"&"
+                   
                 },
                 templateUrl: "./partials/panel.html",
                 transclude: true,
@@ -20,8 +21,8 @@ angular.module("MyApp")
                     scope.alertText = "";
                     scope.alertType = "info";
                     scope.algorithmList = g5.listAlgorithms();
-                    //scope.myData = [{controltype: "range", v:"a",      datatype: "number",     tab:"Node",label: "Min node size",    func: "minNodeSize", name:"aaa",   ignore:false,options:{min:5,max:40,default:10,step:1}},
-            //];
+                    scope.acessorFns={};
+                    scope.view = {};
                     scope.runAlgo = function(name)
                     {
                         scope.alertBox("Runnning Algorithm","warning");

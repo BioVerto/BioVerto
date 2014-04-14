@@ -73,9 +73,12 @@ dc.fgraph = function(parent) {
             _width = 960,
             _height = 600,
             _displayNames = true, // should we display names
-            _filterFunction = function(d, i) {
+            _nodeFilterFunction = function(d, i) {
                 return true;
-            }, //function(d,i){return true;},
+            },
+             _edgeFilterFunction = function(d, i) {
+                return true;
+            },
             _dblclickHandler = function(d) { // handler for what happens under a dbouleclick
                 // do nothing
             },
@@ -246,33 +249,33 @@ dc.fgraph = function(parent) {
                     d3.select(this).select("circle").classed("sticky", d.fixed);
                 });
           _force
-                .nodes(_nodeData.filter(_filterFunction))
+                .nodes(_nodeData.filter(_nodeFilterFunction))
                 .links(_edgeData.filter(function(d) {
-                    return _filterFunction(d.target) && _filterFunction(d.source)
+                    return _nodeFilterFunction(d.target) && _nodeFilterFunction(d.source)&&_edgeFilterFunction(d);
                 }));
           _force.resume();      
         _svg.select(".links").selectAll(".link")
                 .data(_edgeData.filter(function(d) {
-                    return _filterFunction(d.target) && _filterFunction(d.source)
+                    return _nodeFilterFunction(d.target) && _nodeFilterFunction(d.source)&&_edgeFilterFunction(d)
                 }))
                 .exit()
                 .transition()
                 .remove();
         _newLinks = _svg.select(".links").selectAll(".link")
                 .data(_edgeData.filter(function(d) {
-                    return _filterFunction(d.target) && _filterFunction(d.source)
+                    return _nodeFilterFunction(d.target) && _nodeFilterFunction(d.source)&&_edgeFilterFunction(d)
                 }))
                 .enter();
         _newLinks.append("line")
                 .attr("class", "link");
         _newLinks = _svg.select(".links").selectAll(".link")
         _newNodes = _svg.select(".nodes").selectAll(".node")
-                .data(_nodeData.filter(_filterFunction), _indexFunction)
+                .data(_nodeData.filter(_nodeFilterFunction), _indexFunction)
                 .enter().append("g")
                 .attr("class", "node")
                 .call(drag)
         _svg.select(".nodes").selectAll(".node")
-                .data(_nodeData.filter(_filterFunction), _indexFunction)
+                .data(_nodeData.filter(_nodeFilterFunction), _indexFunction)
                 .exit()
                 .transition()
                 .remove();
@@ -321,9 +324,14 @@ dc.fgraph = function(parent) {
     {
 
     }
-    _fgraph.filterFunction = function(_)
+    _fgraph.nodeFilterFunction = function(_)
     {
-        _filterFunction = _;
+        _nodeFilterFunction = function(d){return _(d.data);};
+        drawData();
+    }
+    _fgraph.edgeFilterFunction = function(_)
+    {
+        _edgeFilterFunction = _;
         drawData();
     }
     _fgraph.init = function(parent, data, width, height,state) {
@@ -370,6 +378,10 @@ dc.fgraph = function(parent) {
     _fgraph.nodeData = function()
     {
         return _nodeData;
+    }
+    _fgraph.edgeData = function()
+    {
+        return _edgeData;
     }
     _fgraph.highlightNode = function(nodenum)
     {
@@ -552,6 +564,22 @@ dc.fgraph = function(parent) {
                 };
         return _fgraph;
     }
+     _fgraph.nodeAttrExtent = function(_) {
+      var range = d3.extent(_nodeData, function(d) {
+                            return _(d.data);
+                        });                        
+        return range;
+    }
+     _fgraph.edgeAttrExtent = function(_) {
+       var range = d3.extent(_edgeData,_);
+       if(range[0]==='-')
+       {
+           range[0] = "0"; 
+       };
+          
+        return range;
+    }
+    
     _fgraph.getState = function() {
         var size = _nodeData.length;
         var x = [];

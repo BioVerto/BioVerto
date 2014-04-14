@@ -64,7 +64,15 @@
                     </div>
                  </div>   -->
              </tab>
-             <tab ng-show="layout==='force'" heading="Filters"><filterselect  ></filterselect></tab>
+             <tab ng-show="layout==='force'" heading="Filters">
+                 <div style='padding-bottom: 10px; padding-top: 10px;'><a class='pull-left'>Node Filters</a></div>
+                 <br>
+                 <filterselect acessorfns="acessorFns" type="'Node'" filterupdate ="view.nodeFilterFunction(_)"  extentfn ="view.nodeAttrExtent(_)" ></filterselect>
+                 <div style='padding-bottom: 10px; padding-top: 10px;'><a class='pull-left'>Edge Filters</a></div>
+                 <br>
+                 <filterselect acessorfns="acessorFns" type="'Edge'" filterupdate ="view.edgeFilterFunction(_)"  extentfn ="view.edgeAttrExtent(_)"  ></filterselect>
+            
+             </tab>
             </tabset>
             
 
