@@ -101,7 +101,7 @@ angular.module("MyApp")
                     xml = xml.replace(/xmlns=\"http:\/\/www\.w3\.org\/2000\/svg\"/, '');
                     //draw the SVG onto a canvas
                     canvg(canvas, xml);
-                       window.open(canvas.toDataURL('image/png')); 
+                       window.open(canvas.toDataURL('image/png').replace("image/png", "image/octet-stream")); 
                     }
                     scope.getState = function()
                     {
