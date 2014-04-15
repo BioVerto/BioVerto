@@ -139,7 +139,7 @@
                         </li>
                     </ul>
                     
-                    <li class=" nav pull-right" ng-show="!logged&&false">
+                    <li class=" nav pull-right" ng-show="!logged">
                         <div class="dropdown pull-right ">
                             <button type="button" class="btn btn-primary navbar-btn" data-toggle="dropdown">Login</button>
 
@@ -164,8 +164,7 @@
                                 <div ng-show="register" class="container">
                                     <div class="row">
                                         <div class="span4 offset4 well">
-                                           
-                                            <legend>Enter Email </legend>
+                                         <legend>Enter Email </legend>
                                             <form>
                                                 <input type="text" class="span4" style="margin-bottom: 20px;" ng-model="emailID" placeholder="Email id">
                                             

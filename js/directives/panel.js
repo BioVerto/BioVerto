@@ -23,6 +23,7 @@ angular.module("MyApp")
                     scope.algorithmList = g5.listAlgorithms();
                     scope.acessorFns={};
                     scope.view = {};
+                    scope.imageData ="";
                     scope.runAlgo = function(name)
                     {
                         scope.alertBox("Runnning Algorithm","warning");
@@ -101,7 +102,7 @@ angular.module("MyApp")
                     xml = xml.replace(/xmlns=\"http:\/\/www\.w3\.org\/2000\/svg\"/, '');
                     //draw the SVG onto a canvas
                     canvg(canvas, xml);
-                       window.open(canvas.toDataURL('image/png').replace("image/png", "image/octet-stream")); 
+                      scope.imageData = canvas.toDataURL('image/png'); 
                     }
                     scope.getState = function()
                     {
@@ -193,6 +194,9 @@ angular.module("MyApp")
                         // bring this window to front so it is immediatelly visible                                                                                                                                                
                         bringFront(_DOM, '.viewWindow');
                         scope.setActive();
+                        $("#dropdown"+scope.index).find('form').click(function (e) {
+                                e.stopPropagation();
+                                 });
                     }, 0);
 
                 }

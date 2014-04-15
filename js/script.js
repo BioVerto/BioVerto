@@ -42,8 +42,17 @@ loadFile = function(file, callback)
             }
 var BioVertoPath = "http://datapath.cise.ufl.edu:1080/BioVerto-data";      
 var asanaPHPPath = "http://pranaowalekar.in/kartik/a.php";      
+
 /* Start the app */
 var app= angular.module("MyApp", ['ngSanitize','ui.bootstrap','ngGrid','colorpicker.module','ui.unique'])
+app.config( [
+    '$compileProvider',
+    function( $compileProvider )
+    {   
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|file):|data:image\//);
+       
+    }
+]);
 
 $(document).ready( function() {
     $('#myCarousel').carousel({

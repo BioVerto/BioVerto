@@ -11,6 +11,7 @@
                         <div class="btn-sm btn-sm-nopad pull-right">
                             <a href="#" ng-click="removeView()" class="col-xs-2 pull-right glyphicon glyphicon-remove" ></a>
                         </div>
+                        
                         <div class="btn-sm btn-sm-nopad pull-right">
                             <a href="#" class="col-xs-2 pull-right dropdown-toggle glyphicon glyphicon-cog" ></a>
                             <ul class="dropdown-menu">                                   
@@ -20,13 +21,23 @@
 <!--                                 <li>
                                     <a href="#" ng-click="saveView()">Save View</a>
                                 </li>-->
-                             <li>
-                                    <a href="#" ng-click="exportView()">Export View</a>
-                                </li>
-
+                        
                             </ul>
                         </div>
-                       
+                       <div class="btn-sm btn-sm-nopad pull-right">
+                           <a href="#" ng-click="exportView()" class="col-xs-2 pull-right dropdown-toggle glyphicon glyphicon-picture" ></a>
+                            <ul id="dropdown{{index}}" class="dropdown-menu">                                   
+                               
+                                <form>
+                                 <h6>Export as Image</h6>
+                                <h6>Filename:</h6> 
+                                <input type="text" ng-model="filename">
+                                </form>
+                                <button ng-disabled="!filename" class="btn btn-sm btn-primary"><a href="{{imageData}}" style="color: #FFFFFF;" download="{{filename}}.png" >Save</a></button>
+                               
+                            </ul>
+                        </div>
+                        
                     </div>
                 </div>  
             </div>
