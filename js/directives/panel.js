@@ -90,6 +90,19 @@ angular.module("MyApp")
                          scope.rootfn({fntype:"saveView",args:scope.getState()});
                         
                     }
+                     scope.exportView = function()
+                    {
+                     var canvas, xml;
+                     canvas = document.createElement("canvas");
+                     canvas.className = "screenShotTempCanvas";
+                    //convert SVG into a XML string
+                     xml = (new XMLSerializer()).serializeToString($("#graphNumber" + scope.index).find('svg')[0]);
+                    // Removing the name space as IE throws an error
+                    xml = xml.replace(/xmlns=\"http:\/\/www\.w3\.org\/2000\/svg\"/, '');
+                    //draw the SVG onto a canvas
+                    canvg(canvas, xml);
+                       window.open(canvas.toDataURL('image/png')); 
+                    }
                     scope.getState = function()
                     {
                        var panelscope = scope.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling;
