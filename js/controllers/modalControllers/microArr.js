@@ -4,8 +4,18 @@ if (typeof modalControllers === 'undefined')
 modalControllers.microArr = function($scope, $modalInstance) {
     $scope.uploadButtonEnable = true;
     $scope.state = 'uploadState';
+    $scope.alertShow =false;
+      $scope.alertType = "warning";
+      $scope.alertText = ""
+    $scope.alertClose = function()
+                    {
+                      
+                        $scope.alertShow = false;
+
+                    }
     $scope.handleFileSelect = function(element) {
         $scope.file = element.files[0]; // FileList object
+        $scope.alertClose();
     }
    $scope.findNodesGreaterThanThreshold = function (corr_matrix, col, threshold){
        var obj = {};
@@ -46,8 +56,15 @@ $scope.setThreshold = function(threshold)
         $scope.uploadButtonEnable = false;
         loadFile($scope.file, function(e) {
             $scope.blob = e.target.result;
-
              $scope.parsedData = g5.generateObjArray("microArr", e.target.result);
+            if($scope.parsedData.col>300)
+            {
+                 $scope.uploadButtonEnable = true;
+                $scope.alertText ="Genes more than 300 not supported"
+                 $scope.alertShow = true;
+                $scope.$apply();
+                return ;
+            }
             $scope.previewObjArr = previewData($scope.parsedData.data,$scope.parsedData.row,$scope.parsedData.col);
             $scope.state = 'previewState';
             $scope.$apply();
