@@ -39,7 +39,7 @@ modalControllers.blast = function($scope, $modalInstance, $http) {
                     {
                         if(attr!=="s"&&attr!=="t")
                         {
-                        for(var edges in $scope.results[0])
+                        for(var edges in $scope.results)
                             {   
                                     $scope.results[edges][attr] = parseFloat($scope.results[edges][attr]);
                             } 
