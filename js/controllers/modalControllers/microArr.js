@@ -15,7 +15,7 @@ modalControllers.microArr = function($scope, $modalInstance) {
                     }
     $scope.handleFileSelect = function(element) {
         $scope.file = element.files[0]; // FileList object
-        $scope.alertClose();
+        $scope.alertClose(); 
     }
    $scope.findNodesGreaterThanThreshold = function (corr_matrix, col, threshold){
        var obj = {};
