@@ -185,6 +185,11 @@ Graph.prototype = {
         // select the first element and add accessor functions for mebers
         var el = this.edges[0].data;
         for (var v in el) {
+           if(typeof el[v] === "number")
+           {
+                this.addEdgeAccessor(v, "number", g5.createAccessor(v));
+                continue;
+           }
             if (el[v].match(/^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/) !== null) { //http://stackoverflow.com/questions/1779013/check-if-string-contains-only-digits
                 this.addEdgeAccessor(v, "number", g5.createAccessor(v));
             }
