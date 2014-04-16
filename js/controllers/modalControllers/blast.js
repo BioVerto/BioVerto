@@ -35,6 +35,16 @@ modalControllers.blast = function($scope, $modalInstance, $http) {
         $http({method: 'POST', url: '/runblast?p=' + p + '&id=' + Math.floor(Math.random() * (10000)), data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
                 .success(function(data, status, headers, config) {
                     $scope.results = data.data;
+                    for(var attr in $scope.results[0])
+                    {
+                        if(i!=="s"||i!=="t")
+                        {
+                        for(var edges in $scope.results[0])
+                            {   
+                                    $scope.results[edges][attr] = parseFloat($scope.results[edges][attr]);
+                            } 
+                        }
+                    }
                     $scope.state = 'previewState';
                     $scope.previewColumns = [];
                     var map = {s:"Source",t:"Target",bs:"Bitscore",p:"pident",e:"evalue"};
