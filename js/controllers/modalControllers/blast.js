@@ -37,7 +37,7 @@ modalControllers.blast = function($scope, $modalInstance, $http) {
                     $scope.results = data.data;
                     for(var attr in $scope.results[0])
                     {
-                        if(i!=="s"||i!=="t")
+                        if(attr!=="s"||attr!=="t")
                         {
                         for(var edges in $scope.results[0])
                             {   
