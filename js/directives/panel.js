@@ -73,9 +73,14 @@ angular.module("MyApp")
                     { 
                         var state = scope.state;
                          scope.view.resumeState(state.viewState );
-                         var filterscope = scope.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling;
-                            filterscope.filters = state.filters;
-                            filterscope.applyFilter();
+                         var nodeFilterscope =scope.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling.$$childHead.$$nextSibling.$$nextSibling;
+                        var edgeFilterscope  =scope.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling;
+                           nodeFilterscope.filters = state.nodefilters;
+                           edgeFilterscope.filters = state.edgefilters;
+                               
+                        nodeFilterscope.applyFilter();
+                        edgeFilterscope.applyFilter();
+                        
                     }
                     scope.removeView = function()
                     {
@@ -106,15 +111,17 @@ angular.module("MyApp")
                     }
                     scope.getState = function()
                     {
-                       var panelscope = scope.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling;
-                         var filterscope = scope.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling;
-                            var numOptions = configurationService.getConfig(scope.layout).length;
+                       var panelscope = scope.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling.$$nextSibling.$$nextSibling;
+                        var nodeFilterscope =scope.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling.$$childHead.$$nextSibling.$$nextSibling;
+                        var edgeFilterscope =scope.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling.$$childHead.$$nextSibling.$$nextSibling.$$nextSibling;
+                          
+                        var numOptions = configurationService.getConfig(scope.layout).length;
                            var config = {}
                             for(i = 0 ; i <numOptions;i++)
                             {
                                config["P"+i] =  panelscope["P"+i]
                             }
-                            return {layout:scope.layout,graphName:scope.graphName,config:config,filters:filterscope.filters,viewState:scope.view.getState()}
+                            return {layout:scope.layout,graphName:scope.graphName,config:config,edgefilters:edgeFilterscope.filters,nodefilters:nodeFilterscope.filters,viewState:scope.view.getState()}
                            
                     }
                     scope.filterFunction=function()
