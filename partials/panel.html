@@ -32,9 +32,10 @@
                                  <h6>Export as Image</h6>
                                 <h6>Filename:</h6> 
                                 <input type="text" ng-model="filename">
+                              
+                                <a href="{{imageData}}" ng-hide="!filename" style="color: #FFFFFF;background: #428bca;border-radius: 2;padding: 5;" download="{{filename}}.png" >Save</a>                               
+                                
                                 </form>
-                                <button ng-disabled="!filename" class="btn btn-sm btn-primary"><a href="{{imageData}}" style="color: #FFFFFF;" download="{{filename}}.png" >Save</a></button>
-                               
                             </ul>
                         </div>
                         
