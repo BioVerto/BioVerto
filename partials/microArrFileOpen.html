@@ -20,11 +20,14 @@
           <button class="btn btn-primary pull-right"  ng-click="calculateCorr();state='resultState';">Next</button>           
         </div>
         <div ng-show="state=='resultState'">
+            <h4>Preview of the Correlation Values</h4>
+            <h6>Note: All the elements are not shown</h6>
+            
           <div class="gridStyle" ng-grid="resultGridOptions"></div>
           
           <input type="range" min="-1" max="1" ng-init="threshold = 0;setThreshold(threshold);" ng-change="setThreshold(threshold)" ng-model="threshold" step=".05" class="pull-left">Threshold :{{threshold}} Number of Node : {{numNodes}}
           <br>
-          <button class="btn btn-primary pull-right" ng-disabled="!(target&&source)" ng-click="state='graphName';graphName=file.name.split('.')[0]">Next</button>           
+          <button class="btn btn-primary pull-right"  ng-click="state='graphName';graphName=file.name.split('.')[0]">Next</button>           
         </div>
         <div ng-show="state=='graphName'">
         <div> <h5>Graph Name</h5>
