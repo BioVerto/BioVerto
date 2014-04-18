@@ -9,10 +9,12 @@ modalControllers.blast = function($scope, $modalInstance, $http) {
         $scope.file = element.files[0]; // FileList object
     }
     $scope.ok = function(graphName) {
-        g5.loadGraphFromObjArray($scope.results, graphName, "s", "t");
+        g5.loadGraphFromObjArray($scope.results, graphName, "Source", "Target");
         $modalInstance.close({layout: "force", graphName: graphName});
     };
-
+var log10 = function (val) {
+  return Math.log(val) / Math.LN10;
+}
     $scope.fileUpload = function(evalue, bitscore, pident)
     {
         var formData = new FormData();
@@ -35,22 +37,63 @@ modalControllers.blast = function($scope, $modalInstance, $http) {
         $http({method: 'POST', url: '/runblast?p=' + p + '&id=' + Math.floor(Math.random() * (10000)), data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
                 .success(function(data, status, headers, config) {
                     $scope.results = data.data;
-                    for(var attr in $scope.results[0])
+                    var keys = Object.keys( $scope.results[0]);
+                    for(var i =0 ;i < keys.length;i++)
                     {
-                        if(attr!=="s"&&attr!=="t")
+                        attr= keys[i];
+                        switch (attr)
                         {
-                        for(var edges in $scope.results)
+                            case "e" :
+                            for(var edges in $scope.results)
                             {   
-                                    $scope.results[edges][attr] = parseFloat($scope.results[edges][attr]);
+                                   $scope.results[edges]["log_evalue"]= -1*log10(parseFloat($scope.results[edges][attr]));
+                                    delete $scope.results[edges][attr];
                             } 
+                            break;
+                            case "bs" :
+                            for(var edges in $scope.results)
+                            {   
+                                   $scope.results[edges]["Bitscore"]= parseFloat($scope.results[edges][attr]);
+                                    delete $scope.results[edges][attr];
+                            } 
+                            break;
+                            case "p" :
+                            for(var edges in $scope.results)
+                            {   
+                                   $scope.results[edges]["P_ident"]= parseFloat($scope.results[edges][attr]);
+                                   delete $scope.results[edges][attr];
+                            }
+                            break;
+                             case "s" :
+                            for(var edges in $scope.results)
+                            {   
+                                   $scope.results[edges]["Source"]=$scope.results[edges][attr];
+                                   delete $scope.results[edges][attr];
+                            }
+                            break;
+                            
+                             case "t" :
+                            for(var edges in $scope.results)
+                            {   
+                                   $scope.results[edges]["Target"]=$scope.results[edges][attr];
+                                   delete $scope.results[edges][attr];
+                            }
+                            break;
+                            default:
+                            break;         
+                        
                         }
+                        
+                        
+                       
+                        
                     }
                     $scope.state = 'previewState';
                     $scope.previewColumns = [];
-                    var map = {s:"Source",t:"Target",bs:"Bitscore",p:"pident",e:"evalue"};
+                   // var map = {s:"Source",t:"Target",bs:"Bitscore",p:"pident",log-evalue:"evalue"};
                     for (key in $scope.results[0])
                     {
-                        var tempObj = {field: key.toString(), displayName: map[key.toString()]};
+                        var tempObj = {field: key.toString(), displayName: key.toString()};
                         $scope.previewColumns.push(tempObj);
                     }
                 });

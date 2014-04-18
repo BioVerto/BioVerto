@@ -579,7 +579,10 @@ dc.fgraph = function(parent) {
           
         return range;
     }
-    
+     _fgraph.stopAnimation = function()
+     {
+         _force.stop();
+     }
     _fgraph.getState = function() {
         var size = _nodeData.length;
         var x = [];

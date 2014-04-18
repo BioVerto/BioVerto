@@ -91,6 +91,12 @@ angular.module("MyApp")
                          scope.rootfn({fntype:"cloneView",args:scope.getState()});
                         
                     }
+                    scope.stopAnimationView = function()
+                    {
+                         scope.view.stopAnimation();
+                        
+                    }
+                    
                     scope.saveView = function()
                     {
                          scope.rootfn({fntype:"saveView",args:scope.getState()});
