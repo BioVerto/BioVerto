@@ -36,6 +36,7 @@ var log10 = function (val) {
 
         $http({method: 'POST', url: '/runblast?p=' + p + '&id=' + Math.floor(Math.random() * (10000)), data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
                 .success(function(data, status, headers, config) {
+                    if(!data.data["err"]){
                     $scope.results = data.data;
                     var keys = Object.keys( $scope.results[0]);
                     for(var i =0 ;i < keys.length;i++)
@@ -83,11 +84,11 @@ var log10 = function (val) {
                             break;         
                         
                         }
-                        
+                    }
                         
                        
                         
-                    }
+                    
                     $scope.state = 'previewState';
                     $scope.previewColumns = [];
                    // var map = {s:"Source",t:"Target",bs:"Bitscore",p:"pident",log-evalue:"evalue"};
@@ -96,9 +97,14 @@ var log10 = function (val) {
                         var tempObj = {field: key.toString(), displayName: key.toString()};
                         $scope.previewColumns.push(tempObj);
                     }
+                }
+                else
+                {
+                        alert(data.data.err);
+                }
                 })
                 .error(function(){
-                    alert("Blast threw error");
+                    alert("Backend issues");
                 });
 
     };
