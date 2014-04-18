@@ -96,8 +96,10 @@ var log10 = function (val) {
                         var tempObj = {field: key.toString(), displayName: key.toString()};
                         $scope.previewColumns.push(tempObj);
                     }
+                })
+                .error(function(){
+                    alert("Blast threw error");
                 });
-
 
     };
 
