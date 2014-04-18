@@ -253,7 +253,6 @@ dc.fgraph = function(parent) {
                 .links(_edgeData.filter(function(d) {
                     return _nodeFilterFunction(d.target) && _nodeFilterFunction(d.source)&&_edgeFilterFunction(d);
                 }));
-          _force.resume();      
         _svg.select(".links").selectAll(".link")
                 .data(_edgeData.filter(function(d) {
                     return _nodeFilterFunction(d.target) && _nodeFilterFunction(d.source)&&_edgeFilterFunction(d)
@@ -306,6 +305,7 @@ dc.fgraph = function(parent) {
         changeEdgeColor();
         changeEdgeWidth();
         assignLocations();
+        _force.resume();      
     }
     function changeNodeLabel() {
         _node.selectAll("text")
