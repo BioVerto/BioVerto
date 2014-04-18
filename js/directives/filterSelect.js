@@ -24,7 +24,7 @@ angular.module("MyApp")
                         scope.rangeMin = range[0];
                         scope.rangeMax = range[1];
                         scope.thresVal = range[1];
-                       scope.step = Math.abs(parseInt(range[1])-parseInt(range[0])/100);
+                       scope.step = Math.abs((parseFloat(range[1])-parseFloat(range[0]))/100);
                         /* if(parseInt(range[1])-parseInt(range[0])<1)
                         {
                             scope.step = .1;
