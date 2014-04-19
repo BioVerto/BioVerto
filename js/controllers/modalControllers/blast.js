@@ -44,11 +44,13 @@ var log10 = function (val) {
             p += "-pident"
         }
 $scope.uploadButtonEnable = false;
-$scope.alertText = "Genes more than 300 not supported"
+$scope.alertText = "Processing please wait.."
 $scope.alertShow = true;
                 
         $http({method: 'POST', url: '/runblast?p=' + p + '&id=' + Math.floor(Math.random() * (10000)), data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
                 .success(function(data, status, headers, config) {
+                    $scope.alertShow = true;
+            
                     if(!data["err"]){
                     $scope.results = data;
                     var keys = Object.keys( $scope.results[0]);
@@ -117,7 +119,9 @@ $scope.alertShow = true;
                 }
                 })
                 .error(function(){
-                    alert("Backend issues");
+                                             alert("Backend issues");
+                            $scope.alertShow = false;
+                            $scope.apply();
                 });
 
     };
