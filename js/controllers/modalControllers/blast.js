@@ -44,12 +44,12 @@ var log10 = function (val) {
             p += "-pident"
         }
 $scope.uploadButtonEnable = false;
-$scope.alertText = "Processing please wait.."
+$scope.alertText = "Processing  and retrieving results , please wait.."
 $scope.alertShow = true;
                 
         $http({method: 'POST', url: '/runblast?p=' + p + '&id=' + Math.floor(Math.random() * (10000)), data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
                 .success(function(data, status, headers, config) {
-                    $scope.alertShow = true;
+                    $scope.alertShow = false;
             
                     if(!data["err"]){
                     $scope.results = data;
