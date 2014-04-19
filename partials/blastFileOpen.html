@@ -3,8 +3,11 @@
         <h3>Upload Blast Fasta file</h3>
     </div>
     <div class="modal-body">
+        <alert  ng-show="alertShow" type="alertType" close="alertClose(a)">{{alertText}}</alert>
+     
         <div ng-show="state=='uploadState'">
-        <input type="file" name='files[]' ng-model="fileName" onchange="angular.element(this).scope().handleFileSelect(this)"/>
+        
+            <input type="file" name='files[]' ng-model="fileName" onchange="angular.element(this).scope().handleFileSelect(this)"/>
         <br>
         <input type="checkbox" ng-model="evalue" /> e value<br>
           <input type="checkbox" ng-model="bitscore"/>bitscore<br>

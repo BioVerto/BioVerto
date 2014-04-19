@@ -5,6 +5,16 @@ modalControllers.blast = function($scope, $modalInstance, $http) {
     $scope.uploadButtonEnable = true;
     $scope.state = 'uploadState';
     $scope.graphName = "Blast graph";
+    $scope.alertShow = false;
+    $scope.alertType = "warning";
+    $scope.alertText = ""
+    $scope.alertClose = function()
+    {
+
+        $scope.alertShow = false;
+
+    }
+    
     $scope.handleFileSelect = function(element) {
         $scope.file = element.files[0]; // FileList object
     }
@@ -33,11 +43,14 @@ var log10 = function (val) {
         {
             p += "-pident"
         }
-
+$scope.uploadButtonEnable = false;
+$scope.alertText = "Genes more than 300 not supported"
+$scope.alertShow = true;
+                
         $http({method: 'POST', url: '/runblast?p=' + p + '&id=' + Math.floor(Math.random() * (10000)), data: formData, headers: {'Content-Type': undefined}, transformRequest: angular.identity})
                 .success(function(data, status, headers, config) {
-                    if(!data.data["err"]){
-                    $scope.results = data.data;
+                    if(!data["err"]){
+                    $scope.results = data;
                     var keys = Object.keys( $scope.results[0]);
                     for(var i =0 ;i < keys.length;i++)
                     {
@@ -100,7 +113,7 @@ var log10 = function (val) {
                 }
                 else
                 {
-                        alert(data.data.err);
+                        alert(data.err);
                 }
                 })
                 .error(function(){
