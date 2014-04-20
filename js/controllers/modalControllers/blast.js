@@ -29,7 +29,7 @@ var log10 = function (val) {
     {
         loadFile($scope.file, function(e) {
             var blob = e.target.result;
-           if(blob.split(">").length<300)
+           if(blob.split(">").length<301)
            {    
             blastFile(evalue, bitscore, pident);
         }
