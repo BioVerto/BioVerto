@@ -27,7 +27,22 @@ var log10 = function (val) {
 }
     $scope.fileUpload = function(evalue, bitscore, pident)
     {
-        var formData = new FormData();
+        loadFile($scope.file, function(e) {
+            var blob = "";e.target.result;
+           if(blob.split(">").length<300)
+           {    
+            blastFile();
+        }
+        else
+        {
+           $scope.alertText = "Files more than 300 sequences not supported"
+            $scope.alertShow = true; 
+        }
+    })
+};
+var blastFile = function()
+{
+  var formData = new FormData();
 
         formData.append('file', $scope.file);
         var p = "";
@@ -122,10 +137,8 @@ $scope.alertShow = true;
                                              alert("Backend issues");
                             $scope.alertShow = false;
                             $scope.apply();
-                });
-
-    };
-
+                });  
+}
     $scope.previewGridOptions = {enableColumnResize: true, columnDefs: 'previewColumns', data: 'results', virtualizationThreshold: 10, enableSorting: false};
 
     $scope.cancel = function() {

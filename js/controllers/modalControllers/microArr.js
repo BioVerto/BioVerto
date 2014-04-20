@@ -47,10 +47,7 @@ modalControllers.microArr = function($scope, $modalInstance) {
         g5.loadGraphFromObjArray(generateObjArr($scope.corrResult.data, $scope.corrResult.col), graphName, "Source", "Target");
         $modalInstance.close({layout: "force", graphName: graphName});
     };
-    var myHeaderCellTemplate = '<div class="ngHeaderSortColumn {{col.headerClass}}"><div>{{col.displayName}} </div>' +
-            '<input type="radio" ng-model=\"$parent.$parent.$parent.$parent.source\" value="{{col.displayName}}">  Source <br/>' +
-            '<input type="radio" ng-model=\"$parent.$parent.$parent.$parent.target\" value="{{col.displayName}}"> Target <br/></div>';
-
+   
     $scope.fileUpload = function()
     {
         $scope.uploadButtonEnable = false;
