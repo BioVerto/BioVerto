@@ -28,10 +28,10 @@ var log10 = function (val) {
     $scope.fileUpload = function(evalue, bitscore, pident)
     {
         loadFile($scope.file, function(e) {
-            var blob = "";e.target.result;
+            var blob = e.target.result;
            if(blob.split(">").length<300)
            {    
-            blastFile();
+            blastFile(evalue, bitscore, pident);
         }
         else
         {
@@ -40,7 +40,7 @@ var log10 = function (val) {
         }
     })
 };
-var blastFile = function()
+var blastFile = function(evalue, bitscore, pident)
 {
   var formData = new FormData();
 
