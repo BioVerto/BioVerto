@@ -86,6 +86,22 @@ dc.fgraph = function(parent) {
                 return d.data.index
             },
             _theta = 0.8,
+            _nodeToolTip = function(d){
+               var result ="Node Info <br/>";
+               for(var fn in _graph.nodeAccessors)
+                {
+                result += fn+" : "+ _graph.nodeAccessors[fn](d.data)+"<br/>";
+                }
+                return result;
+            },
+            _edgeToolTip = function(d){
+                var result ="Edge Info <br/>";
+               for(var fn in _graph.edgeAccessors)
+                {
+                result += fn+" : "+ _graph.edgeAccessors[fn](d)+"<br/>";
+                }
+                return result;
+            },
             _terminator; // not used, just to terminate list
 
     // partial redraw of node size
@@ -266,13 +282,25 @@ dc.fgraph = function(parent) {
                 }))
                 .enter();
         _newLinks.append("line")
-                .attr("class", "link");
+                .attr("class", "link")
+                .on("mouseover", function (d,i){
+                                dc.tooltip.html(_edgeToolTip(d)).show();
+                            })
+                .on("mouseout", function (d,i){
+                                dc.tooltip.hide();
+                            });
         _newLinks = _svg.select(".links").selectAll(".link")
         _newNodes = _svg.select(".nodes").selectAll(".node")
                 .data(_nodeData.filter(_nodeFilterFunction), _indexFunction)
                 .enter().append("g")
                 .attr("class", "node")
                 .call(drag)
+                .on("mouseover", function (d,i){
+                                dc.tooltip.html(_nodeToolTip(d)).show();
+                            })
+                .on("mouseout", function (d,i){
+                                dc.tooltip.hide();
+                            });
         _svg.select(".nodes").selectAll(".node")
                 .data(_nodeData.filter(_nodeFilterFunction), _indexFunction)
                 .exit()
@@ -334,10 +362,11 @@ dc.fgraph = function(parent) {
         _edgeFilterFunction = _;
         drawData();
     }
-    _fgraph.init = function(parent, data, width, height,state) {
+    _fgraph.init = function(parent, graph, width, height,state) {
         _parentID = parent;
-        _fgraph.graphView(data)
+        _fgraph.graphView(graph.getData())
                 .resize(width, height);
+        _graph = graph;
         drawData();
         if(state!==undefined)
         {
@@ -352,8 +381,7 @@ dc.fgraph = function(parent) {
     _fgraph.graphView = function(_) {
         if (!arguments.length)
             return _graph;
-        _graph = _;
-        initData(_graph);
+        initData(_);
         return _fgraph;
     };
 

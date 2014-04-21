@@ -9,7 +9,7 @@ function bringFront(elem, stack){
     var min, group = $(stack);
 
     if(group.length < 1) return;
-    min = parseInt(group[0].style.zIndex, 10) || 0;
+    min =0;
     $(group).each(function(i) {
         this.style.zIndex = min + i;
     });

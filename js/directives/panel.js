@@ -50,7 +50,7 @@ angular.module("MyApp")
                         scope.heading = scope.graphName;
                         scope.graph = g5.getGraph(scope.graphName);
                         scope.view = viewProvider.getView(scope.layout);
-                        scope.view.init("#graphNumber" + scope.index, scope.graph.getData(), scope.width, scope.height);
+                        scope.view.init("#graphNumber" + scope.index, scope.graph, scope.width, scope.height);
                         scope.refreshSidebar();
                         var config = jQuery.extend(true, [], configurationService.getConfig(scope.layout));
                         if(scope.state!==undefined)
