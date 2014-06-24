@@ -5,7 +5,7 @@ if (typeof dc === 'undefined')
    @param chartGroup: the group to which the gauge belongs to (determines when refreshing is done)
 */
 dc.cgraph = function(parent) {
-    var _fgraph = {}, // main object
+    var _cgraph = {}, // main object
     _parentID = parent, // keep track of the parent of an object
     _margins = {
 	top: 0,
@@ -13,48 +13,38 @@ dc.cgraph = function(parent) {
 	bottom: 0,
 	left: 0
     },
-    //_fCharge = -120, // charge parameter
-    _nodeColors = d3.scale.category20(), // colors to be used for nodes
+    _nodeColorScaleD = d3.scale.category20(), // colors to be used for nodes when nodeAccessor is discret
     _edgeColors = d3.scale.category20(), // colors to be used for edges
-    _nodeSizeAccessor = function(d){ return 1; },
     _nodeColorAccessor = function(d) {
 	return 1;
     }, // node color accessor
     _edgeColorAccessor = function(d) {
 	return 1;
-    }, // edge color accessor
-    _edgeWidthAccessor = function(d) {
-	return 2;
-    }, // controlls the width of the link
-    _weightAccessor = function(d) {
-	return 2;
-    }, // controlls the weight of the node
-    _edgeWidthScale = d3.scale.linear().range([1, 10]),
+    }, // edge color accessor    
     _cluster,
     _bundle,
     _svg, // svg element
     _rootGElement, //root g element under svg
-    _line, // links
+    _line, // path
     _node, // nodes
-    _transitionDuration = 750,
+    _links, // links
     _graph = {}, // data to be displayed
     _root, // root node of the cluster
-    _diameter =360,
+    _diameter = 360,
     _radius = _diameter / 2,
     _textRadius = 40,
-    _innerRadius = _radius - _textRadius,
-    _displayNames = true, // should we display names
-    _terminator; // not used, just to terminate list
-
+    _innerRadius = _radius - _textRadius;
+    
     // we can initialize the links/nodes only when we have data
     //do we need to call changeData whenever DoReDraw is called??!!
     function changeData(graph) {
 
+        //Deleted .value() because it has no effect on cluster layout
+        //https://github.com/mbostock/d3/wiki/cluster-Layout#wiki-value
 	if(!_cluster)
 	    _cluster = d3.layout.cluster()
             .size([360, _innerRadius])
-            .sort(null)
-            .value(function(d) { return _nodeSizeAccessor(d.data); });
+            .sort(null);
 	
 	if(!_bundle)    
 	    _bundle = d3.layout.bundle();
@@ -76,50 +66,40 @@ dc.cgraph = function(parent) {
 	    _rootGElement = _svg.append("g")
             .attr("transform", "translate(" + _radius + "," + _radius + ")");          
 	
-	
+        if(!_node || !_link) {
+            var circularData = parserForBundle(graph);
+            var nodes = _cluster.nodes(_root = packageHierarchy(circularData)),
+                links = packageImports(nodes);
 
-	var circularData = parserForBundle(graph);
-	//console.log("circular Data");
-	//console.log(circularData);
-	var nodes = _cluster.nodes(_root = packageHierarchy(circularData)),
-        links = packageImports(nodes);
+            _link = _rootGElement.selectAll(".link-cgraph")
+                .data(_bundle(links))
+                .enter().append("path")
+                .each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
+                .attr("class", "link-cgraph")
+                .attr("d", _line);
 
-	_blinks = _bundle(links);
-
-	_link = _rootGElement.selectAll(".link-cgraph")
-            .data(_blinks)
-            .enter().append("path")
-            .each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
-		.attr("class", "link-cgraph")
-            .attr("d", _line);
-
-	_node = _rootGElement.selectAll(".node-cgraph")
-            .data(nodes.filter(function(n) { return !n.children; }))
-        // .enter().append("g")
-        // .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
-        // .append("text")
-            .enter().append("text")
-            .attr("class", "node-cgraph")
-            .attr("dx", function(d) { return d.x < 180 ? 8 : -8; })
-            .attr("dy", ".31em")
-        //.attr("transform", function(d) { return d.x < 180 ? null : "rotate(180)"; })
-            .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")" + (d.x < 180 ? "" : "rotate(180)"); })
-            .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-            .text(function(d) { return d.key; })
-            .on("mouseover", mouseovered)
-            .on("mouseout", mouseouted);
-
-	_node.append("title")
-            .text(function(d) {
-		return d.name;
-            });
-
-	if (_displayNames)
-	    _node.append("text")
-            .text(function(d) {
-		return d.name;
-            });
-
+            _node = _rootGElement.selectAll(".node-cgraph")
+                .data(nodes.filter(function(n) { return !n.children; }))
+                .enter().append("text")
+                .attr("class", "node-cgraph")
+                .attr("dx", function(d) { return d.x < 180 ? 8 : -8; })
+                .attr("dy", ".31em")
+                .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")" + (d.x < 180 ? "" : "rotate(180)"); })
+                .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+                .text(function(d) { return d.key; })
+                .on("mouseover", mouseovered)
+                .on("mouseout", mouseouted);
+        
+            _node.append("title")
+               .text(function(d) {
+                   return d.name;
+               });	
+        }
+       //TODO: Commenting out for time being
+       //Need to figure out how to handle color change for cgraph
+       //changeNodeColor();
+       
+      
     }
 
     function mouseovered(d) {
@@ -147,15 +127,23 @@ dc.cgraph = function(parent) {
             .classed("node-cgraph--source", false);
     }
 
+
+    //partial redraw for node colors
+    function changeNodeColor() {
+        _node.style("fill", function(d) {
+            return _nodeColorScaleD(_nodeColorAccessor(d.data));
+        });
+    }
+    
     /* Function to redraw the part that changes the geometry */
     function changeLayout(){
 	if (!_cluster) return;
 
-	_cluster.size([360, _innerRadius])
-	    .value(function(d){ return _nodeSizeAccessor(d.data); });
+        //Deleted .value() because it has no effect on cluster layout
+        //https://github.com/mbostock/d3/wiki/cluster-Layout#wiki-value
+	_cluster.size([360, _innerRadius]);
 
 	_rootGElement.selectAll(".link-cgraph")
-        //   .data(_blinks) 
             .attr("d", _line);
 	
 	_rootGElement.selectAll(".node-cgraph")
@@ -165,36 +153,31 @@ dc.cgraph = function(parent) {
             .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; });
     }
     
-    _fgraph.init = function(parent,data,width,height) {
-	_diameter = minDiameter(width,height);
+    _cgraph.init = function(parent,data,width,height) {
+	_diameter = Math.min(width,height);
 	_parentID = parent;
-	_fgraph.graphView(data)
+	_cgraph.graphView(data)
             .resize(width,height);
-	return _fgraph;
+	return _cgraph;
     };
 
-    _fgraph.doRender = function() {
-	// delete old content if present
-	// d3.select(_parentID).select("svg").remove();
-
-	_fgraph.doRedraw();
-
-	return _fgraph;
+    _cgraph.doRender = function() {
+	_cgraph.doRedraw();
+        return _cgraph;
     };
 
-    _fgraph.updateEgdeStyle = function(style,fn){
+    _cgraph.updateEgdeStyle = function(style,fn){
 	_link.style(style, fn);              
     };
 
-    _fgraph.doRedraw = function() {
+    _cgraph.doRedraw = function() {
 	//need to include jquery for following line to work
 	var parent = $(_parentID); //$(_parentID+"-inner").parent();
 	_width = parent.width() - _margins.left - _margins.right;
 	_height = parent.height() - _margins.top - _margins.bottom;
 
-	_diameter = minDiameter(_width,_height);
-	_svg
-	    .attr("width", _diameter)
+	_diameter = Math.Min(_width,_height);
+	_svg.attr("width", _diameter)
 	    .attr("height", _diameter);
 
 	_radius = _diameter / 2,
@@ -205,80 +188,50 @@ dc.cgraph = function(parent) {
             .value(function(d) { return d.size; });
     };
 
-    //helper function for circular layout. Returns the minimum of the 2 parameters. Used in deciding the cluster layout size
-    function minDiameter(w,h){
-	if (w < h) {
-	    return w;
-	}
-	else {
-	    return h;
-	}
-    }
-
-    // should we display names for nodes?
-    _fgraph.displayNames = function(_) {
-	if (!arguments.length) return _displayNames;
-	_displayNames = _;
-
-	if (_displayNames)
-	    _node.append("text")
-            .text(function(d) {
-		return d.name;
-            });
-	else {
-	    _node.selectAll("text").remove();
-	}
-
-	// _fgraph.doRedraw();
-	return _fgraph;
-    };
-
     // Change/get inner colors
-    _fgraph.nodeColors = function(_) {
+    _cgraph.nodeColors = function(_) {
 	if (!arguments.length) return _nodeColors;
 	_nodeColors = _;
-	return _fgraph;
+	return _cgraph;
     };
 
-    _fgraph.edgeColors = function(_) {
+    _cgraph.edgeColors = function(_) {
 	if (!arguments.length) return _edgeColors;
 	_edgeColors = _;
-	_fgraph.updateEgdeStyle("stroke",_);
-	return _fgraph;
+	_cgraph.updateEgdeStyle("stroke",_);
+	return _cgraph;
     };
 
-    _fgraph.nodeColorAccessor = function(_) {
+    _cgraph.nodeColorAccessor = function(_) {
 	if (!arguments.length) return _nodeColorAccessor;
 	_nodeColorAccessor = _;
-	return _fgraph;
+        //TODO: Commenting out for time being
+        //Need to figure out how to handle color change for cgraph
+        //changeNodeColor();
+        return _cgraph;
     };
 
-    _fgraph.edgeColorAccessor = function(_) {
+    _cgraph.edgeColorAccessor = function(_) {
 	if (!arguments.length) return _edgeColorAccessor;
 	_edgeColorAccessor = _;
-	return _fgraph;
-    };
-
-    _fgraph.weightAccessor = function(_) {
-	if (!arguments.length) return _weightAccessor;
-	// TODO, enforce the changes
-	_weightAccessor = _;
-	return _fgraph;
+	return _cgraph;
     };
 
     // Change/get data
-    _fgraph.graphView = function(_) {
+    _cgraph.graphView = function(_) {
 	if (!arguments.length) return _graph;
 	_graph = _;
 	changeData(_graph);
-	return _fgraph;
+	return _cgraph;
     };
-_fgraph.destroy = function()
-    {
+    
+    _cgraph.destroy = function() {
         $(_parentID).empty();
-     }
-    _fgraph.resize = function(width,height) {
-	_diameter = minDiameter(width-40,height-40);
+    };
+     
+    //Resize is called everytime height, width is changed
+    _cgraph.resize = function(width,height) {
+	_diameter = Math.min(width-40,height-40);
 	_radius = _diameter / 2,
 	_innerRadius = _radius - _textRadius;
 	if (_svg) {
@@ -291,65 +244,43 @@ _fgraph.destroy = function()
 	    changeLayout();
 	}
 	
-	return _fgraph;
+	return _cgraph;
     };
 
-    _fgraph.minEdgeWidth = function(_) {
-	var range = _edgeWidthScale.range();
-	if (!arguments.length) return range[0];
-
-	range[0] = _;
-	_edgeWidthScale.range(range);
-
-	return _fgraph;
-    };
-
-    _fgraph.maxEdgeWidth = function(_) {
-	var range = _edgeWidthScale.range();
-	if (!arguments.length) return range[1];
-
-	range[1] = _;
-	_edgeWidthScale.range(range);
-
-	return _fgraph;
-    };
-
-    _fgraph.textRadius = function(_) {
+    _cgraph.textRadius = function(_) {
 	if (!arguments.length) return _textRadius;
 	_textRadius = _;
         
         _innerRadius = _diameter/2 - _textRadius;
 	changeLayout();
 	
-	return _fgraph;
-    }
+	return _cgraph;
+    };
 
-    return _fgraph;
+    return _cgraph;
 
-}
+};
 
 //Parser for circular layout.
 function parserForBundle(graph){
-    var circ_graph=[];
-    var nod= graph.nodes;
-    nod.forEach(function(d){ 
-	var imports=[];
-	var num=(d.data.id);
-	var lin=graph.edges;
-	for(var i=0; i<lin.length;i++){
-	    if(lin[i].source.data.id==num){
-		imports.push(String(lin[i].target.data.id));  
+    var cGraphNodes = [];
+    var nodes = graph.nodes;
+    nodes.forEach(function(d){ 
+	var imports = [];
+	var num = (d.data.id);
+	var links=graph.edges;
+	for(var i=0; i<links.length; i++){
+	    if(links[i].source.data.id === num){
+		imports.push(String(links[i].target.data.id));  
 	    }
 	}
-	circ_graph.push({
+	cGraphNodes.push({
             name: d.data.id,
             data: d.data,
             imports: imports
 	});
     });
-    //console.log("circ_graph");
-    //console.log(circ_graph);
-    return circ_graph;
+    return cGraphNodes;
 }
 
 //Helper function for circular layout
@@ -366,7 +297,6 @@ function packageHierarchy(classes) {
 		node.key = name.substring(i + 1);
 	    }
 	}
-	//console.log(node);
 	return node;
     }
 
