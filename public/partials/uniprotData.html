@@ -1,0 +1,35 @@
+<div class="modal-dialog">
+    <div class="modal-header">
+        <h2>Protein Information:</h2>
+    </div>
+    <div class="modal-body">
+        <alert  ng-show="alertShow" type="alertType" close="alertClose(a)">{{alertText}}</alert>
+        <h4>
+            <ul id="myTab" class="nav nav-pills">
+                <li class="active"><a href="#name" data-toggle="tab">
+                    Protein fullname </a></li>
+                <li ><a href="#sequence" data-toggle="tab"> Structure of Protein</a></li>
+                <li ><a href="#papers" data-toggle="tab"> Publications </a></li>
+                <li ><a href="#function" data-toggle="tab"> Function of Protein </a></li>
+            </ul>
+        </h4>
+    </div>
+</div>
+</div>
+<br>
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade in active" id="name">
+    </div>
+    <div class="tab-pane fade" id="sequence">
+    </div>
+    <div class="tab-pane fade" id="papers">
+    </div>
+    <div class="tab-pane fade" id="function">
+    </div>
+</div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-disabled="!graphName" ng-click="ok(graphName)">OK</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+</div>
+    </div>

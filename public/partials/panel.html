@@ -1,0 +1,82 @@
+
+<div class="container">
+    <div >
+        <div ng-click="setActive()" ng-class="{'viewWindow panel panel-info': (index == activeindex), 'viewWindow panel panel-default': (index != activeindex)}">
+            <div class="panel-heading" style="padding: 2px;">  
+                <div class="panel-title ">
+                    <div class="btn-group" style="width:100%;">
+                        <div class="pull-left">
+                            <div class="text-primary"> {{heading}}</div>
+                        </div>
+                        <div class="btn-sm btn-sm-nopad pull-right" style="width: 25px;">
+                            <a href="#" ng-click="removeView()" class="col-xs-2 pull-right glyphicon glyphicon-remove" ></a>
+                        </div>
+                        
+                        <div class="btn-sm btn-sm-nopad pull-right" style="width: 25px;">
+                            <a href="#" class="col-xs-2 pull-right dropdown-toggle glyphicon glyphicon-cog" ></a>
+                            <ul class="dropdown-menu">                                   
+                                <li>
+                                    <a href="#" ng-click="cloneView()">Clone View</a>
+                                </li>
+                                <li>
+                                    <a href="#" ng-click="stopAnimationView()">Stop Animation</a>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                       <div class="btn-sm btn-sm-nopad pull-right" style="width: 25px;">
+                           <a href="#" ng-click="exportAsImage()" class="col-xs-2 pull-right dropdown-toggle glyphicon glyphicon-picture" ></a>
+                            <ul id="dropdown{{index}}" class="dropdown-menu">                                   
+                               
+                                <form>
+                                 <h6>Export as Image</h6>
+                                <h6>Filename:</h6> 
+                                <input type="text" ng-model="filename">
+                              
+                                <a href="{{imageData}}" ng-hide="!filename" style="color: #FFFFFF;background: #428bca;border-radius: 2;padding: 5;" download="{{filename}}.png" >Save</a>                               
+                                
+                                </form>
+                            </ul>
+                        </div>
+                        <div class="btn-sm btn-sm-nopad pull-right" style="width: 25px;">
+                           <a href="#" ng-click="stopAnimationView()" class="col-xs-2 pull-right  glyphicon glyphicon-stop" ></a>                
+                        </div>
+                    </div>
+                </div>  
+            </div>
+
+
+            <div class="panel-body" style="padding: 1px;">
+                <div id="graphNumber{{index}}"></div>
+            </div>
+        </div>
+
+    </div>
+    <div ng-show="index == activeindex" class="sidebar-offcanvas" role="navigation">
+        <div class="well sidebar-nav" >
+
+            <div class="well">
+                <a>Algorithms</a>
+                <button ng-click="runAlgo()" class="btn-sm btn-info">Run Algorithms</button>
+            </div>
+             <tabset justified="true">
+             <tab heading="Properties">
+                 <div id="properties"></div>
+                 <!--<div compile="controls"></div>-->
+             </tab>
+             <tab ng-show="layout==='force'" heading="Filters">
+                 <div style='padding-bottom: 10px; padding-top: 10px;'><a class='pull-left'>Node Filters</a></div>
+                 <br>
+                 <filterselect acessorfns="acessorFns" type="'Node'" filterupdate ="view.nodeFilterFunction(_)" filtervalue = "filters.node" ></filterselect>
+                 <div style='padding-bottom: 10px; padding-top: 10px;'><a class='pull-left'>Edge Filters</a></div>
+                 <br>
+                 <filterselect acessorfns="acessorFns" type="'Edge'" filterupdate ="view.edgeFilterFunction(_)" filtervalue = "filters.edge"  ></filterselect>
+            
+             </tab>
+            </tabset>
+            
+
+        </div>
+    </div>
+
+</div>
